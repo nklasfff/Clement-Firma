@@ -11,105 +11,98 @@
 | Hero-billede | `IMG_2068.png` | `assets/images/hero.png` | Hovedbillede — bruges øverst på landingssiden |
 | Cirkel-figur | `IMG_2066.png` | `assets/images/cirkler.png` | Den originale cirkelmodel — udgangspunkt for de 7 tilpassede cirkler |
 
-> **Bemærk:** Kopiér billederne fra clement-app til `assets/images/` og omdøb dem.
+> Billederne er placeret i `assets/images/` som `hero.png` og `cirkler.png`.
 
 ---
 
 ## De 7 tilpassede cirkler
 
-Den originale cirkelmodel fra Clement (terapeutisk kontekst) oversættes til arbejdslivet:
+Den originale cirkelmodel fra Clement har **Nervesystemregulering** i centrum, omgivet af 6 cirkler. I firma-versionen bevarer vi samme struktur, men oversætter til arbejdslivet:
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                                                                     │
-│    ORIGINAL (terapi)              →    FIRMA (arbejdsplads)         │
-│                                                                     │
-│  ┌───────────────────┐           ┌───────────────────────────┐     │
-│  │  1. Polyvagal      │     →     │  1. Tre tilstande i din   │     │
-│  │     teori          │           │     arbejdsdag            │     │
-│  └───────────────────┘           └───────────────────────────┘     │
-│                                                                     │
-│  ┌───────────────────┐           ┌───────────────────────────┐     │
-│  │  2. Terapeutisk    │     →     │  2. Ledelse og            │     │
-│  │     relation       │           │     arbejdskultur         │     │
-│  └───────────────────┘           └───────────────────────────┘     │
-│                                                                     │
-│  ┌───────────────────┐           ┌───────────────────────────┐     │
-│  │  3. Nervesystem-   │     →     │  3. Stressregulering      │     │
-│  │     regulering     │           │     på kontoret           │     │
-│  └───────────────────┘           └───────────────────────────┘     │
-│                                                                     │
-│  ┌───────────────────┐           ┌───────────────────────────┐     │
-│  │  4. Krop og        │     →     │  4. Krop og bevægelse     │     │
-│  │     somatik        │           │     i hverdagen           │     │
-│  └───────────────────┘           └───────────────────────────┘     │
-│                                                                     │
-│  ┌───────────────────┐           ┌───────────────────────────┐     │
-│  │  5. Åndedræts-     │     →     │  5. Åndedræt og pauser    │     │
-│  │     arbejde        │           │     ved skrivebordet      │     │
-│  └───────────────────┘           └───────────────────────────┘     │
-│                                                                     │
-│  ┌───────────────────┐           ┌───────────────────────────┐     │
-│  │  6. Emotionel      │     →     │  6. Følelsesmæssig        │     │
-│  │     bevidsthed     │           │     intelligens på job    │     │
-│  └───────────────────┘           └───────────────────────────┘     │
-│                                                                     │
-│  ┌───────────────────┐           ┌───────────────────────────┐     │
-│  │  7. Integration    │     →     │  7. Bæredygtig            │     │
-│  │     og helhed      │           │     arbejdsbalance        │     │
-│  └───────────────────┘           └───────────────────────────┘     │
-│                                                                     │
-└─────────────────────────────────────────────────────────────────────┘
+        ORIGINAL (terapi)                    FIRMA (arbejdsplads)
+        ─────────────────                    ────────────────────
+
+           Polyvagal                        Tre tilstande i
+             teori                          din arbejdsdag
+
+
+  Terapeutisk       Tilknytnings-    Ledelse og        Samarbejds-
+    Relation          mønstre       arbejdskultur       mønstre
+
+
+        ● Nervesystem-                    ● Stressregulering
+          regulering                        på kontoret
+          (CENTRUM)                         (CENTRUM)
+
+
+  Traumer &         Kropsterapi     Mentalt pres       Krop og
+  Dissociation      & Behandling    & Resiliens        bevægelse
+                                                       i hverdagen
+
+           Psyko-                          Åndedræt og
+           biologi                         pauser ved
+                                           skrivebordet
 ```
+
+| # | Original cirkel | Firma-cirkel | Kernebudskab |
+|---|----------------|--------------|--------------|
+| **C** | Nervesystemregulering | **Stressregulering på kontoret** | Centrum — alt andet kredser om dette |
+| **1** | Polyvagal teori | **Tre tilstande i din arbejdsdag** | Grøn/gul/rød zone — genkend dit stressniveau |
+| **2** | Terapeutisk Relation | **Ledelse og arbejdskultur** | Psykologisk tryghed, tillidsbaseret ledelse |
+| **3** | Tilknytningsmønstre | **Samarbejdsmønstre** | Hvordan vi knytter os til kolleger og teams |
+| **4** | Kropsterapi & Behandling | **Krop og bevægelse i hverdagen** | Bevægelsespauser, ergonomi, kropsbevidsthed |
+| **5** | Psykobiologi | **Åndedræt og pauser ved skrivebordet** | Konkrete åndedrætsteknikker til kontoret |
+| **6** | Traumer & Dissociation | **Mentalt pres og resiliens** | Håndtér overbelastning, undgå burnout |
+
+### Centrum — Stressregulering på kontoret
+**Oprindelig:** Nervesystemregulering
+**Firma-version:** Det centrale omdrejningspunkt — alle andre cirkler støtter op om dette:
+- Micro-pauser mellem møder
+- Grounding-teknikker ved skrivebordet
+- Sensorisk regulering (lys, lyd, temperatur)
 
 ### Cirkel 1 — Tre tilstande i din arbejdsdag
-**Oprindelig:** Polyvagal teori (ventral vagal, sympatisk, dorsal vagal)
+**Oprindelig:** Polyvagal teori
 **Firma-version:** Genkend de tre tilstande i løbet af din arbejdsdag:
 - **Grøn zone (ventral):** Fokuseret, samarbejdende, kreativ — flowet kører
 - **Gul zone (sympatisk):** Stresset, presset, irritabel — deadlines og konflikter
 - **Rød zone (dorsal):** Udmattet, lukket ned, uengageret — burnout-fare
 
 ### Cirkel 2 — Ledelse og arbejdskultur
-**Oprindelig:** Terapeutisk relation
+**Oprindelig:** Terapeutisk Relation
 **Firma-version:** Relationen mellem leder og medarbejder som fundament for trivsel:
 - Psykologisk tryghed i teamet
 - Tillidsbaseret ledelse vs. kontrolbaseret ledelse
 - Feedbackkultur der regulerer nervesystemet
 
-### Cirkel 3 — Stressregulering på kontoret
-**Oprindelig:** Nervesystemregulering
-**Firma-version:** Praktiske teknikker til at regulere stress midt i arbejdsdagen:
-- Micro-pauser mellem møder
-- Grounding-teknikker ved skrivebordet
-- Sensorisk regulering (lys, lyd, temperatur)
+### Cirkel 3 — Samarbejdsmønstre
+**Oprindelig:** Tilknytningsmønstre
+**Firma-version:** Hvordan vi knytter os til kolleger, teams og organisationen:
+- Tryg vs. utryg samarbejdsstil
+- Teamdynamik og roller
+- At skabe tilhørsforhold på arbejdspladsen
 
 ### Cirkel 4 — Krop og bevægelse i hverdagen
-**Oprindelig:** Krop og somatik
+**Oprindelig:** Kropsterapi & Behandling
 **Firma-version:** Kroppen som ressource i kontormiljøet:
 - Stillesiddende arbejde og dets påvirkning
 - Bevægelsespauser og skrivebords-stretching
 - Ergonomi som nervesystem-støtte
 
 ### Cirkel 5 — Åndedræt og pauser ved skrivebordet
-**Oprindelig:** Åndedrætarbejde
+**Oprindelig:** Psykobiologi
 **Firma-version:** Åndedrætsøvelser tilpasset kontoret:
 - 4-7-8 åndedræt før præsentationer
 - Box breathing mellem møder
 - Kollektive åndedrætspauser i teams
 
-### Cirkel 6 — Følelsesmæssig intelligens på jobbet
-**Oprindelig:** Emotionel bevidsthed
-**Firma-version:** At navigere følelser professionelt:
-- Genkend dine emotionelle triggere på arbejdet
-- Håndtér konflikter med emotionel intelligens
-- Skab rum for ærlighed uden sårbarhed
-
-### Cirkel 7 — Bæredygtig arbejdsbalance
-**Oprindelig:** Integration og helhed
-**Firma-version:** At samle det hele til en bæredygtig praksis:
-- Personlig wellness-rutine i arbejdsdagen
-- Grænser mellem arbejde og privatliv
-- Langsigtet trivsel frem for kortsigtede fixes
+### Cirkel 6 — Mentalt pres og resiliens
+**Oprindelig:** Traumer & Dissociation
+**Firma-version:** Håndtér overbelastning og opbyg modstandskraft:
+- Genkend tegn på overbelastning (zoning ud, følelsesløshed)
+- Forebyg burnout med bevidste grænser
+- Resiliens-rutiner i hverdagen
 
 ---
 

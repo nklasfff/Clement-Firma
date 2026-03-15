@@ -43,13 +43,13 @@ indhold:
     work_life_balance: true
 
   cirkler:
-    tre_tilstande: true
-    ledelse_og_kultur: true
-    stressregulering: true
-    krop_og_bevægelse: true
-    åndedræt_og_pauser: true
-    følelsesmæssig_intelligens: true
-    bæredygtig_balance: true
+    stressregulering_centrum: true   # Nervesystemregulering → Stressregulering på kontoret
+    tre_tilstande: true              # Polyvagal teori → Tre tilstande i din arbejdsdag
+    ledelse_og_kultur: true          # Terapeutisk Relation → Ledelse og arbejdskultur
+    samarbejdsmønstre: true          # Tilknytningsmønstre → Samarbejdsmønstre
+    krop_og_bevægelse: true          # Kropsterapi & Behandling → Krop og bevægelse
+    åndedræt_og_pauser: true         # Psykobiologi → Åndedræt og pauser
+    mentalt_pres_og_resiliens: true  # Traumer & Dissociation → Mentalt pres og resiliens
 
 # Branchespecifikke eksempler
 # Tilpas eksempler og sprog til virksomhedens kontekst
