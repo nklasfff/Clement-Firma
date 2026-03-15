@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clement Firma — Wellness-framework til arbejdspladsen</title>
+  <style>
+    :root {
+      --primary: #6B2D5B;
+      --primary-light: #8B3D7B;
+      --accent: #D4A373;
+      --bg: #FAF7F4;
+      --text: #2C2C2C;
+      --text-light: #5A5A5A;
+      --white: #FFFFFF;
+      --green: #4CAF50;
+      --yellow: #FFC107;
+      --red: #E57373;
+      --card-shadow: 0 2px 20px rgba(107, 45, 91, 0.08);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 80px 20px 60px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: var(--white);
+      text-align: center;
+    }
+
+    .hero-image {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid rgba(255,255,255,0.3);
+      margin-bottom: 30px;
+    }
+
+    .hero h1 {
+      font-size: 2.4rem;
+      font-weight: 400;
+      margin-bottom: 10px;
+      letter-spacing: 0.02em;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      opacity: 0.9;
+      max-width: 520px;
+      font-style: italic;
+    }
+
+    /* ── Sections ── */
+    section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 24px;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      color: var(--primary);
+      margin-bottom: 12px;
+      font-weight: 400;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .section-intro {
+      color: var(--text-light);
+      margin-bottom: 36px;
+      font-size: 1.05rem;
+    }
+
+    .divider {
+      width: 60px;
+      height: 2px;
+      background: var(--accent);
+      margin: 60px auto;
+    }
+
+    /* ── Cirkelmodel ── */
+    .cirkel-section {
+      text-align: center;
+    }
+
+    .cirkel-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 60px;
+      flex-wrap: wrap;
+      margin: 40px 0;
+    }
+
+    .cirkel-original {
+      max-width: 340px;
+    }
+
+    .cirkel-original img {
+      width: 100%;
+      border-radius: 12px;
+    }
+
+    .cirkel-original figcaption {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    .arrow-between {
+      font-size: 2.5rem;
+      color: var(--accent);
+    }
+
+    /* ── Ny cirkelmodel (SVG) ── */
+    .ny-cirkel-figur {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .ny-cirkel-figur svg {
+      width: 100%;
+      height: auto;
+    }
+
+    /* ── Mapping tabel ── */
+    .mapping-grid {
+      display: grid;
+      gap: 16px;
+      margin: 30px 0;
+    }
+
+    .mapping-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: var(--card-shadow);
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .mapping-card.centrum {
+      border: 2px solid var(--primary);
+      background: linear-gradient(135deg, #f9f0f6 0%, var(--white) 100%);
+    }
+
+    .mapping-from {
+      text-align: right;
+      color: var(--text-light);
+      font-size: 0.95rem;
+    }
+
+    .mapping-arrow {
+      color: var(--accent);
+      font-size: 1.4rem;
+    }
+
+    .mapping-to {
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 1.05rem;
+    }
+
+    .mapping-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 2px;
+    }
+
+    /* ── Cirkel detaljer ── */
+    .cirkel-detaljer {
+      margin: 40px 0;
+    }
+
+    .cirkel-detail-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 16px;
+      box-shadow: var(--card-shadow);
+      border-left: 4px solid var(--primary);
+    }
+
+    .cirkel-detail-card.centrum-card {
+      border-left: 4px solid var(--accent);
+      background: linear-gradient(135deg, #fdf6ee 0%, var(--white) 100%);
+    }
+
+    .cirkel-detail-card h3 span {
+      font-weight: 400;
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+
+    .cirkel-detail-card ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 10px;
+    }
+
+    .cirkel-detail-card ul li {
+      padding: 4px 0 4px 20px;
+      position: relative;
+      color: var(--text-light);
+    }
+
+    .cirkel-detail-card ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 12px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* ── Perspektiver ── */
+    .perspektiver {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin: 30px 0;
+    }
+
+    .perspektiv-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: var(--card-shadow);
+    }
+
+    .perspektiv-card h3 {
+      margin-bottom: 12px;
+    }
+
+    .perspektiv-card .eksempel {
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 14px;
+      margin-top: 14px;
+      font-style: italic;
+      color: var(--text-light);
+      font-size: 0.95rem;
+    }
+
+    /* ── Temaer ── */
+    .tema-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 30px 0;
+    }
+
+    .tema-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 22px;
+      box-shadow: var(--card-shadow);
+      text-align: center;
+    }
+
+    .tema-card .tema-nr {
+      font-size: 0.75rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .tema-card h3 {
+      font-size: 1.05rem;
+      margin: 6px 0;
+    }
+
+    .tema-card p {
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
+
+    /* ── Øvelser ── */
+    .øvelse-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 16px;
+      box-shadow: var(--card-shadow);
+    }
+
+    .øvelse-meta {
+      display: flex;
+      gap: 16px;
+      margin: 8px 0 14px;
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
+
+    .øvelse-meta span {
+      background: var(--bg);
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .øvelse-card blockquote {
+      border-left: 3px solid var(--accent);
+      padding-left: 16px;
+      color: var(--text-light);
+      font-style: italic;
+      line-height: 1.8;
+    }
+
+    /* ── Zone-indikator ── */
+    .zone-bar {
+      display: flex;
+      border-radius: 30px;
+      overflow: hidden;
+      height: 8px;
+      margin: 20px 0 30px;
+      max-width: 400px;
+    }
+
+    .zone-bar .green { flex: 1; background: var(--green); }
+    .zone-bar .yellow { flex: 1; background: var(--yellow); }
+    .zone-bar .red { flex: 1; background: var(--red); }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-light);
+      font-size: 0.9rem;
+      border-top: 1px solid #e5e0dc;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 1.8rem; }
+      .perspektiver { grid-template-columns: 1fr; }
+      .tema-grid { grid-template-columns: 1fr 1fr; }
+      .mapping-card { grid-template-columns: 1fr; text-align: center; }
+      .mapping-from { text-align: center; }
+      .cirkel-container { flex-direction: column; gap: 20px; }
+      .arrow-between { transform: rotate(90deg); }
+    }
+
+    @media (max-width: 480px) {
+      .tema-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════ HERO ════ -->
+  <header class="hero">
+    <img src="assets/images/hero.png" alt="Clement" class="hero-image">
+    <h1>Clement Firma</h1>
+    <p>Wellness-framework til arbejdspladsen — baseret på den terapeutiske cirkelmodel, tilpasset dit kontormiljø</p>
+  </header>
+
+  <!-- ════ CIRKELMODEL ════ -->
+  <section class="cirkel-section">
+    <h2>Fra terapi til arbejdsplads</h2>
+    <p class="section-intro">Den originale cirkelmodel oversættes til 7 arbejdspladscirkler med stressregulering i centrum.</p>
+
+    <div class="cirkel-container">
+      <figure class="cirkel-original">
+        <img src="assets/images/cirkler.png" alt="Original cirkelmodel">
+        <figcaption>Clements originale model</figcaption>
+      </figure>
+      <div class="arrow-between">&rarr;</div>
+      <div class="ny-cirkel-figur">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <!-- Forbindelseslinjer -->
+          <line x1="200" y1="200" x2="200" y2="55" stroke="#D4A373" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>
+          <line x1="200" y1="200" x2="330" y2="105" stroke="#D4A373" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>
+          <line x1="200" y1="200" x2="330" y2="295" stroke="#D4A373" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>
+          <line x1="200" y1="200" x2="200" y2="345" stroke="#D4A373" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>
+          <line x1="200" y1="200" x2="70" y2="295" stroke="#D4A373" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>
+          <line x1="200" y1="200" x2="70" y2="105" stroke="#D4A373" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>
+
+          <!-- Centrum -->
+          <circle cx="200" cy="200" r="52" fill="#6B2D5B"/>
+          <text x="200" y="193" text-anchor="middle" fill="white" font-size="11" font-family="Georgia">Stressregulering</text>
+          <text x="200" y="210" text-anchor="middle" fill="white" font-size="11" font-family="Georgia">på kontoret</text>
+
+          <!-- Cirkel 1: Tre tilstande (top) -->
+          <circle cx="200" cy="55" r="42" fill="#8B3D7B"/>
+          <text x="200" y="49" text-anchor="middle" fill="white" font-size="10" font-family="Georgia">Tre tilstande</text>
+          <text x="200" y="63" text-anchor="middle" fill="white" font-size="10" font-family="Georgia">i din arbejdsdag</text>
+
+          <!-- Cirkel 2: Ledelse (top-right) -->
+          <circle cx="330" cy="105" r="42" fill="#8B3D7B"/>
+          <text x="330" y="99" text-anchor="middle" fill="white" font-size="10" font-family="Georgia">Ledelse og</text>
+          <text x="330" y="113" text-anchor="middle" fill="white" font-size="10" font-family="Georgia">arbejdskultur</text>
+
+          <!-- Cirkel 3: Samarbejdsmønstre (bottom-right) -->
+          <circle cx="330" cy="295" r="42" fill="#8B3D7B"/>
+          <text x="330" y="289" text-anchor="middle" fill="white" font-size="10" font-family="Georgia">Samarbejds-</text>
+          <text x="330" y="303" text-anchor="middle" fill="white" font-size="10" font-family="Georgia">mønstre</text>
+
+          <!-- Cirkel 4: Krop og bevægelse (bottom) -->
+          <circle cx="200" cy="345" r="42" fill="#8B3D7B"/>
+          <text x="200" y="339" text-anchor="middle" fill="white" font-size="10" font-family="Georgia">Krop og</text>
+          <text x="200" y="353" text-anchor="middle" fill="white" font-size="10" font-family="Georgia">bevægelse</text>
+
+          <!-- Cirkel 5: Åndedræt (bottom-left) -->
+          <circle cx="70" cy="295" r="42" fill="#8B3D7B"/>
+          <text x="70" y="289" text-anchor="middle" fill="white" font-size="10" font-family="Georgia">Åndedræt og</text>
+          <text x="70" y="303" text-anchor="middle" fill="white" font-size="10" font-family="Georgia">pauser</text>
+
+          <!-- Cirkel 6: Mentalt pres (top-left) -->
+          <circle cx="70" cy="105" r="42" fill="#8B3D7B"/>
+          <text x="70" y="99" text-anchor="middle" fill="white" font-size="10" font-family="Georgia">Mentalt pres</text>
+          <text x="70" y="113" text-anchor="middle" fill="white" font-size="10" font-family="Georgia">og resiliens</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ════ MAPPING ════ -->
+  <section>
+    <h2>De 7 cirkler — fra terapi til firma</h2>
+    <p class="section-intro">Hver cirkel er oversat til en arbejdspladskontekst.</p>
+
+    <div class="mapping-grid">
+      <div class="mapping-card centrum">
+        <div class="mapping-from">
+          <div class="mapping-label">Centrum</div>
+          Nervesystemregulering
+        </div>
+        <div class="mapping-arrow">&rarr;</div>
+        <div class="mapping-to">Stressregulering på kontoret</div>
+      </div>
+      <div class="mapping-card">
+        <div class="mapping-from">
+          <div class="mapping-label">Cirkel 1</div>
+          Polyvagal teori
+        </div>
+        <div class="mapping-arrow">&rarr;</div>
+        <div class="mapping-to">Tre tilstande i din arbejdsdag</div>
+      </div>
+      <div class="mapping-card">
+        <div class="mapping-from">
+          <div class="mapping-label">Cirkel 2</div>
+          Terapeutisk Relation
+        </div>
+        <div class="mapping-arrow">&rarr;</div>
+        <div class="mapping-to">Ledelse og arbejdskultur</div>
+      </div>
+      <div class="mapping-card">
+        <div class="mapping-from">
+          <div class="mapping-label">Cirkel 3</div>
+          Tilknytningsmønstre
+        </div>
+        <div class="mapping-arrow">&rarr;</div>
+        <div class="mapping-to">Samarbejdsmønstre</div>
+      </div>
+      <div class="mapping-card">
+        <div class="mapping-from">
+          <div class="mapping-label">Cirkel 4</div>
+          Kropsterapi &amp; Behandling
+        </div>
+        <div class="mapping-arrow">&rarr;</div>
+        <div class="mapping-to">Krop og bevægelse i hverdagen</div>
+      </div>
+      <div class="mapping-card">
+        <div class="mapping-from">
+          <div class="mapping-label">Cirkel 5</div>
+          Psykobiologi
+        </div>
+        <div class="mapping-arrow">&rarr;</div>
+        <div class="mapping-to">Åndedræt og pauser ved skrivebordet</div>
+      </div>
+      <div class="mapping-card">
+        <div class="mapping-from">
+          <div class="mapping-label">Cirkel 6</div>
+          Traumer &amp; Dissociation
+        </div>
+        <div class="mapping-arrow">&rarr;</div>
+        <div class="mapping-to">Mentalt pres og resiliens</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ════ CIRKEL DETALJER ════ -->
+  <section>
+    <h2>Cirklerne i detaljer</h2>
+
+    <div class="zone-bar">
+      <div class="green"></div>
+      <div class="yellow"></div>
+      <div class="red"></div>
+    </div>
+
+    <div class="cirkel-detaljer">
+      <div class="cirkel-detail-card centrum-card">
+        <h3>Centrum — Stressregulering på kontoret <span>(Nervesystemregulering)</span></h3>
+        <ul>
+          <li>Micro-pauser mellem møder</li>
+          <li>Grounding-teknikker ved skrivebordet</li>
+          <li>Sensorisk regulering (lys, lyd, temperatur)</li>
+        </ul>
+      </div>
+
+      <div class="cirkel-detail-card">
+        <h3>1. Tre tilstande i din arbejdsdag <span>(Polyvagal teori)</span></h3>
+        <ul>
+          <li><strong style="color:var(--green)">Grøn zone:</strong> Fokuseret, samarbejdende, kreativ — flowet kører</li>
+          <li><strong style="color:var(--yellow)">Gul zone:</strong> Stresset, presset, irritabel — deadlines og konflikter</li>
+          <li><strong style="color:var(--red)">Rød zone:</strong> Udmattet, lukket ned, uengageret — burnout-fare</li>
+        </ul>
+      </div>
+
+      <div class="cirkel-detail-card">
+        <h3>2. Ledelse og arbejdskultur <span>(Terapeutisk Relation)</span></h3>
+        <ul>
+          <li>Psykologisk tryghed i teamet</li>
+          <li>Tillidsbaseret ledelse vs. kontrolbaseret ledelse</li>
+          <li>Feedbackkultur der regulerer nervesystemet</li>
+        </ul>
+      </div>
+
+      <div class="cirkel-detail-card">
+        <h3>3. Samarbejdsmønstre <span>(Tilknytningsmønstre)</span></h3>
+        <ul>
+          <li>Tryg vs. utryg samarbejdsstil</li>
+          <li>Teamdynamik og roller</li>
+          <li>At skabe tilhørsforhold på arbejdspladsen</li>
+        </ul>
+      </div>
+
+      <div class="cirkel-detail-card">
+        <h3>4. Krop og bevægelse i hverdagen <span>(Kropsterapi &amp; Behandling)</span></h3>
+        <ul>
+          <li>Stillesiddende arbejde og dets påvirkning</li>
+          <li>Bevægelsespauser og skrivebords-stretching</li>
+          <li>Ergonomi som nervesystem-støtte</li>
+        </ul>
+      </div>
+
+      <div class="cirkel-detail-card">
+        <h3>5. Åndedræt og pauser ved skrivebordet <span>(Psykobiologi)</span></h3>
+        <ul>
+          <li>4-7-8 åndedræt før præsentationer</li>
+          <li>Box breathing mellem møder</li>
+          <li>Kollektive åndedrætspauser i teams</li>
+        </ul>
+      </div>
+
+      <div class="cirkel-detail-card">
+        <h3>6. Mentalt pres og resiliens <span>(Traumer &amp; Dissociation)</span></h3>
+        <ul>
+          <li>Genkend tegn på overbelastning (zoning ud, følelsesløshed)</li>
+          <li>Forebyg burnout med bevidste grænser</li>
+          <li>Resiliens-rutiner i hverdagen</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ════ PERSPEKTIVER ════ -->
+  <section>
+    <h2>To perspektiver</h2>
+    <p class="section-intro">Alt indhold leveres i to versioner — for den der mærker det, og den der leder det.</p>
+
+    <div class="perspektiver">
+      <div class="perspektiv-card">
+        <h3>Medarbejder</h3>
+        <p>Fokus på selvomsorg, personlige teknikker og egen trivsel. Varm, inviterende og praktisk tone.</p>
+        <div class="eksempel">"Mærk efter: Er du i grøn, gul eller rød zone lige nu?"</div>
+      </div>
+      <div class="perspektiv-card">
+        <h3>Leder</h3>
+        <p>Fokus på teamtrivsel, kultur og facilitering. Strategisk, handlingsorienteret og empatisk tone.</p>
+        <div class="eksempel">"Hvordan skaber du psykologisk tryghed i dit næste møde?"</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ════ TEMAER ════ -->
+  <section>
+    <h2>6 temaer</h2>
+    <p class="section-intro">Hvert tema indeholder indhold fra alle 7 cirkler, set fra begge perspektiver.</p>
+
+    <div class="tema-grid">
+      <div class="tema-card">
+        <div class="tema-nr">Tema 1</div>
+        <h3>Generelt</h3>
+        <p>Grundlæggende trivsel i arbejdsdagen</p>
+      </div>
+      <div class="tema-card">
+        <div class="tema-nr">Tema 2</div>
+        <h3>Møder</h3>
+        <p>Regulering og tilstedeværelse i møder</p>
+      </div>
+      <div class="tema-card">
+        <div class="tema-nr">Tema 3</div>
+        <h3>Deadlines &amp; Pres</h3>
+        <p>Håndtering af tidspres og deadlines</p>
+      </div>
+      <div class="tema-card">
+        <div class="tema-nr">Tema 4</div>
+        <h3>Skærmarbejde</h3>
+        <p>Krop og sind ved skærmen</p>
+      </div>
+      <div class="tema-card">
+        <div class="tema-nr">Tema 5</div>
+        <h3>Konflikter</h3>
+        <p>Navigation af uenigheder og spændinger</p>
+      </div>
+      <div class="tema-card">
+        <div class="tema-nr">Tema 6</div>
+        <h3>Work-Life Balance</h3>
+        <p>Grænser og genopladning</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ════ ØVELSER ════ -->
+  <section>
+    <h2>5 øvelser til kontoret</h2>
+    <p class="section-intro">Designet så de kan udføres diskret og naturligt i en arbejdskontekst.</p>
+
+    <div class="øvelse-card">
+      <h3>1. Skrivebordsgrounding</h3>
+      <div class="øvelse-meta">
+        <span>2 min</span>
+        <span>Ved skrivebordet</span>
+        <span>Stressregulering</span>
+      </div>
+      <blockquote>
+        Mærk dine fødder mod gulvet. Mærk hænderne mod bordet. Tre dybe vejrtrækninger.<br>
+        Kig på tre ting i rummet og navngiv dem stille for dig selv.
+      </blockquote>
+    </div>
+
+    <div class="øvelse-card">
+      <h3>2. Møde-reset</h3>
+      <div class="øvelse-meta">
+        <span>1 min</span>
+        <span>Mødelokalet</span>
+        <span>Åndedræt</span>
+      </div>
+      <blockquote>
+        Inden mødet begynder: 4 sekunders indånding, 7 sekunders holde, 8 sekunders udånding.<br>
+        Gentag to gange. Sæt en intention for mødet.
+      </blockquote>
+    </div>
+
+    <div class="øvelse-card">
+      <h3>3. Deadline-åndedræt</h3>
+      <div class="øvelse-meta">
+        <span>3 min</span>
+        <span>Hvor som helst</span>
+        <span>Tre tilstande + Åndedræt</span>
+      </div>
+      <blockquote>
+        Check ind: Hvilken zone er du i? Gul? Rød?<br>
+        Box breathing: 4 sek ind — 4 sek hold — 4 sek ud — 4 sek hold. Gentag 4 gange.<br>
+        Check ind igen: Har zonen ændret sig?
+      </blockquote>
+    </div>
+
+    <div class="øvelse-card">
+      <h3>4. Konflikt-parkering</h3>
+      <div class="øvelse-meta">
+        <span>5 min</span>
+        <span>Et stille sted</span>
+        <span>Følelsesmæssig intelligens</span>
+      </div>
+      <blockquote>
+        Navngiv følelsen: Hvad mærker du? Frustration? Uretfærdighed? Angst?<br>
+        Mærk hvor i kroppen følelsen sidder.<br>
+        Spørg dig selv: "Hvad har jeg brug for lige nu?"<br>
+        Parkér situationen bevidst — du vender tilbage med et reguleret nervesystem.
+      </blockquote>
+    </div>
+
+    <div class="øvelse-card">
+      <h3>5. Afslutningsritual</h3>
+      <div class="øvelse-meta">
+        <span>3 min</span>
+        <span>Sidst på dagen</span>
+        <span>Bæredygtig balance</span>
+      </div>
+      <blockquote>
+        Skriv tre ting du fik gjort i dag.<br>
+        Skriv én ting du lader ligge til i morgen — og giv dig selv lov.<br>
+        Tre dybe vejrtrækninger. Luk computeren bevidst. Dagen er slut.
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ════ FOOTER ════ -->
+  <footer>
+    <p>Clement Firma &mdash; Wellness-framework til arbejdspladsen</p>
+  </footer>
+
+</body>
+</html>
