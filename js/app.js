@@ -25,7 +25,24 @@
   // ── Init ──
   function init() {
     renderOevelser();
+    opdaterCirkelTekster();
     bindEvents();
+  }
+
+  // ── Opdater SVG-cirkel-tekster baseret på perspektiv ──
+  function opdaterCirkelTekster() {
+    cirkelNodes.forEach(function(node) {
+      var cirkelId = node.dataset.cirkel;
+      var tekster = CIRKEL_TEKSTER[cirkelId];
+      if (!tekster) return;
+
+      var perspektivTekst = tekster[aktivPerspektiv];
+      var tekstElementer1 = node.querySelectorAll('.cirkel-tekst-1');
+      var tekstElementer2 = node.querySelectorAll('.cirkel-tekst-2');
+
+      tekstElementer1.forEach(function(el) { el.textContent = perspektivTekst[0]; });
+      tekstElementer2.forEach(function(el) { el.textContent = perspektivTekst[1]; });
+    });
   }
 
   // ── Events ──
@@ -37,6 +54,9 @@
         perspektivBtns.forEach(function(b) { b.classList.remove('active'); });
         this.classList.add('active');
         perspektivHint.innerHTML = 'Du ser indholdet som <strong>' + aktivPerspektiv + '</strong>';
+
+        // Opdater cirkeltekster i SVG
+        opdaterCirkelTekster();
 
         // Opdater åbent panel
         if (aktivCirkel) {

@@ -3,6 +3,38 @@
    Alt indhold til cirkler, øvelser, zoner og temaer
    ═══════════════════════════════════════════ */
 
+// Dynamiske tekster inde i SVG-cirklerne — skifter med perspektiv
+const CIRKEL_TEKSTER = {
+  centrum: {
+    medarbejder: ["Stressregulering", "i din hverdag"],
+    leder: ["Stressregulering", "i dit team"]
+  },
+  tilstande: {
+    medarbejder: ["Tre tilstande", "i din arbejdsdag"],
+    leder: ["Tre tilstande", "i dit team"]
+  },
+  ledelse: {
+    medarbejder: ["Din leder", "og din trivsel"],
+    leder: ["Dit lederskab", "og kulturen"]
+  },
+  samarbejde: {
+    medarbejder: ["Dine samarbejds-", "mønstre"],
+    leder: ["Teamets", "samarbejdsmønstre"]
+  },
+  krop: {
+    medarbejder: ["Din krop", "i hverdagen"],
+    leder: ["Bevægelse", "i teamet"]
+  },
+  aandedraet: {
+    medarbejder: ["Dit åndedræt", "og dine pauser"],
+    leder: ["Fælles pauser", "og åndedræt"]
+  },
+  resiliens: {
+    medarbejder: ["Dit mentale", "overskud"],
+    leder: ["Teamets resiliens", "og grænser"]
+  }
+};
+
 const CIRKLER = {
   centrum: {
     titel: "Stressregulering på kontoret",
@@ -33,9 +65,9 @@ const CIRKLER = {
     medarbejder: {
       beskrivelse: "I løbet af en arbejdsdag skifter du mellem tre tilstande. At genkende dem er første skridt til at regulere dig selv.",
       punkter: [
-        "<strong style='color:#4CAF50'>Grøn zone:</strong> Du er fokuseret, kreativ og samarbejdende — flowet kører",
-        "<strong style='color:#FFC107'>Gul zone:</strong> Du mærker stress, pres eller irritation — kroppen er i alarmberedskab",
-        "<strong style='color:#E57373'>Rød zone:</strong> Du er udmattet, lukket ned eller fraværende — energien er brugt op",
+        "<strong style='color:#6B8F71'>Grøn zone:</strong> Du er fokuseret, kreativ og samarbejdende — flowet kører",
+        "<strong style='color:#C4956A'>Gul zone:</strong> Du mærker stress, pres eller irritation — kroppen er i alarmberedskab",
+        "<strong style='color:#A45B6E'>Rød zone:</strong> Du er udmattet, lukket ned eller fraværende — energien er brugt op",
         "Det er normalt at skifte mellem zonerne — det handler om at opdage det"
       ],
       tip: "Check ind med dig selv lige nu: Hvilken farve er du i? Der er intet forkert svar."
