@@ -556,21 +556,145 @@
 
     html += '<div class="menu-divider"></div>';
 
-    // Settings section
+    // Notifikationer
     html += '<div class="menu-section">';
-    html += '<div class="menu-section-title">Indstillinger</div>';
+    html += '<div class="menu-section-title">Notifikationer</div>';
+
+    html += '<div class="menu-setting">';
+    html += '<div class="menu-setting-row">';
+    html += '<div class="menu-setting-info"><span class="menu-setting-name">Daglig påmindelse</span>';
+    html += '<span class="menu-setting-desc">En blid påmindelse om at tage en pause</span></div>';
+    html += '<label class="menu-toggle"><input type="checkbox" checked data-setting="daglig"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div class="menu-setting">';
+    html += '<div class="menu-setting-row">';
+    html += '<div class="menu-setting-info"><span class="menu-setting-name">Morgen check-in</span>';
+    html += '<span class="menu-setting-desc">Start dagen med en kort reguleringsøvelse</span></div>';
+    html += '<label class="menu-toggle"><input type="checkbox" checked data-setting="morgen"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div class="menu-setting">';
+    html += '<div class="menu-setting-row">';
+    html += '<div class="menu-setting-info"><span class="menu-setting-name">Ugentlig opsummering</span>';
+    html += '<span class="menu-setting-desc">Overblik over din uges trivsel og øvelser</span></div>';
+    html += '<label class="menu-toggle"><input type="checkbox" data-setting="ugentlig"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
+    html += '</div>';
+    html += '</div>';
 
     if (aktivPerspektiv === 'leder') {
-      html += '<button class="menu-item" data-action="notifikationer"><span class="menu-item-icon">🔔</span>Notifikationer</button>';
-      html += '<button class="menu-item" data-action="teamoversigt"><span class="menu-item-icon">👥</span>Teamoversigt</button>';
-    } else {
-      html += '<button class="menu-item" data-action="notifikationer"><span class="menu-item-icon">🔔</span>Notifikationer</button>';
-      html += '<button class="menu-item" data-action="paaminelser"><span class="menu-item-icon">⏰</span>Daglige påmindelser</button>';
+      html += '<div class="menu-setting">';
+      html += '<div class="menu-setting-row">';
+      html += '<div class="menu-setting-info"><span class="menu-setting-name">Team check-in påmindelse</span>';
+      html += '<span class="menu-setting-desc">Påmindelse om at tjekke ind med dit team</span></div>';
+      html += '<label class="menu-toggle"><input type="checkbox" checked data-setting="teamcheckin"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
+      html += '</div>';
+      html += '</div>';
     }
 
-    html += '<button class="menu-item" data-action="indstillinger"><span class="menu-item-icon">⚙</span>Indstillinger</button>';
-    html += '<button class="menu-item" data-action="privatliv"><span class="menu-item-icon">🔒</span>Privatliv</button>';
-    html += '<button class="menu-item" data-action="om"><span class="menu-item-icon">ℹ</span>Om appen</button>';
+    html += '<div class="menu-setting-note">Påmindelser sendes diskret og kan altid slås fra</div>';
+    html += '</div>';
+
+    html += '<div class="menu-divider"></div>';
+
+    // Daglige påmindelser / tidspunkter
+    html += '<div class="menu-section">';
+    html += '<div class="menu-section-title">Pausehjælp</div>';
+
+    html += '<div class="menu-setting">';
+    html += '<div class="menu-setting-row">';
+    html += '<div class="menu-setting-info"><span class="menu-setting-name">Pause-påmindelser</span>';
+    html += '<span class="menu-setting-desc">Blid notifikation hvert 45. minut i arbejdstiden</span></div>';
+    html += '<label class="menu-toggle"><input type="checkbox" checked data-setting="pause"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div class="menu-setting">';
+    html += '<div class="menu-setting-row">';
+    html += '<div class="menu-setting-info"><span class="menu-setting-name">Åndedrætspause</span>';
+    html += '<span class="menu-setting-desc">En guidet vejrtrækning midt på dagen</span></div>';
+    html += '<label class="menu-toggle"><input type="checkbox" data-setting="aandedraet"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div class="menu-setting">';
+    html += '<div class="menu-setting-row">';
+    html += '<div class="menu-setting-info"><span class="menu-setting-name">Afslutningsritual</span>';
+    html += '<span class="menu-setting-desc">Påmindelse om at lukke arbejdsdagen bevidst</span></div>';
+    html += '<label class="menu-toggle"><input type="checkbox" checked data-setting="afslutning"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '</div>';
+
+    html += '<div class="menu-divider"></div>';
+
+    // Indstillinger
+    html += '<div class="menu-section">';
+    html += '<div class="menu-section-title">Generelt</div>';
+
+    html += '<div class="menu-setting">';
+    html += '<div class="menu-setting-row">';
+    html += '<div class="menu-setting-info"><span class="menu-setting-name">Mørk tilstand</span>';
+    html += '<span class="menu-setting-desc">Dæmpet visning til aftenbrug</span></div>';
+    html += '<label class="menu-toggle"><input type="checkbox" data-setting="dark"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div class="menu-setting">';
+    html += '<div class="menu-setting-row">';
+    html += '<div class="menu-setting-info"><span class="menu-setting-name">Haptisk feedback</span>';
+    html += '<span class="menu-setting-desc">Let vibration ved interaktioner</span></div>';
+    html += '<label class="menu-toggle"><input type="checkbox" checked data-setting="haptic"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div class="menu-setting">';
+    html += '<div class="menu-setting-row">';
+    html += '<div class="menu-setting-info"><span class="menu-setting-name">Lydeffekter</span>';
+    html += '<span class="menu-setting-desc">Beroligende lyde ved åndedrætsøvelser</span></div>';
+    html += '<label class="menu-toggle"><input type="checkbox" data-setting="lyd"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '</div>';
+
+    html += '<div class="menu-divider"></div>';
+
+    // Privatliv & data
+    html += '<div class="menu-section">';
+    html += '<div class="menu-section-title">Privatliv & data</div>';
+    html += '<p class="menu-privacy-text">Dine data opbevares kun lokalt på din enhed. Ingen personlige oplysninger deles med tredjepart. Appen kræver ingen login og indsamler ingen brugerdata.</p>';
+
+    html += '<div class="menu-setting">';
+    html += '<div class="menu-setting-row">';
+    html += '<div class="menu-setting-info"><span class="menu-setting-name">Anonym brugsstatistik</span>';
+    html += '<span class="menu-setting-desc">Hjælp os med at forbedre appen</span></div>';
+    html += '<label class="menu-toggle"><input type="checkbox" data-setting="analytics"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<button class="menu-text-btn" data-action="sletdata">Slet alle lokale data</button>';
+    html += '</div>';
+
+    html += '<div class="menu-divider"></div>';
+
+    // Om appen
+    html += '<div class="menu-section">';
+    html += '<div class="menu-section-title">Om appen</div>';
+    html += '<div class="menu-about-app">';
+    html += '<p><strong>Clement Firma</strong> v1.0</p>';
+    html += '<p>Udviklet i samarbejde med Anne Marie Clement, baseret på over 20 års erfaring med nervesystemsarbejde, polyvagal teori og tilknytningsforskning.</p>';
+    html += '<p class="menu-about-links">';
+    html += '<span class="menu-about-link">Vilkår</span>';
+    html += '<span class="menu-about-sep">·</span>';
+    html += '<span class="menu-about-link">Privatlivspolitik</span>';
+    html += '<span class="menu-about-sep">·</span>';
+    html += '<span class="menu-about-link">Kontakt</span>';
+    html += '</p>';
+    html += '</div>';
     html += '</div>';
 
     menuContent.innerHTML = html;
@@ -589,18 +713,13 @@
       menuRolleBtn.addEventListener('click', function() {
         skiftRolle();
         renderMenuContent();
-        bindMenuItemActions();
       });
     }
 
-    bindMenuItemActions();
-  }
-
-  function bindMenuItemActions() {
-    menuContent.querySelectorAll('.menu-item[data-action]').forEach(function(item) {
-      item.addEventListener('click', function() {
-        // Placeholder — these would open sub-views in a full app
-        closeMenu();
+    // Bind toggle switches (visual only for demo)
+    menuContent.querySelectorAll('.menu-toggle input').forEach(function(input) {
+      input.addEventListener('change', function(e) {
+        e.stopPropagation();
       });
     });
   }

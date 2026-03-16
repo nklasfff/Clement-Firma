@@ -66,10 +66,11 @@ body {
 }
 
 .onboarding-kolibri {
-  width: 140px;
+  width: 180px;
   height: auto;
-  margin-bottom: 28px;
-  opacity: 0.8;
+  margin-bottom: 32px;
+  opacity: 1;
+  filter: brightness(1.3) contrast(1.1);
 }
 
 .onboarding h1 {
@@ -267,7 +268,7 @@ body.hero-visible .hamburger-line {
 .menu-content {
   flex: 1;
   overflow-y: auto;
-  padding: 16px 0;
+  padding: 16px 0 250px;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -359,6 +360,162 @@ body.hero-visible .hamburger-line {
 .menu-rolle-btn:hover {
   background: var(--primary);
   color: var(--white);
+}
+
+/* ── Menu Settings ── */
+.menu-setting {
+  padding: 0 24px;
+  margin-bottom: 4px;
+}
+
+.menu-setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+}
+
+.menu-setting-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.menu-setting-name {
+  display: block;
+  font-size: 0.92rem;
+  color: var(--text);
+  font-family: Georgia, serif;
+  line-height: 1.3;
+}
+
+.menu-setting-desc {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin-top: 1px;
+}
+
+.menu-setting-note {
+  padding: 8px 24px 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* Toggle switch */
+.menu-toggle {
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.menu-toggle input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-track {
+  display: block;
+  width: 44px;
+  height: 26px;
+  border-radius: 13px;
+  background: rgba(107, 45, 91, 0.15);
+  transition: background 0.25s ease;
+  position: relative;
+}
+
+.toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  transition: transform 0.25s ease;
+}
+
+.menu-toggle input:checked + .toggle-track {
+  background: var(--primary);
+}
+
+.menu-toggle input:checked + .toggle-track .toggle-thumb {
+  transform: translateX(18px);
+}
+
+/* Menu privacy & about */
+.menu-privacy-text {
+  padding: 0 24px;
+  font-size: 0.82rem;
+  color: var(--text-light);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.menu-text-btn {
+  display: block;
+  margin: 12px 24px 0;
+  padding: 8px 16px;
+  background: none;
+  border: 1.5px solid var(--rose);
+  color: var(--rose);
+  font-family: Georgia, serif;
+  font-size: 0.82rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.menu-text-btn:hover {
+  background: var(--rose);
+  color: var(--white);
+}
+
+.menu-about-app {
+  padding: 0 24px;
+}
+
+.menu-about-app p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.menu-about-app p strong {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.menu-about-links {
+  display: flex;
+  gap: 0;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.menu-about-link {
+  color: var(--primary);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.menu-about-link:hover {
+  color: var(--accent);
+}
+
+.menu-about-sep {
+  margin: 0 8px;
+  color: var(--text-muted);
+  font-size: 0.82rem;
 }
 
 /* ── Search Overlay ── */
@@ -599,14 +756,14 @@ body.hero-visible .hamburger-line {
 }
 
 .nav-kolibri {
-  width: 22px;
+  width: 24px;
   height: auto;
   display: block;
-  opacity: 0.5;
+  opacity: 0.65;
 }
 
 .nav-item.active .nav-kolibri {
-  opacity: 0.85;
+  opacity: 1;
 }
 
 .nav-label {
@@ -1488,9 +1645,9 @@ footer {
 }
 
 .footer-kolibri {
-  width: 32px;
+  width: 48px;
   height: auto;
-  opacity: 0.4;
+  opacity: 0.6;
   margin-bottom: 14px;
 }
 
