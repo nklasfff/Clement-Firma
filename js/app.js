@@ -104,6 +104,7 @@
     bindEvents();
     bindMenuEvents();
     bindSearchEvents();
+    bindFilterEvents();
 
     if (firstVisit) {
       // Always go to hjem on first visit
@@ -415,10 +416,23 @@
     var temaKeys = Object.keys(TEMA_INDHOLD);
     temaKeys.forEach(function(key) {
       var tema = TEMA_INDHOLD[key];
+      // Count related exercises
+      var oevelseCount = 0;
+      OEVELSER.forEach(function(o) {
+        if (o.temaer && o.temaer.indexOf(key) !== -1) oevelseCount++;
+      });
+
       html += '<button class="tema-card" data-tema="' + key + '">';
+      html += '<div class="tema-card-header tema-card-header-' + key + '">';
       html += '<span class="tema-ikon">' + (tema.ikon || '') + '</span>';
       html += '<h3>' + tema.titel + '</h3>';
-      html += '<p>' + (tema[aktivPerspektiv].intro.substring(0, 60)) + '...</p>';
+      html += '</div>';
+      html += '<div class="tema-card-body">';
+      html += '<p class="tema-card-question">' + (tema.spoergsmaal || tema[aktivPerspektiv].intro.substring(0, 60) + '...') + '</p>';
+      if (oevelseCount > 0) {
+        html += '<span class="tema-card-count">' + oevelseCount + ' øvelse' + (oevelseCount > 1 ? 'r' : '') + '</span>';
+      }
+      html += '</div>';
       html += '</button>';
     });
     temaGrid.innerHTML = html;
@@ -455,6 +469,26 @@
     html += '<p class="tema-intro">' + perspektiv.intro + '</p>';
     html += '<p class="tema-tekst">' + perspektiv.tekst + '</p>';
 
+    // Related exercises
+    var relOevelser = [];
+    OEVELSER.forEach(function(o, idx) {
+      if (o.temaer && o.temaer.indexOf(temaId) !== -1) {
+        relOevelser.push({ oevelse: o, index: idx });
+      }
+    });
+
+    if (relOevelser.length > 0) {
+      html += '<div class="tema-detail-oevelser">';
+      html += '<span class="tema-detail-oevelser-label">Øvelser til dette tema</span>';
+      relOevelser.forEach(function(item) {
+        html += '<button class="tema-detail-oevelse-link" data-oevelse-idx="' + item.index + '">';
+        html += '<span class="oevelse-link-tid">' + item.oevelse.tid + '</span>';
+        html += '<span class="oevelse-link-titel">' + item.oevelse.titel + '</span>';
+        html += '</button>';
+      });
+      html += '</div>';
+    }
+
     if (perspektiv.relateredeCirkler && perspektiv.relateredeCirkler.length) {
       html += '<div class="tema-relaterede">';
       perspektiv.relateredeCirkler.forEach(function(cirkelId) {
@@ -480,29 +514,72 @@
       });
     });
 
+    // Bind exercise links
+    temaExpanded.querySelectorAll('.tema-detail-oevelse-link').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var idx = parseInt(this.dataset.oevelseIdx);
+        navigateTo('oevelser');
+        setTimeout(function() {
+          var cards = oevelserGrid.querySelectorAll('.oevelse-card');
+          if (cards[idx]) {
+            // Collapse all, expand target
+            cards.forEach(function(c) {
+              c.classList.remove('expanded');
+              var btn = c.querySelector('.oevelse-toggle');
+              if (btn) btn.textContent = 'Vis øvelse';
+            });
+            cards[idx].classList.add('expanded');
+            var toggleBtn = cards[idx].querySelector('.oevelse-toggle');
+            if (toggleBtn) toggleBtn.textContent = 'Skjul øvelse';
+            cards[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 150);
+      });
+    });
+
     temaExpanded.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   // ── Øvelser ──
+  // Filter category mapping
+  var OEVELSE_FILTER_MAP = {
+    krop: ['krop'],
+    aandedraet: ['aandedraet'],
+    regulering: ['centrum', 'tilstande', 'resiliens'],
+    team: ['ledelse', 'samarbejde']
+  };
+
+  var aktivFilter = 'alle';
+
   function renderOevelser() {
     var html = '';
     OEVELSER.forEach(function(o, i) {
-      html += '<div class="oevelse-card" data-index="' + i + '">';
+      html += '<div class="oevelse-card" data-index="' + i + '" data-cirkel="' + o.cirkel + '">';
+      html += '<div class="oevelse-card-inner">';
+      html += '<div class="oevelse-card-top">';
       html += '<h3>' + o.titel + '</h3>';
+      html += '<span class="oevelse-tid-badge">' + o.tid + '</span>';
+      html += '</div>';
       html += '<div class="oevelse-meta">';
-      html += '<span>' + o.tid + '</span>';
       html += '<span>' + o.sted + '</span>';
       if (CIRKLER[o.cirkel]) {
         html += '<span>' + CIRKLER[o.cirkel].titel + '</span>';
       }
       html += '</div>';
       html += '<p class="oevelse-intro">' + o.intro + '</p>';
-      html += '<ol class="oevelse-steps">';
+      html += '<ol class="oevelse-steps" data-total="' + o.steps.length + '">';
       o.steps.forEach(function(step, idx) {
         html += '<li data-step="' + (idx + 1) + '">' + step + '</li>';
       });
       html += '</ol>';
+      html += '<div class="oevelse-guide-controls">';
+      html += '<button class="oevelse-guide-btn btn-secondary oevelse-guide-start">Start guidet</button>';
+      html += '<div class="oevelse-guide-progress"><div class="oevelse-guide-progress-bar"></div></div>';
+      html += '<button class="oevelse-guide-btn oevelse-guide-next" style="display:none;">Næste trin</button>';
+      html += '</div>';
       html += '<button class="oevelse-toggle">Vis øvelse</button>';
+      html += '</div>';
       html += '</div>';
     });
 
@@ -510,14 +587,18 @@
 
     // Bind expand/collapse
     oevelserGrid.querySelectorAll('.oevelse-card').forEach(function(card) {
-      card.addEventListener('click', function() {
+      card.addEventListener('click', function(e) {
+        // Don't toggle if clicking guide buttons
+        if (e.target.closest('.oevelse-guide-controls')) return;
+
         var isExpanded = this.classList.contains('expanded');
 
-        // Collapse all
+        // Collapse all and reset guide states
         oevelserGrid.querySelectorAll('.oevelse-card').forEach(function(c) {
           c.classList.remove('expanded');
           var btn = c.querySelector('.oevelse-toggle');
           if (btn) btn.textContent = 'Vis øvelse';
+          resetGuide(c);
         });
 
         // Toggle this
@@ -526,6 +607,129 @@
           var toggleBtn = this.querySelector('.oevelse-toggle');
           if (toggleBtn) toggleBtn.textContent = 'Skjul øvelse';
         }
+      });
+    });
+
+    // Bind guided mode
+    oevelserGrid.querySelectorAll('.oevelse-guide-start').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var card = this.closest('.oevelse-card');
+        startGuide(card);
+      });
+    });
+
+    oevelserGrid.querySelectorAll('.oevelse-guide-next').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var card = this.closest('.oevelse-card');
+        advanceGuide(card);
+      });
+    });
+
+    // Apply current filter
+    applyFilter(aktivFilter);
+  }
+
+  function resetGuide(card) {
+    var steps = card.querySelector('.oevelse-steps');
+    if (!steps) return;
+    steps.classList.remove('guided');
+    var lis = steps.querySelectorAll('li');
+    lis.forEach(function(li) { li.classList.remove('step-active', 'step-done'); });
+    var startBtn = card.querySelector('.oevelse-guide-start');
+    var nextBtn = card.querySelector('.oevelse-guide-next');
+    var progressBar = card.querySelector('.oevelse-guide-progress-bar');
+    if (startBtn) { startBtn.style.display = ''; startBtn.textContent = 'Start guidet'; }
+    if (nextBtn) nextBtn.style.display = 'none';
+    if (progressBar) progressBar.style.width = '0%';
+    card.removeAttribute('data-guide-step');
+  }
+
+  function startGuide(card) {
+    var steps = card.querySelector('.oevelse-steps');
+    if (!steps) return;
+    steps.classList.add('guided');
+    var lis = steps.querySelectorAll('li');
+    lis.forEach(function(li) { li.classList.remove('step-active', 'step-done'); });
+    if (lis[0]) lis[0].classList.add('step-active');
+    card.setAttribute('data-guide-step', '0');
+
+    var startBtn = card.querySelector('.oevelse-guide-start');
+    var nextBtn = card.querySelector('.oevelse-guide-next');
+    var progressBar = card.querySelector('.oevelse-guide-progress-bar');
+    if (startBtn) startBtn.style.display = 'none';
+    if (nextBtn) { nextBtn.style.display = ''; nextBtn.textContent = 'Næste trin'; }
+    var total = parseInt(steps.dataset.total) || lis.length;
+    if (progressBar) progressBar.style.width = (1 / total * 100) + '%';
+  }
+
+  function advanceGuide(card) {
+    var steps = card.querySelector('.oevelse-steps');
+    if (!steps) return;
+    var lis = steps.querySelectorAll('li');
+    var current = parseInt(card.getAttribute('data-guide-step')) || 0;
+    var total = lis.length;
+
+    // Mark current as done
+    if (lis[current]) {
+      lis[current].classList.remove('step-active');
+      lis[current].classList.add('step-done');
+    }
+
+    var next = current + 1;
+    if (next < total) {
+      lis[next].classList.add('step-active');
+      card.setAttribute('data-guide-step', next);
+      lis[next].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    var progressBar = card.querySelector('.oevelse-guide-progress-bar');
+    if (progressBar) progressBar.style.width = ((next + 1) / total * 100) + '%';
+
+    // Last step
+    if (next >= total - 1) {
+      var nextBtn = card.querySelector('.oevelse-guide-next');
+      if (nextBtn) nextBtn.textContent = 'Afslut';
+    }
+
+    // Done
+    if (next >= total) {
+      var startBtn = card.querySelector('.oevelse-guide-start');
+      var nextBtn2 = card.querySelector('.oevelse-guide-next');
+      if (startBtn) { startBtn.style.display = ''; startBtn.textContent = 'Start igen'; }
+      if (nextBtn2) nextBtn2.style.display = 'none';
+      // Mark all done
+      lis.forEach(function(li) { li.classList.remove('step-active'); li.classList.add('step-done'); });
+    }
+  }
+
+  function applyFilter(filter) {
+    aktivFilter = filter;
+    var cards = oevelserGrid.querySelectorAll('.oevelse-card');
+    cards.forEach(function(card) {
+      var cirkel = card.dataset.cirkel;
+      if (filter === 'alle') {
+        card.classList.remove('hidden-by-filter');
+      } else {
+        var categories = OEVELSE_FILTER_MAP[filter];
+        if (categories && categories.indexOf(cirkel) !== -1) {
+          card.classList.remove('hidden-by-filter');
+        } else {
+          card.classList.add('hidden-by-filter');
+        }
+      }
+    });
+  }
+
+  function bindFilterEvents() {
+    var filterContainer = document.getElementById('oevelserFilter');
+    if (!filterContainer) return;
+    filterContainer.querySelectorAll('.oevelser-filter-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        filterContainer.querySelectorAll('.oevelser-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+        this.classList.add('active');
+        applyFilter(this.dataset.filter);
       });
     });
   }
