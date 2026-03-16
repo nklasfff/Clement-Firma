@@ -117,6 +117,7 @@ body {
 /* ── View Header ── */
 .view-header {
   padding: 24px 24px 16px;
+  padding-top: calc(env(safe-area-inset-top, 20px) + 16px);
   max-width: 700px;
   margin: 0 auto;
 }
@@ -139,6 +140,7 @@ body {
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
   color: var(--white);
   padding: 48px 24px;
+  padding-top: calc(env(safe-area-inset-top, 20px) + 32px);
 }
 
 .hero-inner {
