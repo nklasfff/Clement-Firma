@@ -902,6 +902,137 @@ body.hero-visible .hamburger-line {
   color: var(--text);
 }
 
+/* ── Dynamiske sammenhænge (Fordybelse tab) ── */
+.sammenhaenge-section {
+  margin-top: 40px;
+  padding-top: 8px;
+}
+
+.sammenhaenge-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.sammenhaenge-linje {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(107, 45, 91, 0.15), transparent);
+}
+
+.sammenhaenge-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.sammenhaenge-intro {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  font-style: italic;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.sammenhaeng-item {
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  margin-bottom: 10px;
+  overflow: hidden;
+  transition: box-shadow 0.25s ease;
+}
+
+.sammenhaeng-item:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+.sammenhaeng-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: Georgia, serif;
+  text-align: left;
+  transition: background 0.2s ease;
+}
+
+.sammenhaeng-toggle:hover {
+  background: rgba(107, 45, 91, 0.02);
+}
+
+.sammenhaeng-titel {
+  font-size: 0.92rem;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.sammenhaeng-pil {
+  color: var(--accent);
+  font-weight: 600;
+  margin: 0 4px;
+}
+
+.sammenhaeng-chevron {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
+.sammenhaeng-item.open .sammenhaeng-chevron {
+  transform: rotate(90deg);
+  color: var(--primary);
+}
+
+.sammenhaeng-indhold {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s ease;
+  padding: 0 20px;
+}
+
+.sammenhaeng-item.open .sammenhaeng-indhold {
+  max-height: 600px;
+  padding: 0 20px 20px;
+}
+
+.sammenhaeng-indhold p {
+  color: var(--text-light);
+  font-size: 0.95rem;
+  line-height: 1.85;
+  margin-bottom: 16px;
+  border-left: 3px solid var(--accent-light);
+  padding-left: 16px;
+}
+
+.sammenhaeng-link {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-family: Georgia, serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 6px 0;
+  transition: color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sammenhaeng-link:hover {
+  color: var(--accent);
+}
+
 /* Øvelse panel (i cirkel) */
 .oevelse-inline {
   background: var(--white);

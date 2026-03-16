@@ -630,3 +630,153 @@ const OEVELSER = [
     ]
   }
 ];
+
+// ── Dynamiske sammenhænge mellem cirkler (21 par × 2 perspektiver) ──
+const SAMMENHAENGE = {
+
+  // ─── Centrum (Stressregulering) ↔ alle andre ───
+
+  'centrum-tilstande': {
+    medarbejder: "Stressregulering og dine tre nervesystemstilstande er uløseligt forbundne. Regulering er selve evnen til at bevæge dig bevidst mellem tilstandene — fra gul alarm tilbage til grøn sikkerhed, eller fra rød nedlukning op til gul aktivering. Uden reguleringsredskaber sidder du fast i den tilstand dit nervesystem automatisk vælger. Med dem har du et konkret kort og en konkret vej. Når du mærker at du skifter til gul — hjertet banker, skuldrene stiger — er det selve reguleringsøvelsen (tre vejrtrækninger, grounding, en micro-pause) der bringer dig tilbage. Stressregulering er ikke noget du gør ved siden af dit arbejde. Det er den kompetence der afgør hvilken tilstand du arbejder fra — og dermed kvaliteten af alt du gør.",
+    leder: "Din evne til at regulere stress er direkte forbundet med din evne til at aflæse og påvirke dit teams tilstande. Når du selv er reguleret, kan du se klart om teamet er i grøn, gul eller rød — og handle derefter. Når du selv er dysreguleret, mister du denne aflæsningsevne og risikerer at presse et team der allerede er i rød, eller bremse et team der er i grøn flow. Co-regulering begynder med din egen regulering: dit nervesystems tilstand sætter tonen for hele rummets tilstand. Start med dig selv, og du starter med teamet."
+  },
+
+  'centrum-ledelse': {
+    medarbejder: "Din oplevelse af ledelse og kultur påvirker direkte dit nervesystems regulering — hver eneste dag. En leder der skaber psykologisk tryghed sender sikkerhedssignaler til dit nervesystem, og det giver dig adgang til kreativitet, ærlighed og engagement. En leder der skaber uforudsigelighed eller frygt aktiverer dit alarmsystem, og du bruger energi på selvbeskyttelse i stedet for godt arbejde. At forstå denne sammenhæng giver dig sprog for din oplevelse: det er ikke 'bare stress' — det er dit nervesystem der reagerer på de sociale signaler i din arbejdskultur. Og det giver dig mulighed for at søge co-regulering fra de relationer der giver dig ro.",
+    leder: "Ledelse er regulering. Det er ikke en metafor — det er neurobiologi. Forskning viser at nervesystemer synkroniserer sig i hierarkiske relationer, og dit teams systemer orienterer sig efter dit. Når du er rolig og tilstede, skaber du en kaskade af regulering. Når du er stresset og reaktiv, forstærkes den reaktion i hele teamet. Din vigtigste forberedelse til ethvert møde er derfor ikke slides — det er din egen regulering. De 60 sekunder du bruger på at lande inden du går ind i lokalet er den mest effektive ledelsesinvestering du kan lave."
+  },
+
+  'centrum-samarbejde': {
+    medarbejder: "Dit nervesystems reguleringstilstand afgør fundamentalt hvilken samarbejdsstil du bringer ind i teamet. Når du er reguleret og i grøn tilstand, har du adgang til din trygge samarbejdsstil — du kan lytte, give plads, bede om hjælp og håndtere uenighed. Når du er dysreguleret, aktiveres dine tidlige tilknytningsmønstre automatisk: den undvigende trækker sig, den ambivalente overtilpasser, den desorganiserede svinger mellem begge. At regulere dit nervesystem er derfor den mest direkte vej til bedre samarbejde — ikke fordi du 'kontrollerer dig selv,' men fordi regulering giver dig adgang til de dele af dig der samarbejder bedst.",
+    leder: "Teamets samarbejdsmønstre formes direkte af det reguleringsmiljø du skaber. I et reguleret team — hvor der er psykologisk tryghed og konsistent ledelse — vil selv medarbejdere med utrygge tilknytningsmønstre begynde at samarbejde mere fleksibelt. I et dysreguleret team aktiveres alles forsvarsmønstre: den undvigende isolerer sig mere, den ambivalente overtilpasser mere, og konflikter eskalerer. Din investering i teamets regulering er samtidig en investering i teamets samarbejdsevne."
+  },
+
+  'centrum-krop': {
+    medarbejder: "Kroppen og nervesystemet er en uadskillelig helhed — du kan ikke regulere det ene uden det andet. Når du sidder spændt foran skærmen i timevis, sender din krop konstante stresssignaler til nervesystemet gennem fascia, muskler og åndedræt. Modsat sender bevidst bevægelse, stretch og sensorisk kontakt (mærk fødderne, mærk stolen) direkte reguleringssignaler. Din krop er den mest umiddelbare adgang til stressregulering — hurtigere end tanker, hurtigere end samtale. Tre skulderrul og fem dybe vejrtrækninger ændrer din fysiologiske tilstand målbart på under et minut.",
+    leder: "Kropsbevidsthed i teamet er en direkte forlængelse af stressregulering. Når du skaber en kultur hvor bevægelse, pauser og kropslig opmærksomhed er naturlige dele af arbejdsdagen, investerer du direkte i teamets reguleringskkapacitet. Gå-møder, stå-borde, bevægelsespauser — det er ikke wellness-pynt. Det er nervesystemsinfrastruktur. Et team der bevæger sig er et team der regulerer sig."
+  },
+
+  'centrum-aandedraet': {
+    medarbejder: "Åndedræt er den hurtigste og mest direkte vej til stressregulering — det er selve nøglen til dit nervesystems dashboard. Vagusnerven, den længste nerve i dit autonome nervesystem, stimuleres direkte af forlænget udånding. Når du forlænger din udånding, sender du bogstaveligt talt et signal til hjernen om at det er sikkert at slappe af. Det er derfor 4-7-8 åndedræt virker: fordi udåndingen er dobbelt så lang som indåndingen. Stressregulering på kontoret handler i sin mest destillerede form om én ting: bevidst åndedræt spredt over din dag.",
+    leder: "Kollektivt åndedræt er det mest kraftfulde reguleringsredskab du har som leder. Når du starter et møde med 30 sekunders fælles åndedræt, synkroniserer du bogstaveligt talt dit teams nervesystemer. Den biologiske mekanisme hedder respiratorisk synkronisering, og den skaber en fælles reguleret baseline for hele gruppen. Det føles måske uvant de første gange, men effekten er målbar: bedre lytning, klarere tænkning, dybere samtaler."
+  },
+
+  'centrum-resiliens': {
+    medarbejder: "Resiliens er ikke evnen til at holde ud — det er evnen til at vende tilbage. Og den evne afhænger direkte af dit nervesystems reguleringskapacitet. Jo bedre du er til daglig stressregulering, desto mere fleksibelt er dit system når presset stiger. Tænk på det som en muskel: daglige micro-pauser, bevidst åndedræt og grounding træner dit nervesystems evne til at skifte mellem aktivering og hvile. Når den store deadline eller den svære samtale kommer, har du et system der kan håndtere det — fordi det er trænet i hverdagen.",
+    leder: "Teamets resiliens bygges i hverdagen, ikke i krisen. De daglige reguleringsrutiner du skaber — pauser mellem møder, bevidste check-ins, synlig omsorg — opbygger den autonome fleksibilitet der bærer teamet gennem pressede perioder. Et team der har stærke daglige reguleringsritualer kan absorbere langt mere pres end et team der kører på konstant alarm. Din investering i hverdagens regulering er din forsikring mod morgendagens overbelastning."
+  },
+
+  // ─── Tilstande ↔ alle andre (excl. centrum) ───
+
+  'tilstande-ledelse': {
+    medarbejder: "Din leders adfærd påvirker direkte hvilken tilstand dit nervesystem befinder sig i. En leder der er konsistent, tilgængelig og anerkendende sender sikkerhedssignaler der holder dit system i grøn. En leder der er uforudsigelig, kritisk eller utilgængelig aktiverer gul alarm — og over tid kan det skubbe dig mod rød nedlukning. At forstå denne sammenhæng giver dig sprog for din oplevelse og mulighed for at handle: søg regulering fra andre relationer, sæt grænser, og vær bevidst om hvilke ledelsessignaler der aktiverer dit system.",
+    leder: "Din evne til at aflæse dit teams tilstande er direkte forbundet med din ledelseseffektivitet. Når du kan se at teamet er i gul alarm, ved du at de har brug for klarhed og prioritering — ikke flere opgaver. Når du kan se rød nedlukning, ved du at aflastning er nødvendig — ikke motivation. Og din egen tilstand smitter: et team med en leder i gul alarm vil selv eskalere til gul. Din mest effektive ledelsesstrategi er at regulere dig selv ned, så du kan aflæse klart og handle præcist."
+  },
+
+  'tilstande-samarbejde': {
+    medarbejder: "Dine tre nervesystemstilstande former direkte din samarbejdsevne. I grøn tilstand har du adgang til empati, fleksibilitet og kreativt samarbejde. I gul tilstand bliver du reaktiv — du afbryder, misforstår, eller trækker dig. I rød tilstand er du fraværende — du sidder i mødet men er ikke rigtig der. Dine samarbejdsmønstre fra barndommen (tryg, undvigende, ambivalent) forstærkes under pres: jo mere dysreguleret du er, desto mere falder du tilbage i gamle mønstre. At genkende din tilstand er første skridt til at vælge en anden samarbejdsstrategi.",
+    leder: "Teamets samarbejdskvalitet er et direkte spejl af teamets kollektive nervesystemstilstand. Et team i grøn tilstand samarbejder naturligt: de lytter, bygger videre på hinandens idéer, og håndterer uenighed konstruktivt. Et team i gul tilstand fragmenterer: folk arbejder i siloer, misforståelser stiger, og konflikter eskalerer. Et team i rød tilstand er funktionelt afkoblet. Din vigtigste samarbejdsindsats som leder er at skabe betingelserne for grøn tilstand — klarhed, tryghed, pauser og realistiske forventninger."
+  },
+
+  'tilstande-krop': {
+    medarbejder: "Dine tre nervesystemstilstande bor i kroppen — ikke i hovedet. Grøn tilstand mærkes som afslappede skuldre, dybt åndedræt og en følelse af at være tilstede. Gul tilstand mærkes som spændte muskler, hurtig puls og overfladisk åndedræt. Rød tilstand mærkes som tyngde, tomhed og følelsesløshed. Kroppen er dit mest pålidelige instrument til at vide hvilken tilstand du er i — og den er samtidig din mest direkte vej til at ændre tilstanden. Bevægelse bringer dig op fra rød, grounding bringer dig ned fra gul.",
+    leder: "At aflæse dit teams tilstande kræver at du kigger på kroppe, ikke bare lytter til ord. Spændte skuldre, hurtige bevægelser og anspændte stemmer signalerer gul alarm. Sammensunkne holdninger, fraværende blikke og monotone stemmer signalerer rød nedlukning. Energi, humor og afslappede kroppe signalerer grøn. Når du introducerer bevægelsespauser, gå-møder og kropslig opmærksomhed, giver du teamet redskaber til at skifte tilstand gennem kroppen — den mest direkte vej."
+  },
+
+  'tilstande-aandedraet': {
+    medarbejder: "Åndedræt er det mest præcise instrument til at bevæge dig mellem tilstandene. Fra gul til grøn: forlænget udånding (4-7-8 åndedræt) aktiverer det beroligende system og sænker arousal. Fra rød til gul: energiserende åndedræt (hurtigere indånding, kortere udånding) aktiverer systemet blidt. Respiratorisk sinus arrhytmi — den naturlige variation i puls ved ind- og udånding — er et direkte mål for din autonome fleksibilitet. Jo bedre du er til bevidst åndedræt, desto mere fleksibelt kan dit system skifte mellem tilstandene.",
+    leder: "Fælles åndedræt er det mest effektive redskab til at flytte et helt teams tilstand. Når et team i gul alarm tager tre fælles vejrtrækninger med forlænget udånding, synkroniseres nervesystemerne og tilstanden skifter mod grøn. Det er den biologiske mekanisme bag hvorfor sang, meditation og fælles bevægelse føles samlende — og du kan bruge den bevidst i dit lederskab. Start møder med åndedræt, indbyg pauser i workshops, og model det selv."
+  },
+
+  'tilstande-resiliens': {
+    medarbejder: "Resiliens handler fundamentalt om din evne til at bevæge dig mellem tilstandene — særligt at vende tilbage fra gul og rød til grøn. Burnout er når du har mistet denne fleksibilitet: dit system er låst i kronisk gul alarm eller rød nedlukning og kan ikke længere skifte. De tre tilstande er derfor dit tidlige varslingssystem: hvis du tilbringer mere og mere tid i gul eller rød, og det tager længere og længere at vende tilbage til grøn, er det et signal om at din resiliens er under pres. Recovery handler om at genoprette denne fleksibilitet.",
+    leder: "Teamets resiliens kan aflæses direkte i teamets tilstandsmønstre. Et resilient team tilbringer størstedelen af tiden i grøn, kan håndtere perioder i gul uden at fragmentere, og vender hurtigt tilbage efter pres. Et team i risiko for overbelastning tilbringer stadig mere tid i gul, har sværere ved at finde grøn, og begynder at vise tegn på rød. Hold øje med disse mønstre i dit team — de er det mest pålidelige early warning system du har."
+  },
+
+  // ─── Ledelse ↔ alle andre (excl. centrum, tilstande) ───
+
+  'ledelse-samarbejde': {
+    medarbejder: "Din leders stil former direkte teamets samarbejdsmønstre. En leder der skaber psykologisk tryghed muliggør trygt samarbejde — folk tør bede om hjælp, indrømme fejl og være uenige. En leder der skaber frygt aktiverer alles forsvarsstrategier: den undvigende isolerer sig, den ambivalente overtilpasser, og konflikterne går under jorden. Din leders relation til dig fungerer som en slags tilknytningsrelation på arbejdspladsen — den former fundamentalt hvordan du knytter dig til teamet og opgaverne.",
+    leder: "Du er den vigtigste arkitekt af dit teams samarbejdsmønstre. Gennem din konsistens, tilgængelighed og responsivitet skaber du det der i tilknytningsteorien hedder en 'sikker base' — et fundament hvorfra teamet kan udforske, tage risici og samarbejde trygt. Konkret betyder det: reager nogenlunde ens på fejl, hold dine løfter, vær tilgængelig når det er svært. Når du skaber denne base, vil selv medarbejdere med utrygge samarbejdsmønstre gradvist begynde at samarbejde mere fleksibelt."
+  },
+
+  'ledelse-krop': {
+    medarbejder: "Kulturen på din arbejdsplads bestemmer i høj grad hvor meget plads din krop har i din arbejdsdag. I en kultur hvor det er legitimt at rejse sig, strække sig og tage bevægelsespauser, støttes dit nervesystem. I en kultur hvor det forventes at du sidder stille og producerer uafbrudt, undertrykkes dit systems grundlæggende behov. Mærk efter: holder du vejret under møder? Spænder du kæben når du læser mails? Din krops reaktioner afslører kulturen — og din krop fortjener at blive lyttet til.",
+    leder: "Kropslig bevidsthed i teamet er et ledelsesspørgsmål — ikke et wellness-spørgsmål. Når du gør det legitimt at bevæge sig, tage pauser og lytte til kroppen, skaber du en kultur der støtter nervesystemets grundlæggende behov. Gå-møder, stå-borde, bevægelsespauser — det er ikke ekstra. Det er infrastruktur for regulering. Og det starter med at du selv modellerer det: rejs dig under møder, foreslå gåture, og vis at kroppen er velkommen i arbejdet."
+  },
+
+  'ledelse-aandedraet': {
+    medarbejder: "Fælles åndedrætspauser i teamet er et signal om ledelseskvalitet. Når din leder starter et møde med 30 sekunders stille åndedræt, kommunikerer det: 'Vi har tid. Vi er til stede. Det her er vigtigt nok til at vi lander først.' Det er en handling der regulerer hele rummets nervesystem — og det kræver en leder der forstår at tilstedeværelse er mere produktivt end tempo.",
+    leder: "Åndedræt er dit mest tilgængelige co-reguleringsredskab. Når du tager en synlig, bevidst vejrtrækning inden du taler, regulerer det dit eget system og sender et signal til rummets nervesystemer. Når du guider fælles åndedræt i starten af møder, synkroniserer du teamet. Det er den simpleste og mest evidensbaserede ledelsesintervention der findes — og den tager 30 sekunder."
+  },
+
+  'ledelse-resiliens': {
+    medarbejder: "Din leders evne til at skabe realistiske forventninger, beskytte grænser og anerkende belastning er den vigtigste faktor for din resiliens på arbejdspladsen. En leder der siger 'vi gør mindre lige nu' i en presset periode beskytter dit nervesystem. En leder der tilføjer opgaver oven i overbelastning nedbryder det. Psykologisk tryghed er ikke blot rart — det er resiliens-infrastruktur. Når du ved at det er okay at sige 'jeg har for meget,' kan du handle inden du rammer muren.",
+    leder: "Du er dit teams primære resiliens-faktor. Ikke fordi du skal bære deres byrder, men fordi du skaber de rammer der enten opbygger eller nedbryder deres autonome fleksibilitet. Realistiske forventninger, beskyttede pauser, legitime grænser og ægte 1:1-check-ins er resiliens-byggeklodser. Og husk: du kan ikke bygge resiliens i dit team fra en tom tank. Din egen recovery, dine egne grænser er forudsætningen — ikke luksus."
+  },
+
+  // ─── Samarbejde ↔ alle andre (excl. centrum, tilstande, ledelse) ───
+
+  'samarbejde-krop': {
+    medarbejder: "Dine samarbejdsmønstre sidder i kroppen — ikke kun i hovedet. Den undvigende stil viser sig som tilbagetrukne skuldre, korslagte arme og en krop der vender let væk. Den ambivalente stil viser sig som konstant spænding, fremadlænet krop og en hyperårvågenhed over for andres reaktioner. Disse kropslige mønstre blev formet i dine tidligste relationer og gentager sig automatisk i teamet. Kropsbevidsthed giver dig mulighed for at opdage mønstret i kroppen før det styrer din adfærd — og dermed et valg om at gøre noget anderledes.",
+    leder: "Teamets samarbejdsmønstre kan aflæses i kroppe lige så tydeligt som i ord. Hvem trækker sig fysisk tilbage under diskussioner? Hvem læner sig konstant frem og overtager? Hvem sidder stivt og spændt? Disse kropslige signaler fortæller dig om teamets tilknytningsmønstre og reguleringstilstand. Når du introducerer bevægelse, gåture og kropslig variation i teamets hverdag, giver du mulighed for at bryde fastlåste mønstre — kroppen kan åbne for nye samarbejdsformer."
+  },
+
+  'samarbejde-aandedraet': {
+    medarbejder: "Når samarbejdet bliver spændt — uenigheder, misforståelser, konflikter — er åndedræt din mest umiddelbare udvej fra den automatiske reaktion. Tre bevidste vejrtrækninger under bordet giver dit nervesystem de få sekunder det behøver for at skifte fra reaktion til respons. Det er forskellen mellem at sige noget du fortryder, og at vælge dine ord bevidst. Åndedræt er ikke bare en reguleringsøvelse — det er en samarbejdskompetence.",
+    leder: "Fælles åndedræt transformerer samarbejdskvaliteten i et team. Når du starter møder med tre fælles vejrtrækninger, skaber du en fælles reguleret baseline der gør alle bedre i stand til at lytte, bidrage og håndtere uenighed. Det er særligt kraftfuldt før svære samtaler, feedback-sessioner eller strategidiskussioner — præcis de situationer hvor nervesystemerne er mest aktiverede og samarbejdsmønstrene mest udfordrede."
+  },
+
+  'samarbejde-resiliens': {
+    medarbejder: "Dine samarbejdsmønstre påvirker direkte din resiliens. Hvis du har en undvigende stil og isolerer dig under pres, mister du adgangen til co-regulering fra kolleger — og dit nervesystem bærer hele belastningen alene. Hvis du har en ambivalent stil og overtilpasser, bruger du energi på andres behov og glemmer dine egne grænser. Begge mønstre nedbryder resiliens over tid. At udvikle en mere tryg samarbejdsstil — hvor du kan bede om hjælp og sætte grænser — er en af de mest effektive resiliens-strategier der findes.",
+    leder: "Teamets samarbejdsmønstre er en direkte indikator for teamets resiliens. Et team med trygge samarbejdsmønstre — hvor folk beder om hjælp, deler belastning og støtter hinanden — er langt mere resilient end et team hvor alle bærer alene. Din opgave er at skabe de betingelser der muliggør trygt samarbejde: klarhed om roller, eksplicit permission til at sige fra, og en kultur hvor det at bede om hjælp er styrke, ikke svaghed."
+  },
+
+  // ─── Krop ↔ alle andre (excl. centrum, tilstande, ledelse, samarbejde) ───
+
+  'krop-aandedraet': {
+    medarbejder: "Kroppen og åndedrættet er to sider af samme reguleringsmekanisme. Når kroppen er spændt, bliver åndedrættet overfladisk — og omvendt. Fascia, dit krops bindevæv, er tæt forbundet med mellemgulvet og påvirker direkte din åndedrætskvalitet. Når du sidder sammensunket foran skærmen, komprimeres mellemgulvet og åndedrættet begrænses. Når du rejser dig, strækker ud og åbner brystkassen, frigives åndedrættet naturligt. De to redskaber forstærker hinanden: bevægelse frigør åndedræt, og dybere åndedræt afslapper kroppen. Sammen er de det mest kraftfulde reguleringspar du har.",
+    leder: "Kroppen og åndedrættet er de to mest direkte reguleringsredskaber dit team har adgang til — og de forstærker hinanden. Når du kombinerer bevægelsespauser med bevidst åndedræt — f.eks. 'rejs jer op, stræk armene, og tag tre dybe vejrtrækninger' — får du en dobbelt reguleringseffekt. Det tager 60 sekunder og ændrer hele rummets energi. Gør det til en vane midt i lange møder og workshops."
+  },
+
+  'krop-resiliens': {
+    medarbejder: "Din krops tilstand er et direkte barometer for din resiliens. Kroniske spændinger, dårlig søvn, hovedpine og fordøjelsesproblemer er ikke tilfældige — de er dit nervesystems signaler om at din kapacitet er under pres. Kroppen taler før psyken gør. Når du mærker at nakken er konstant spændt, at du har ondt i maven eller ikke kan sove, er det tid til at lytte — ikke til at tage en smertestillende og køre videre. Kropslig bevidsthed er dit tidligste varslingssystem for overbelastning.",
+    leder: "Kropslige signaler i teamet er early warning indicators for resiliens under pres. Når flere i teamet rapporterer hovedpine, dårlig søvn eller konstante spændinger, er det ikke individuelle problemer — det er et systemproblem. Det er nervesystemer der fortæller dig at belastningen er for høj. Tag disse signaler alvorligt: juster tempoet, reducer belastning, og skab rum for fysisk genopladning. Kroppen løser ikke."
+  },
+
+  // ─── Åndedræt ↔ Resiliens ───
+
+  'aandedraet-resiliens': {
+    medarbejder: "Daglig åndedrætspraksis er en af de mest evidensbaserede måder at opbygge resiliens på. Respiratorisk sinus arrhytmi — den naturlige variation i din puls ved ind- og udånding — er et direkte mål for din autonome fleksibilitet, altså dit nervesystems evne til at skifte mellem aktivering og hvile. Jo højere RSA, desto mere resilient er dit system. Og RSA styrkes direkte af regelmæssig bevidst åndedræt. Tre minutter om dagen med forlænget udånding træner bogstaveligt talt dit nervesystems bounceevne. Det er den billigste og mest tilgængelige resiliens-investering der findes.",
+    leder: "Fælles åndedrætspauser opbygger ikke bare momentan regulering — de opbygger teamets langsigtede resiliens. Hver gang teamet ånder bevidst sammen, styrkes den kollektive evne til at regulere under pres. Det er som træning: effekten akkumulerer over tid. Teams der har regelmæssige åndedrætspauser som del af deres mødekultur rapporterer højere stressresistens, bedre recovery efter pressede perioder, og lavere sygefravær. Det er 30 sekunder der betaler sig mange gange tilbage."
+  }
+};
+
+// ── Hjælpefunktioner til sammenhænge ──
+function hentSammenhaenge(cirkelId) {
+  var result = [];
+  var keys = Object.keys(SAMMENHAENGE);
+  for (var i = 0; i < keys.length; i++) {
+    var parts = keys[i].split('-');
+    if (parts[0] === cirkelId || parts[1] === cirkelId) {
+      var andenCirkel = parts[0] === cirkelId ? parts[1] : parts[0];
+      result.push({
+        id: andenCirkel,
+        titel: CIRKLER[andenCirkel] ? CIRKLER[andenCirkel].titel : andenCirkel,
+        data: SAMMENHAENGE[keys[i]]
+      });
+    }
+  }
+  return result;
+}
+
+// Titler til sammenhænge-visning
+var CIRKEL_NAVNE = {
+  centrum: 'Stressregulering',
+  tilstande: 'Tre tilstande',
+  ledelse: 'Ledelse & kultur',
+  samarbejde: 'Samarbejdsmønstre',
+  krop: 'Krop & bevægelse',
+  aandedraet: 'Åndedræt & pauser',
+  resiliens: 'Resiliens & grænser'
+};

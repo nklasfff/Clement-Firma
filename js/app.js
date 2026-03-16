@@ -264,7 +264,70 @@
     indhold.dybde.forEach(function(afsnit) {
       html += '<p class="dybde-afsnit">' + afsnit + '</p>';
     });
+
+    // Dynamiske sammenhænge
+    var sammenhaenge = hentSammenhaenge(cirkelId);
+    if (sammenhaenge.length > 0) {
+      html += '<div class="sammenhaenge-section">';
+      html += '<div class="sammenhaenge-header">';
+      html += '<div class="sammenhaenge-linje"></div>';
+      html += '<span class="sammenhaenge-label">Dynamiske sammenhænge</span>';
+      html += '<div class="sammenhaenge-linje"></div>';
+      html += '</div>';
+      html += '<p class="sammenhaenge-intro">Se hvordan ' + (CIRKEL_NAVNE[cirkelId] || cirkelId).toLowerCase() + ' dynamisk påvirker og påvirkes af de andre dimensioner i dit arbejdsliv.</p>';
+
+      sammenhaenge.forEach(function(s) {
+        var tekst = s.data[aktivPerspektiv];
+        var andenNavn = CIRKEL_NAVNE[s.id] || s.titel;
+        var cirkelNavn = CIRKEL_NAVNE[cirkelId] || CIRKLER[cirkelId].titel;
+
+        html += '<div class="sammenhaeng-item" data-cirkel="' + s.id + '">';
+        html += '<button class="sammenhaeng-toggle">';
+        html += '<span class="sammenhaeng-titel">' + cirkelNavn + ' <span class="sammenhaeng-pil">↔</span> ' + andenNavn + '</span>';
+        html += '<span class="sammenhaeng-chevron">›</span>';
+        html += '</button>';
+        html += '<div class="sammenhaeng-indhold">';
+        html += '<p>' + tekst + '</p>';
+        html += '<button class="sammenhaeng-link" data-goto="' + s.id + '">Udforsk ' + andenNavn + ' →</button>';
+        html += '</div>';
+        html += '</div>';
+      });
+
+      html += '</div>';
+    }
+
     panelDybde.innerHTML = html;
+
+    // Bind sammenhænge expand/collapse
+    panelDybde.querySelectorAll('.sammenhaeng-toggle').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var item = this.closest('.sammenhaeng-item');
+        var wasOpen = item.classList.contains('open');
+
+        // Close all
+        panelDybde.querySelectorAll('.sammenhaeng-item').forEach(function(el) {
+          el.classList.remove('open');
+        });
+
+        // Toggle clicked
+        if (!wasOpen) {
+          item.classList.add('open');
+          item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      });
+    });
+
+    // Bind sammenhænge navigation links
+    panelDybde.querySelectorAll('.sammenhaeng-link').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var gotoId = this.dataset.goto;
+        aktivCirkel = gotoId;
+        renderCirkelDetail(gotoId);
+        navigateTo('cirkel/' + gotoId);
+        window.scrollTo(0, 0);
+      });
+    });
 
     // Øvelse — find relateret øvelse
     var relOevelse = null;
@@ -679,6 +742,35 @@
           title: t.navn,
           snippet: snippet.substring(0, 120) + (snippet.length > 120 ? '...' : ''),
           action: function() { navigateTo('trappen'); setTimeout(function() { aktivTrin = key; visTrappenSvar(key); }, 100); }
+        });
+      }
+    });
+
+    // Search SAMMENHAENGE
+    var sammKeys = Object.keys(SAMMENHAENGE);
+    sammKeys.forEach(function(key) {
+      var s = SAMMENHAENGE[key];
+      var tekst = s[aktivPerspektiv];
+      if (tekst && tekst.toLowerCase().indexOf(q) !== -1) {
+        var parts = key.split('-');
+        var c1 = CIRKEL_NAVNE[parts[0]] || parts[0];
+        var c2 = CIRKEL_NAVNE[parts[1]] || parts[1];
+        results.push({
+          type: 'Sammenhæng',
+          title: c1 + ' ↔ ' + c2,
+          snippet: tekst.substring(0, 120) + '...',
+          action: (function(cId) {
+            return function() {
+              navigateTo('cirkel/' + cId);
+              aktivCirkel = cId;
+              renderCirkelDetail(cId);
+              // Switch to dybde tab
+              setTimeout(function() {
+                tabs.forEach(function(t) { t.classList.toggle('active', t.dataset.tab === 'dybde'); });
+                tabPanels.forEach(function(p) { p.classList.toggle('active', p.dataset.panel === 'dybde'); });
+              }, 100);
+            };
+          })(parts[0])
         });
       }
     });
