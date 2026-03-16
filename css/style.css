@@ -768,7 +768,7 @@ body.hero-visible .hamburger-line {
 }
 
 .nav-kolibri {
-  width: 24px;
+  width: 48px;
   height: auto;
   display: block;
   opacity: 0.65;
@@ -801,6 +801,14 @@ body.hero-visible .hamburger-line {
 .view-sub {
   color: var(--text-light);
   font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+
+.view-intro {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.7;
+  font-style: italic;
   margin-bottom: 16px;
 }
 
