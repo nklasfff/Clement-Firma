@@ -83,6 +83,14 @@
         cirkelNodes.forEach(function(n) { n.classList.remove('active'); });
         this.classList.add('active');
         aktivCirkel = cirkelId;
+
+        // Fjern aktiv tema
+        if (aktivTema) {
+          temaCards.forEach(function(c) { c.classList.remove('active'); });
+          aktivTema = null;
+          filterOevelser(null);
+        }
+
         visCirckelIndhold(cirkelId);
       });
 
@@ -118,6 +126,7 @@
           // Toggle off
           this.classList.remove('active');
           aktivTema = null;
+          indholdPanel.classList.remove('open');
           filterOevelser(null);
           return;
         }
@@ -172,13 +181,18 @@
     var data = TEMA_INDHOLD[temaId];
     if (!data) return;
 
-    // Scroll til øvelser der matcher
-    var section = document.getElementById('oevelserSection');
-    if (section) {
-      setTimeout(function() {
-        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 200);
-    }
+    var tekst = data[aktivPerspektiv];
+    var html = '<h3>' + data.titel + '</h3>';
+    html += '<p style="color:var(--text-light); margin-bottom:16px;">' + tekst + '</p>';
+
+    panelInner.innerHTML = html;
+    indholdPanel.classList.add('open');
+
+    // Fjern cirkel-highlight da vi nu viser tema
+    cirkelNodes.forEach(function(n) { n.classList.remove('active'); });
+    aktivCirkel = null;
+
+    indholdPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   // ── Render øvelser ──
