@@ -859,6 +859,47 @@ body {
 .zone-amber { color: var(--amber); }
 .zone-rose { color: var(--rose); }
 
+/* ── Kolibri Signatur ── */
+.kolibri-signatur {
+  text-align: center;
+  padding: 28px 0 8px;
+  opacity: 0.3;
+}
+
+.kolibri-signatur img {
+  width: 32px;
+  height: auto;
+  filter: sepia(0.4) hue-rotate(280deg) saturate(0.6);
+}
+
+/* ── Lotus Separator ── */
+.lotus-separator {
+  text-align: center;
+  padding: 24px 0 0;
+}
+
+.lotus-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 50%;
+  opacity: 0.6;
+}
+
+/* ── Lotus Header (Øvelser) ── */
+.lotus-header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.lotus-header-icon {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 50%;
+  opacity: 0.7;
+}
+
 /* ── Footer ── */
 footer {
   text-align: center;
@@ -866,6 +907,14 @@ footer {
   color: var(--text-light);
   font-size: 0.9rem;
   border-top: 1px solid rgba(107, 45, 91, 0.06);
+}
+
+.footer-kolibri {
+  width: 36px;
+  height: auto;
+  opacity: 0.3;
+  filter: sepia(0.4) hue-rotate(280deg) saturate(0.6);
+  margin-bottom: 12px;
 }
 
 .footer-sub {

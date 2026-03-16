@@ -12,6 +12,9 @@
   var aktivTema = null;
   var aktivTrin = null;
 
+  // ── Kolibri signatur HTML ──
+  var kolibriHTML = '<div class="kolibri-signatur"><img src="assets/images/kolibri.png" alt=""></div>';
+
   // ── DOM refs ──
   var views = document.querySelectorAll('.view');
   var navItems = document.querySelectorAll('.nav-item');
@@ -201,6 +204,7 @@
     });
     html += '</ul>';
     html += '<div class="overblik-tip">' + indhold.overblik.tip + '</div>';
+    html += kolibriHTML;
     panelOverblik.innerHTML = html;
 
     // Dybde
@@ -208,6 +212,7 @@
     indhold.dybde.forEach(function(afsnit) {
       html += '<p class="dybde-afsnit">' + afsnit + '</p>';
     });
+    html += kolibriHTML;
     panelDybde.innerHTML = html;
 
     // Øvelse — find relateret øvelse
@@ -233,6 +238,7 @@
       });
       html += '</ol>';
       html += '</div>';
+      html += kolibriHTML;
     } else {
       html = '<p style="color:var(--text-light); padding:20px;">Ingen specifik øvelse til denne cirkel endnu.</p>';
     }
@@ -269,6 +275,7 @@
     html += '</div>';
 
     html += '</div>';
+    html += kolibriHTML;
 
     trappenResponse.innerHTML = html;
     trappenResponse.classList.add('visible');
@@ -331,6 +338,7 @@
     }
 
     html += '</div>';
+    html += kolibriHTML;
 
     temaExpanded.innerHTML = html;
     temaExpanded.classList.add('visible');
