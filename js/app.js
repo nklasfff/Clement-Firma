@@ -1,97 +1,134 @@
 /* ═══════════════════════════════════════════
    Clement Firma — App Logic
+   Multi-view SPA med routing, tabs og interaktioner
    ═══════════════════════════════════════════ */
 
 (function() {
   'use strict';
 
   // ── State ──
-  let aktivPerspektiv = 'medarbejder';
-  let aktivCirkel = null;
-  let aktivTema = null;
+  var aktivPerspektiv = 'medarbejder';
+  var aktivCirkel = null;
+  var aktivTema = null;
+  var aktivTrin = null;
 
   // ── DOM refs ──
-  const perspektivBtns = document.querySelectorAll('.perspektiv-btn');
-  const perspektivHint = document.getElementById('perspektivHint');
-  const cirkelNodes = document.querySelectorAll('.cirkel-node');
-  const indholdPanel = document.getElementById('indholdPanel');
-  const panelInner = document.getElementById('panelInner');
-  const panelClose = document.getElementById('panelClose');
-  const zoneBtns = document.querySelectorAll('.zone-btn');
-  const zoneResponse = document.getElementById('zoneResponse');
-  const temaCards = document.querySelectorAll('.tema-card');
-  const oevelserGrid = document.getElementById('oevelserGrid');
+  var views = document.querySelectorAll('.view');
+  var navItems = document.querySelectorAll('.nav-item');
+  var perspektivBtns = document.querySelectorAll('.perspektiv-btn');
+  var perspektivHint = document.getElementById('perspektivHint');
+  var cirkelNodes = document.querySelectorAll('.cirkel-node');
+
+  // Cirkel detail
+  var cirkelDetailIkon = document.getElementById('cirkelDetailIkon');
+  var cirkelDetailTitel = document.getElementById('cirkelDetailTitel');
+  var tabs = document.querySelectorAll('.tab');
+  var tabPanels = document.querySelectorAll('.tab-panel');
+  var panelOverblik = document.getElementById('panelOverblik');
+  var panelDybde = document.getElementById('panelDybde');
+  var panelOevelse = document.getElementById('panelOevelse');
+
+  // Trappen
+  var trappeTrin = document.querySelectorAll('.trappe-trin');
+  var trappenResponse = document.getElementById('trappenResponse');
+
+  // Temaer
+  var temaGrid = document.getElementById('temaGrid');
+  var temaExpanded = document.getElementById('temaExpanded');
+
+  // Øvelser
+  var oevelserGrid = document.getElementById('oevelserGrid');
 
   // ── Init ──
   function init() {
-    renderOevelser();
     opdaterCirkelTekster();
+    renderTemaer();
+    renderOevelser();
     bindEvents();
+    handleHash();
   }
 
-  // ── Opdater SVG-cirkel-tekster baseret på perspektiv ──
-  function opdaterCirkelTekster() {
-    cirkelNodes.forEach(function(node) {
-      var cirkelId = node.dataset.cirkel;
-      var tekster = CIRKEL_TEKSTER[cirkelId];
-      if (!tekster) return;
+  // ── Navigation ──
+  function navigateTo(viewName, push) {
+    if (push !== false) {
+      window.location.hash = viewName;
+    }
 
-      var perspektivTekst = tekster[aktivPerspektiv];
-      var tekstElementer1 = node.querySelectorAll('.cirkel-tekst-1');
-      var tekstElementer2 = node.querySelectorAll('.cirkel-tekst-2');
-
-      tekstElementer1.forEach(function(el) { el.textContent = perspektivTekst[0]; });
-      tekstElementer2.forEach(function(el) { el.textContent = perspektivTekst[1]; });
+    views.forEach(function(v) {
+      v.classList.remove('active', 'fade-in');
     });
+
+    var target = document.querySelector('.view[data-view="' + viewName.split('/')[0] + '"]');
+    if (target) {
+      target.classList.add('active', 'fade-in');
+      window.scrollTo(0, 0);
+    }
+
+    // Update nav
+    navItems.forEach(function(item) {
+      item.classList.toggle('active', item.dataset.view === viewName.split('/')[0]);
+    });
+  }
+
+  function handleHash() {
+    var hash = window.location.hash.slice(1) || 'hjem';
+
+    if (hash.indexOf('cirkel/') === 0) {
+      var cirkelId = hash.split('/')[1];
+      if (CIRKLER[cirkelId]) {
+        aktivCirkel = cirkelId;
+        renderCirkelDetail(cirkelId);
+        navigateTo('cirkel', false);
+      } else {
+        navigateTo('hjem', false);
+      }
+    } else {
+      navigateTo(hash, false);
+    }
   }
 
   // ── Events ──
   function bindEvents() {
-    // Perspektiv toggle
-    perspektivBtns.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        aktivPerspektiv = this.dataset.perspektiv;
-        perspektivBtns.forEach(function(b) { b.classList.remove('active'); });
-        this.classList.add('active');
-        perspektivHint.innerHTML = 'Du ser indholdet som <strong>' + aktivPerspektiv + '</strong>';
-
-        // Opdater cirkeltekster i SVG
-        opdaterCirkelTekster();
-
-        // Opdater åbent panel
-        if (aktivCirkel) {
-          visCirckelIndhold(aktivCirkel);
-        }
-
-        // Opdater zone-svar
-        var selectedZone = document.querySelector('.zone-btn.selected');
-        if (selectedZone) {
-          visZoneSvar(selectedZone.dataset.zone);
-        }
-
-        // Opdater tema
-        if (aktivTema) {
-          visTemaIndhold(aktivTema);
-        }
+    // Nav
+    navItems.forEach(function(item) {
+      item.addEventListener('click', function() {
+        navigateTo(this.dataset.view);
       });
     });
 
-    // Cirkel-klik
+    // Hash change
+    window.addEventListener('hashchange', handleHash);
+
+    // Perspektiv toggle (all)
+    perspektivBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        aktivPerspektiv = this.dataset.perspektiv;
+
+        // Update all perspektiv buttons
+        perspektivBtns.forEach(function(b) {
+          b.classList.toggle('active', b.dataset.perspektiv === aktivPerspektiv);
+        });
+
+        if (perspektivHint) {
+          perspektivHint.innerHTML = 'Du ser indholdet som <strong>' + aktivPerspektiv + '</strong>';
+        }
+
+        opdaterCirkelTekster();
+
+        // Refresh current content
+        if (aktivCirkel) renderCirkelDetail(aktivCirkel);
+        if (aktivTrin) visTrappenSvar(aktivTrin);
+        if (aktivTema) visTemaDetalje(aktivTema);
+      });
+    });
+
+    // Cirkel klik
     cirkelNodes.forEach(function(node) {
       node.addEventListener('click', function() {
         var cirkelId = this.dataset.cirkel;
-        cirkelNodes.forEach(function(n) { n.classList.remove('active'); });
-        this.classList.add('active');
         aktivCirkel = cirkelId;
-
-        // Fjern aktiv tema
-        if (aktivTema) {
-          temaCards.forEach(function(c) { c.classList.remove('active'); });
-          aktivTema = null;
-          filterOevelser(null);
-        }
-
-        visCirckelIndhold(cirkelId);
+        renderCirkelDetail(cirkelId);
+        navigateTo('cirkel/' + cirkelId);
       });
 
       node.addEventListener('keydown', function(e) {
@@ -102,124 +139,234 @@
       });
     });
 
-    // Panel close
-    panelClose.addEventListener('click', function() {
-      indholdPanel.classList.remove('open');
-      cirkelNodes.forEach(function(n) { n.classList.remove('active'); });
-      aktivCirkel = null;
+    // Cirkel back
+    document.getElementById('cirkelBack').addEventListener('click', function() {
+      navigateTo('hjem');
     });
 
-    // Zone-knapper
-    zoneBtns.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        zoneBtns.forEach(function(b) { b.classList.remove('selected'); });
-        this.classList.add('selected');
-        visZoneSvar(this.dataset.zone);
+    // Tabs
+    tabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        var tabName = this.dataset.tab;
+        tabs.forEach(function(t) { t.classList.toggle('active', t.dataset.tab === tabName); });
+        tabPanels.forEach(function(p) { p.classList.toggle('active', p.dataset.panel === tabName); });
       });
     });
 
-    // Tema-kort
-    temaCards.forEach(function(card) {
-      card.addEventListener('click', function() {
-        var temaId = this.dataset.tema;
-        if (aktivTema === temaId) {
-          // Toggle off
-          this.classList.remove('active');
-          aktivTema = null;
-          indholdPanel.classList.remove('open');
-          filterOevelser(null);
-          return;
-        }
-        temaCards.forEach(function(c) { c.classList.remove('active'); });
-        this.classList.add('active');
-        aktivTema = temaId;
-        visTemaIndhold(temaId);
-        filterOevelser(temaId);
+    // Trappen
+    trappeTrin.forEach(function(trin) {
+      trin.addEventListener('click', function() {
+        var trinId = this.dataset.trin;
+        trappeTrin.forEach(function(t) { t.classList.remove('selected'); });
+        this.classList.add('selected');
+        aktivTrin = trinId;
+        visTrappenSvar(trinId);
       });
     });
   }
 
-  // ── Vis cirkel-indhold ──
-  function visCirckelIndhold(cirkelId) {
+  // ── Opdater SVG-cirkel-tekster ──
+  function opdaterCirkelTekster() {
+    cirkelNodes.forEach(function(node) {
+      var cirkelId = node.dataset.cirkel;
+      var tekster = CIRKEL_TEKSTER[cirkelId];
+      if (!tekster) return;
+
+      var perspektivTekst = tekster[aktivPerspektiv];
+      node.querySelectorAll('.cirkel-tekst-1').forEach(function(el) { el.textContent = perspektivTekst[0]; });
+      node.querySelectorAll('.cirkel-tekst-2').forEach(function(el) { el.textContent = perspektivTekst[1]; });
+    });
+  }
+
+  // ── Cirkel Detail ──
+  function renderCirkelDetail(cirkelId) {
     var data = CIRKLER[cirkelId];
     if (!data) return;
 
     var indhold = data[aktivPerspektiv];
 
-    var html = '<h3>' + data.titel + '</h3>';
-    html += '<p style="color:var(--text-light); margin-bottom:16px;">' + indhold.beskrivelse + '</p>';
-    html += '<ul class="panel-bullets">';
-    indhold.punkter.forEach(function(p) {
+    // Header
+    cirkelDetailIkon.textContent = data.ikon || '◉';
+    cirkelDetailTitel.textContent = data.titel;
+
+    // Reset to overblik tab
+    tabs.forEach(function(t) { t.classList.toggle('active', t.dataset.tab === 'overblik'); });
+    tabPanels.forEach(function(p) { p.classList.toggle('active', p.dataset.panel === 'overblik'); });
+
+    // Overblik
+    var html = '<p class="overblik-beskrivelse">' + indhold.overblik.beskrivelse + '</p>';
+    html += '<ul class="overblik-punkter">';
+    indhold.overblik.punkter.forEach(function(p) {
       html += '<li>' + p + '</li>';
     });
     html += '</ul>';
-    html += '<div class="panel-tip">' + indhold.tip + '</div>';
+    html += '<div class="overblik-tip">' + indhold.overblik.tip + '</div>';
+    panelOverblik.innerHTML = html;
 
-    panelInner.innerHTML = html;
-    indholdPanel.classList.add('open');
+    // Dybde
+    html = '';
+    indhold.dybde.forEach(function(afsnit) {
+      html += '<p class="dybde-afsnit">' + afsnit + '</p>';
+    });
+    panelDybde.innerHTML = html;
 
-    // Scroll til panel
-    indholdPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // Øvelse — find relateret øvelse
+    var relOevelse = null;
+    for (var i = 0; i < OEVELSER.length; i++) {
+      if (OEVELSER[i].cirkel === cirkelId) {
+        relOevelse = OEVELSER[i];
+        break;
+      }
+    }
+
+    if (relOevelse) {
+      html = '<div class="oevelse-inline">';
+      html += '<h3>' + relOevelse.titel + '</h3>';
+      html += '<div class="oevelse-meta">';
+      html += '<span>' + relOevelse.tid + '</span>';
+      html += '<span>' + relOevelse.sted + '</span>';
+      html += '</div>';
+      html += '<p style="color:var(--text-light); margin-bottom:16px; line-height:1.7;">' + relOevelse.intro + '</p>';
+      html += '<ol class="oevelse-steps" style="display:block;">';
+      relOevelse.steps.forEach(function(step, idx) {
+        html += '<li data-step="' + (idx + 1) + '">' + step + '</li>';
+      });
+      html += '</ol>';
+      html += '</div>';
+    } else {
+      html = '<p style="color:var(--text-light); padding:20px;">Ingen specifik øvelse til denne cirkel endnu.</p>';
+    }
+    panelOevelse.innerHTML = html;
   }
 
-  // ── Vis zone-svar ──
-  function visZoneSvar(zone) {
-    var data = ZONE_SVAR[zone];
+  // ── Trappen ──
+  function visTrappenSvar(trinId) {
+    var data = TRAPPEN[trinId];
     if (!data) return;
 
     var svar = data[aktivPerspektiv];
-    var html = '<h4>' + svar.titel + '</h4>';
-    html += '<p>' + svar.tekst + '</p>';
-    html += '<div class="zone-exercise">' + svar.oevelse + '</div>';
+    var farveClass = data.farve === 'sage' ? 'sage-border' : data.farve === 'amber' ? 'amber-border' : 'rose-border';
 
-    zoneResponse.innerHTML = html;
-    zoneResponse.classList.add('visible');
+    var html = '<div class="trappen-card ' + farveClass + '">';
+    html += '<h3>' + data.navn + '</h3>';
+    html += '<p>' + svar.beskrivelse + '</p>';
+
+    html += '<strong style="display:block; color:var(--primary); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">Kropslige signaler</strong>';
+    html += '<ul class="trappen-signaler">';
+    svar.kropsSignaler.forEach(function(s) {
+      html += '<li>' + s + '</li>';
+    });
+    html += '</ul>';
+
+    html += '<div class="trappen-handling">';
+    html += '<strong>Handling</strong>';
+    html += '<p>' + svar.handling + '</p>';
+    html += '</div>';
+
+    html += '<div class="trappen-oevelse">';
+    html += '<strong>Prøv nu</strong>';
+    html += '<p>' + svar.oevelse + '</p>';
+    html += '</div>';
+
+    html += '</div>';
+
+    trappenResponse.innerHTML = html;
+    trappenResponse.classList.add('visible');
   }
 
-  // ── Vis tema-indhold ──
-  function visTemaIndhold(temaId) {
+  // ── Temaer ──
+  function renderTemaer() {
+    var html = '';
+    var temaKeys = Object.keys(TEMA_INDHOLD);
+    temaKeys.forEach(function(key) {
+      var tema = TEMA_INDHOLD[key];
+      html += '<button class="tema-card" data-tema="' + key + '">';
+      html += '<span class="tema-ikon">' + (tema.ikon || '') + '</span>';
+      html += '<h3>' + tema.titel + '</h3>';
+      html += '<p>' + (tema[aktivPerspektiv].intro.substring(0, 60)) + '...</p>';
+      html += '</button>';
+    });
+    temaGrid.innerHTML = html;
+
+    // Bind clicks
+    temaGrid.querySelectorAll('.tema-card').forEach(function(card) {
+      card.addEventListener('click', function() {
+        var temaId = this.dataset.tema;
+
+        if (aktivTema === temaId) {
+          // Toggle off
+          this.classList.remove('active');
+          aktivTema = null;
+          temaExpanded.classList.remove('visible');
+          return;
+        }
+
+        temaGrid.querySelectorAll('.tema-card').forEach(function(c) { c.classList.remove('active'); });
+        this.classList.add('active');
+        aktivTema = temaId;
+        visTemaDetalje(temaId);
+      });
+    });
+  }
+
+  function visTemaDetalje(temaId) {
     var data = TEMA_INDHOLD[temaId];
     if (!data) return;
 
-    var tekst = data[aktivPerspektiv];
-    var html = '<h3>' + data.titel + '</h3>';
-    html += '<p style="color:var(--text-light); margin-bottom:16px;">' + tekst + '</p>';
+    var perspektiv = data[aktivPerspektiv];
 
-    panelInner.innerHTML = html;
-    indholdPanel.classList.add('open');
+    var html = '<div class="tema-detail-card">';
+    html += '<h3>' + data.titel + '</h3>';
+    html += '<p class="tema-intro">' + perspektiv.intro + '</p>';
+    html += '<p class="tema-tekst">' + perspektiv.tekst + '</p>';
 
-    // Fjern cirkel-highlight da vi nu viser tema
-    cirkelNodes.forEach(function(n) { n.classList.remove('active'); });
-    aktivCirkel = null;
+    if (perspektiv.relateredeCirkler && perspektiv.relateredeCirkler.length) {
+      html += '<div class="tema-relaterede">';
+      perspektiv.relateredeCirkler.forEach(function(cirkelId) {
+        if (CIRKLER[cirkelId]) {
+          html += '<span class="tag" data-cirkel="' + cirkelId + '">' + CIRKLER[cirkelId].titel + '</span>';
+        }
+      });
+      html += '</div>';
+    }
 
-    indholdPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    html += '</div>';
+
+    temaExpanded.innerHTML = html;
+    temaExpanded.classList.add('visible');
+
+    // Bind relaterede cirkel-tags
+    temaExpanded.querySelectorAll('.tag[data-cirkel]').forEach(function(tag) {
+      tag.addEventListener('click', function() {
+        var cirkelId = this.dataset.cirkel;
+        aktivCirkel = cirkelId;
+        renderCirkelDetail(cirkelId);
+        navigateTo('cirkel/' + cirkelId);
+      });
+    });
+
+    temaExpanded.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
-  // ── Render øvelser ──
-  function renderOevelser(filterTema) {
-    var oevelser = OEVELSER;
-
-    if (filterTema) {
-      oevelser = oevelser.filter(function(o) {
-        return o.temaer.indexOf(filterTema) !== -1;
-      });
-    }
-
-    if (oevelser.length === 0) {
-      oevelserGrid.innerHTML = '<p style="text-align:center; color:var(--text-light); padding:20px;">Ingen øvelser matcher dette tema endnu.</p>';
-      return;
-    }
-
+  // ── Øvelser ──
+  function renderOevelser() {
     var html = '';
-    oevelser.forEach(function(o, i) {
+    OEVELSER.forEach(function(o, i) {
       html += '<div class="oevelse-card" data-index="' + i + '">';
       html += '<h3>' + o.titel + '</h3>';
       html += '<div class="oevelse-meta">';
       html += '<span>' + o.tid + '</span>';
       html += '<span>' + o.sted + '</span>';
-      html += '<span>' + CIRKLER[o.cirkel].titel + '</span>';
+      if (CIRKLER[o.cirkel]) {
+        html += '<span>' + CIRKLER[o.cirkel].titel + '</span>';
+      }
       html += '</div>';
-      html += '<blockquote>' + o.instruktion + '</blockquote>';
+      html += '<p class="oevelse-intro">' + o.intro + '</p>';
+      html += '<ol class="oevelse-steps">';
+      o.steps.forEach(function(step, idx) {
+        html += '<li data-step="' + (idx + 1) + '">' + step + '</li>';
+      });
+      html += '</ol>';
       html += '<button class="oevelse-toggle">Vis øvelse</button>';
       html += '</div>';
     });
@@ -230,13 +377,15 @@
     oevelserGrid.querySelectorAll('.oevelse-card').forEach(function(card) {
       card.addEventListener('click', function() {
         var isExpanded = this.classList.contains('expanded');
-        // Collapse alle
+
+        // Collapse all
         oevelserGrid.querySelectorAll('.oevelse-card').forEach(function(c) {
           c.classList.remove('expanded');
           var btn = c.querySelector('.oevelse-toggle');
           if (btn) btn.textContent = 'Vis øvelse';
         });
-        // Toggle denne
+
+        // Toggle this
         if (!isExpanded) {
           this.classList.add('expanded');
           var toggleBtn = this.querySelector('.oevelse-toggle');
@@ -244,11 +393,6 @@
         }
       });
     });
-  }
-
-  // ── Filtrer øvelser ──
-  function filterOevelser(temaId) {
-    renderOevelser(temaId);
   }
 
   // ── Start ──
