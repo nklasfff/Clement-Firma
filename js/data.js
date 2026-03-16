@@ -422,6 +422,7 @@ const TEMA_INDHOLD = {
   generelt: {
     titel: "Hverdagens trivsel",
     ikon: "☀",
+    spoergsmaal: "Føler du dig generelt træt eller urolig — uden at vide præcis hvorfor?",
     medarbejder: {
       intro: "Trivsel er ikke noget der sker af sig selv — det er en daglig praksis. Ligesom dit nervesystem har brug for 'nektar' hver dag, har din arbejdsdag brug for bevidste ritualer der støtter din regulering og dit velbefindende.",
       tekst: "Start din dag med et bevidst check-in: Hvilken tilstand er du i? Hvad har du brug for? Små daglige ritualer bygger langsigtet trivsel — det er den daglige konsistens, ikke de store gestusser, der skaber forandring. En morgenrutine med tre vejrtrækninger, en frokostpause uden skærm, et afslutningsritual sidst på dagen. Disse små handlinger sender gentagne signaler til dit nervesystem om at du tager vare på det.",
@@ -436,6 +437,7 @@ const TEMA_INDHOLD = {
   moeder: {
     titel: "Møder — tilstedeværelse og regulering",
     ikon: "◉",
+    spoergsmaal: "Sidder du i møde efter møde — uden pause, uden landing?",
     medarbejder: {
       intro: "Møder er nervesystemets stresstest. Flere mennesker, forskellige energier, forventninger og tidspres — alt sammen i ét rum. Din forberedelse handler ikke kun om indholdet.",
       tekst: "Mød forberedt — ikke bare fagligt, men nervemæssigt. Et reguleret nervesystem gør dig til en bedre lytter, en klarere kommunikatør og en mere kreativ bidragyder. Tag 60 sekunder før hvert møde til at lande: mærk fødderne, tag tre vejrtrækninger, sæt en intention. Under mødet: mærk efter om du lytter eller allerede formulerer dit svar. Hvis du mærker irritation eller utålmodighed, er det dit nervesystem der skifter til gul — tag en bevidst vejrtrækning under bordet.",
@@ -450,6 +452,7 @@ const TEMA_INDHOLD = {
   deadlines: {
     titel: "Deadlines & pres — når tiden presser",
     ikon: "⏱",
+    spoergsmaal: "Mærker du presset i kroppen — hurtig puls, spændt kæbe, kort åndedræt?",
     medarbejder: {
       intro: "Under pres skifter dit nervesystem til overlevelsesmode — og præcis de kognitive funktioner du har mest brug for (kreativitet, overblik, præcision) lukker ned. At regulere under pres er ikke luksus — det er din vigtigste kompetence.",
       tekst: "Når deadline presser, er dit nervesystem i gul alarm — hjertet banker, musklerne spænder, åndedrættes bliver overfladisk. Det er funktionelt i korte stød, men over timer og dage koster det kvalitet og helbred. Genkend tilstanden og regulér aktivt: box breathing mellem opgaver, micro-pauser hvert 45. minut, nok vand. Kvaliteten stiger når nervesystemet er med. Det virker kontraintuitivt at tage pauser under pres, men forskning viser konsistent at regulerede arbejdsblokke producerer bedre resultater end uafbrudt stress-arbejde.",
@@ -464,6 +467,7 @@ const TEMA_INDHOLD = {
   skaerm: {
     titel: "Skærmarbejde — krop og sind ved skærmen",
     ikon: "▢",
+    spoergsmaal: "Har du ondt i øjnene, nakken eller hovedet efter en lang dag foran skærmen?",
     medarbejder: {
       intro: "Skærmen fastholder dig i hovedet og afbryder forbindelsen til kroppen. Over tid kan det ligne en mild form for dissociation — du er 'oppe i tankerne' men mister kontakten med resten af dig selv.",
       tekst: "Skærmen er en dissociationsmaskin: den holder din opmærksomhed fast i et lille visuelt felt og afbryder kontakten med kroppen. Hvert 45. minut: rejs dig, bevæg dig, kig væk. Mærk dine fødder. Rul skuldrene. Din krop er ikke bare en holder til dit hoved. Indfør 20-20-20 reglen: hvert 20. minut, kig på noget 20 meter væk i 20 sekunder. Det giver øjnene og nervesystemet en micro-pause. Og husk at skifte position: stå, sid, bevæg dig. Variation er dit nervesystems ven.",
@@ -478,6 +482,7 @@ const TEMA_INDHOLD = {
   konflikter: {
     titel: "Konflikter — spændinger og uenigheder",
     ikon: "⬡",
+    spoergsmaal: "Har du en svær samtale foran dig — eller bærer du stadig på en der er sket?",
     medarbejder: {
       intro: "Konflikter aktiverer nervesystemet øjeblikkeligt — det er en af de stærkeste triggers der findes, fordi vores system er dybt programmeret til at reagere på social trussel.",
       tekst: "Før du reagerer: regulér. Mærk. Navngiv. Vælg derefter din respons — ikke din reaktion. Konflikter aktiverer de ældste dele af dit nervesystem, og din reaktion (kamp, flugt eller frys) afspejler ofte gamle mønstre mere end den aktuelle situation. Parkér konflikten bevidst hvis du er i gul eller rød tilstand: 'Jeg vil gerne tale om det her, men jeg har brug for 30 minutter først.' Det er ikke undvigelse — det er intelligent selvregulering der giver dig adgang til dine bedste kommunikationsevner.",
@@ -492,6 +497,7 @@ const TEMA_INDHOLD = {
   balance: {
     titel: "Work-life balance — grænser og genopladning",
     ikon: "☯",
+    spoergsmaal: "Føler du at arbejdet følger med hjem — i tanker, krop eller skærm?",
     medarbejder: {
       intro: "Balance er ikke 50/50 — det er at vide hvornår du skal give, og hvornår du skal stoppe. Dine grænser er ikke egoistiske. De er neurobiologisk nødvendige.",
       tekst: "Dit nervesystem har en endelig kapacitet — og den genopfyldes kun gennem ægte recovery. Det betyder ikke bare at stoppe med at arbejde, men aktivt at gøre ting der regulerer: bevægelse, natur, social kontakt, søvn, kreative aktiviteter. Scroll på telefonen er ikke recovery — det er stimulering. Bevidste grænser for arbejdstid, tilgængelighed og ansvar er ikke luksus. De er den mest basale form for nervesystemsbeskyttelse. Start med én grænse denne uge og vær konsistent med den.",
