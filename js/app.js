@@ -56,13 +56,19 @@
   var searchTags = document.getElementById('searchTags');
   var searchResults = document.getElementById('searchResults');
 
+  // Velkommen
+  var velkommenSection = document.getElementById('velkommenSection');
+  var velkommenTitel = document.getElementById('velkommenTitel');
+  var velkommenTekst = document.getElementById('velkommenTekst');
+  var isFirstVisit = false;
+
   // ── Init ──
   function init() {
     // Check om bruger allerede har valgt rolle
     var gemt = localStorage.getItem('clementRolle');
     if (gemt) {
       aktivPerspektiv = gemt;
-      startApp();
+      startApp(false);
     } else {
       visOnboarding();
     }
@@ -79,12 +85,13 @@
       btn.addEventListener('click', function() {
         aktivPerspektiv = this.dataset.rolle;
         localStorage.setItem('clementRolle', aktivPerspektiv);
-        startApp();
+        startApp(true);
       });
     });
   }
 
-  function startApp() {
+  function startApp(firstVisit) {
+    isFirstVisit = firstVisit;
     onboarding.classList.add('hidden');
     bottomNav.classList.remove('hidden');
     topBar.classList.remove('hidden');
@@ -97,7 +104,16 @@
     bindEvents();
     bindMenuEvents();
     bindSearchEvents();
-    handleHash();
+
+    if (firstVisit) {
+      // Always go to hjem on first visit
+      window.location.hash = 'hjem';
+      navigateTo('hjem', false);
+      showVelkommen();
+      animateCircles();
+    } else {
+      handleHash();
+    }
     updateHeroVisibility();
   }
 
@@ -961,6 +977,66 @@
       searchTags.querySelectorAll('.search-tag').forEach(function(t) { t.classList.remove('active'); });
       performSearch(val);
     });
+  }
+
+  // ── Velkommen (first visit) ──
+  function showVelkommen() {
+    if (!velkommenSection || !velkommenTitel || !velkommenTekst) return;
+
+    if (aktivPerspektiv === 'leder') {
+      velkommenTitel.textContent = 'Velkommen. Dit nervesystem sætter tonen for hele dit team.';
+      velkommenTekst.textContent = 'Denne app giver dig redskaber til at forstå og regulere dit eget nervesystem — og skabe de betingelser, der lader dine medarbejdere trives. Bygget på Anne Marie Clements 20 års erfaring med nervesystemet som nøgle til trivsel. Udforsk de syv dimensioner nedenfor.';
+    } else {
+      velkommenTitel.textContent = 'Velkommen. Din trivsel begynder i dit nervesystem.';
+      velkommenTekst.textContent = 'Denne app er dit personlige rum for balance på arbejdspladsen — med øvelser, viden og redskaber baseret på Anne Marie Clements 20 års arbejde med nervesystemet. Syv dimensioner, der tilsammen skaber trivsel i din hverdag. Start hvor det føles rigtigt.';
+    }
+
+    // Show with a slight delay for the transition
+    setTimeout(function() {
+      velkommenSection.classList.add('visible');
+    }, 300);
+
+    // Auto-hide after 20 seconds (or user can scroll past)
+    setTimeout(function() {
+      velkommenSection.classList.remove('visible');
+      velkommenSection.classList.add('hiding');
+    }, 25000);
+  }
+
+  function animateCircles() {
+    var connections = document.querySelector('.connections');
+    var nodes = document.querySelectorAll('.cirkel-node');
+
+    // Set initial state
+    if (connections) {
+      connections.classList.add('entrance');
+    }
+    nodes.forEach(function(node) {
+      node.classList.add('entrance');
+    });
+
+    // Animate center first, then outer circles with stagger
+    var order = ['centrum', 'tilstande', 'ledelse', 'samarbejde', 'krop', 'aandedraet', 'resiliens'];
+    var baseDelay = 600; // ms after page loads
+
+    order.forEach(function(id, i) {
+      var node = document.querySelector('.cirkel-node[data-cirkel="' + id + '"]');
+      if (node) {
+        var delay = baseDelay + (i === 0 ? 0 : 200 + (i * 120));
+        setTimeout(function() {
+          node.classList.remove('entrance');
+          node.classList.add('animate-in');
+        }, delay);
+      }
+    });
+
+    // Animate connections after circles
+    if (connections) {
+      setTimeout(function() {
+        connections.classList.remove('entrance');
+        connections.classList.add('animate-in');
+      }, baseDelay + 200 + (6 * 120));
+    }
   }
 
   // ── Start ──
