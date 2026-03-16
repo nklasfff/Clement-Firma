@@ -65,14 +65,11 @@ body {
   width: 100%;
 }
 
-.onboarding-image {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid rgba(255,255,255,0.15);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.25);
+.onboarding-kolibri {
+  width: 140px;
+  height: auto;
   margin-bottom: 28px;
+  opacity: 0.8;
 }
 
 .onboarding h1 {
@@ -220,6 +217,17 @@ body {
 .nav-icon {
   font-size: 1.3rem;
   line-height: 1;
+}
+
+.nav-kolibri {
+  width: 22px;
+  height: auto;
+  display: block;
+  opacity: 0.5;
+}
+
+.nav-item.active .nav-kolibri {
+  opacity: 0.85;
 }
 
 .nav-label {
@@ -967,6 +975,13 @@ footer {
   color: var(--text-light);
   font-size: 0.9rem;
   border-top: 1px solid rgba(107, 45, 91, 0.06);
+}
+
+.footer-kolibri {
+  width: 32px;
+  height: auto;
+  opacity: 0.4;
+  margin-bottom: 14px;
 }
 
 .footer-sub {
