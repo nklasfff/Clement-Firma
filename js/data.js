@@ -19,8 +19,8 @@ const CIRKEL_TEKSTER = {
     leder: ["Dit lederskab", "og kulturen"]
   },
   samarbejde: {
-    medarbejder: ["Dine samarbejds-", "mønstre"],
-    leder: ["Teamets", "samarbejdsmønstre"]
+    medarbejder: ["Dine", "samarbejds-", "mønstre"],
+    leder: ["Teamets", "samarbejds-", "mønstre"]
   },
   krop: {
     medarbejder: ["Din krop", "i hverdagen"],

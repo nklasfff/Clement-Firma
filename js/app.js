@@ -41,6 +41,21 @@
   // Øvelser
   var oevelserGrid = document.getElementById('oevelserGrid');
 
+  // Top bar / Menu / Search
+  var topBar = document.getElementById('topBar');
+  var menuBtn = document.getElementById('menuBtn');
+  var menuOverlay = document.getElementById('menuOverlay');
+  var menuPanel = document.getElementById('menuPanel');
+  var menuClose = document.getElementById('menuClose');
+  var menuContent = document.getElementById('menuContent');
+  var searchBtn = document.getElementById('searchBtn');
+  var searchOverlay = document.getElementById('searchOverlay');
+  var searchInput = document.getElementById('searchInput');
+  var searchClear = document.getElementById('searchClear');
+  var searchClose = document.getElementById('searchClose');
+  var searchTags = document.getElementById('searchTags');
+  var searchResults = document.getElementById('searchResults');
+
   // ── Init ──
   function init() {
     // Check om bruger allerede har valgt rolle
@@ -57,6 +72,7 @@
   function visOnboarding() {
     onboarding.classList.remove('hidden');
     bottomNav.classList.add('hidden');
+    topBar.classList.add('hidden');
 
     var choices = onboarding.querySelectorAll('.onboarding-choice');
     choices.forEach(function(btn) {
@@ -71,12 +87,18 @@
   function startApp() {
     onboarding.classList.add('hidden');
     bottomNav.classList.remove('hidden');
+    topBar.classList.remove('hidden');
     opdaterRolleLabel();
     opdaterCirkelTekster();
     renderTemaer();
     renderOevelser();
+    renderMenuContent();
+    renderSearchTags();
     bindEvents();
+    bindMenuEvents();
+    bindSearchEvents();
     handleHash();
+    updateHeroVisibility();
   }
 
   // ── Rolle ──
@@ -117,6 +139,8 @@
     navItems.forEach(function(item) {
       item.classList.toggle('active', item.dataset.view === viewName.split('/')[0]);
     });
+
+    updateHeroVisibility();
   }
 
   function handleHash() {
@@ -206,6 +230,7 @@
       var perspektivTekst = tekster[aktivPerspektiv];
       node.querySelectorAll('.cirkel-tekst-1').forEach(function(el) { el.textContent = perspektivTekst[0]; });
       node.querySelectorAll('.cirkel-tekst-2').forEach(function(el) { el.textContent = perspektivTekst[1]; });
+      node.querySelectorAll('.cirkel-tekst-3').forEach(function(el) { el.textContent = perspektivTekst[2] || ''; });
     });
   }
 
@@ -423,6 +448,307 @@
           if (toggleBtn) toggleBtn.textContent = 'Skjul øvelse';
         }
       });
+    });
+  }
+
+  // ── Hero visibility (for white top-bar icons) ──
+  function updateHeroVisibility() {
+    var hash = window.location.hash.slice(1) || 'hjem';
+    if (hash === 'hjem' || hash === '') {
+      document.body.classList.add('hero-visible');
+    } else {
+      document.body.classList.remove('hero-visible');
+    }
+  }
+
+  // ── Menu ──
+  function renderMenuContent() {
+    var rolleText = aktivPerspektiv === 'leder' ? 'leder' : 'medarbejder';
+    var html = '';
+
+    // Rolle info
+    html += '<div class="menu-rolle-info">';
+    html += '<p>Du bruger appen som <strong>' + rolleText + '</strong></p>';
+    html += '<button class="menu-rolle-btn" id="menuRolleSkift">Skift rolle</button>';
+    html += '</div>';
+
+    // Om Anne Marie
+    html += '<div class="menu-about">';
+    html += '<div class="menu-section-title">Om Anne Marie Clement</div>';
+    html += '<p>Anne Marie Clement har i over 20 år arbejdet med nervesystemet som nøgle til trivsel og balance. ';
+    html += 'Hendes tilgang bygger på polyvagal teori, tilknytningsforskning og kropslig bevidsthed — ';
+    html += 'oversat til praktiske redskaber der virker i hverdagen og på arbejdspladsen.</p>';
+    html += '</div>';
+
+    html += '<div class="menu-divider"></div>';
+
+    // Navigation
+    html += '<div class="menu-section">';
+    html += '<div class="menu-section-title">Indhold</div>';
+    html += '<button class="menu-item" data-nav="hjem"><span class="menu-item-icon">◉</span>Hjem</button>';
+    html += '<button class="menu-item" data-nav="trappen"><span class="menu-item-icon">☰</span>Nervesystemstrappen</button>';
+    html += '<button class="menu-item" data-nav="temaer"><span class="menu-item-icon">◈</span>Temaer</button>';
+    html += '<button class="menu-item" data-nav="oevelser"><span class="menu-item-icon">◎</span>Øvelser</button>';
+    html += '</div>';
+
+    html += '<div class="menu-divider"></div>';
+
+    // Settings section
+    html += '<div class="menu-section">';
+    html += '<div class="menu-section-title">Indstillinger</div>';
+
+    if (aktivPerspektiv === 'leder') {
+      html += '<button class="menu-item" data-action="notifikationer"><span class="menu-item-icon">🔔</span>Notifikationer</button>';
+      html += '<button class="menu-item" data-action="teamoversigt"><span class="menu-item-icon">👥</span>Teamoversigt</button>';
+    } else {
+      html += '<button class="menu-item" data-action="notifikationer"><span class="menu-item-icon">🔔</span>Notifikationer</button>';
+      html += '<button class="menu-item" data-action="paaminelser"><span class="menu-item-icon">⏰</span>Daglige påmindelser</button>';
+    }
+
+    html += '<button class="menu-item" data-action="indstillinger"><span class="menu-item-icon">⚙</span>Indstillinger</button>';
+    html += '<button class="menu-item" data-action="privatliv"><span class="menu-item-icon">🔒</span>Privatliv</button>';
+    html += '<button class="menu-item" data-action="om"><span class="menu-item-icon">ℹ</span>Om appen</button>';
+    html += '</div>';
+
+    menuContent.innerHTML = html;
+
+    // Bind menu navigation
+    menuContent.querySelectorAll('.menu-item[data-nav]').forEach(function(item) {
+      item.addEventListener('click', function() {
+        closeMenu();
+        navigateTo(this.dataset.nav);
+      });
+    });
+
+    // Bind rolle skift in menu
+    var menuRolleBtn = document.getElementById('menuRolleSkift');
+    if (menuRolleBtn) {
+      menuRolleBtn.addEventListener('click', function() {
+        skiftRolle();
+        renderMenuContent();
+        bindMenuItemActions();
+      });
+    }
+
+    bindMenuItemActions();
+  }
+
+  function bindMenuItemActions() {
+    menuContent.querySelectorAll('.menu-item[data-action]').forEach(function(item) {
+      item.addEventListener('click', function() {
+        // Placeholder — these would open sub-views in a full app
+        closeMenu();
+      });
+    });
+  }
+
+  function openMenu() {
+    menuOverlay.classList.add('visible');
+    menuPanel.classList.add('open');
+  }
+
+  function closeMenu() {
+    menuOverlay.classList.remove('visible');
+    menuPanel.classList.remove('open');
+  }
+
+  function bindMenuEvents() {
+    menuBtn.addEventListener('click', openMenu);
+    menuClose.addEventListener('click', closeMenu);
+    menuOverlay.addEventListener('click', closeMenu);
+  }
+
+  // ── Search ──
+  var SEARCH_TAGS = [
+    'Stress', 'Åndedræt', 'Nervesystem', 'Pauser',
+    'Samarbejde', 'Ledelse', 'Resiliens', 'Krop',
+    'Regulering', 'Tilknytning'
+  ];
+
+  function renderSearchTags() {
+    var html = '';
+    SEARCH_TAGS.forEach(function(tag) {
+      html += '<button class="search-tag" data-tag="' + tag + '">' + tag + '</button>';
+    });
+    searchTags.innerHTML = html;
+
+    searchTags.querySelectorAll('.search-tag').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var tag = this.dataset.tag;
+        searchInput.value = tag;
+        searchClear.classList.add('visible');
+        // Highlight active tag
+        searchTags.querySelectorAll('.search-tag').forEach(function(t) { t.classList.remove('active'); });
+        this.classList.add('active');
+        performSearch(tag);
+      });
+    });
+  }
+
+  function openSearch() {
+    searchOverlay.classList.add('visible');
+    searchInput.value = '';
+    searchClear.classList.remove('visible');
+    searchResults.innerHTML = '<div class="search-empty">Søg efter et emne eller tryk på et tag</div>';
+    searchTags.querySelectorAll('.search-tag').forEach(function(t) { t.classList.remove('active'); });
+    setTimeout(function() { searchInput.focus(); }, 100);
+  }
+
+  function closeSearch() {
+    searchOverlay.classList.remove('visible');
+    searchInput.blur();
+  }
+
+  function performSearch(query) {
+    if (!query || query.trim().length === 0) {
+      searchResults.innerHTML = '<div class="search-empty">Søg efter et emne eller tryk på et tag</div>';
+      return;
+    }
+
+    var q = query.toLowerCase().trim();
+    var results = [];
+
+    // Search CIRKLER
+    var cirkelKeys = Object.keys(CIRKLER);
+    cirkelKeys.forEach(function(key) {
+      var c = CIRKLER[key];
+      var indhold = c[aktivPerspektiv];
+      var match = false;
+      var snippet = '';
+
+      if (c.titel.toLowerCase().indexOf(q) !== -1) { match = true; snippet = indhold.overblik.beskrivelse; }
+      if (!match && indhold.overblik.beskrivelse.toLowerCase().indexOf(q) !== -1) { match = true; snippet = indhold.overblik.beskrivelse; }
+      if (!match) {
+        for (var i = 0; i < indhold.overblik.punkter.length; i++) {
+          if (indhold.overblik.punkter[i].toLowerCase().indexOf(q) !== -1) { match = true; snippet = indhold.overblik.punkter[i]; break; }
+        }
+      }
+      if (!match) {
+        for (var i = 0; i < indhold.dybde.length; i++) {
+          if (indhold.dybde[i].toLowerCase().indexOf(q) !== -1) { match = true; snippet = indhold.dybde[i]; break; }
+        }
+      }
+
+      if (match) {
+        results.push({
+          type: 'Cirkel',
+          title: c.titel,
+          snippet: snippet.substring(0, 120) + (snippet.length > 120 ? '...' : ''),
+          action: function() { navigateTo('cirkel/' + key); aktivCirkel = key; renderCirkelDetail(key); }
+        });
+      }
+    });
+
+    // Search TEMA_INDHOLD
+    var temaKeys = Object.keys(TEMA_INDHOLD);
+    temaKeys.forEach(function(key) {
+      var t = TEMA_INDHOLD[key];
+      var indhold = t[aktivPerspektiv];
+      var match = false;
+      var snippet = '';
+
+      if (t.titel.toLowerCase().indexOf(q) !== -1) { match = true; snippet = indhold.intro; }
+      if (!match && indhold.intro.toLowerCase().indexOf(q) !== -1) { match = true; snippet = indhold.intro; }
+      if (!match && indhold.tekst.toLowerCase().indexOf(q) !== -1) { match = true; snippet = indhold.tekst; }
+
+      if (match) {
+        results.push({
+          type: 'Tema',
+          title: t.titel,
+          snippet: snippet.substring(0, 120) + (snippet.length > 120 ? '...' : ''),
+          action: function() { navigateTo('temaer'); setTimeout(function() { aktivTema = key; visTemaDetalje(key); }, 100); }
+        });
+      }
+    });
+
+    // Search TRAPPEN
+    var trinKeys = Object.keys(TRAPPEN);
+    trinKeys.forEach(function(key) {
+      var t = TRAPPEN[key];
+      var indhold = t[aktivPerspektiv];
+      var match = false;
+      var snippet = '';
+
+      if (t.navn.toLowerCase().indexOf(q) !== -1) { match = true; snippet = indhold.beskrivelse; }
+      if (!match && indhold.beskrivelse.toLowerCase().indexOf(q) !== -1) { match = true; snippet = indhold.beskrivelse; }
+      if (!match && indhold.handling.toLowerCase().indexOf(q) !== -1) { match = true; snippet = indhold.handling; }
+
+      if (match) {
+        results.push({
+          type: 'Nervesystemstrappen',
+          title: t.navn,
+          snippet: snippet.substring(0, 120) + (snippet.length > 120 ? '...' : ''),
+          action: function() { navigateTo('trappen'); setTimeout(function() { aktivTrin = key; visTrappenSvar(key); }, 100); }
+        });
+      }
+    });
+
+    // Search OEVELSER
+    OEVELSER.forEach(function(o, idx) {
+      var match = false;
+      var snippet = '';
+
+      if (o.titel.toLowerCase().indexOf(q) !== -1) { match = true; snippet = o.intro; }
+      if (!match && o.intro.toLowerCase().indexOf(q) !== -1) { match = true; snippet = o.intro; }
+      if (!match) {
+        for (var i = 0; i < o.steps.length; i++) {
+          if (o.steps[i].toLowerCase().indexOf(q) !== -1) { match = true; snippet = o.steps[i]; break; }
+        }
+      }
+
+      if (match) {
+        results.push({
+          type: 'Øvelse',
+          title: o.titel,
+          snippet: snippet.substring(0, 120) + (snippet.length > 120 ? '...' : ''),
+          action: function() { navigateTo('oevelser'); }
+        });
+      }
+    });
+
+    // Render results
+    if (results.length === 0) {
+      searchResults.innerHTML = '<div class="search-empty">Ingen resultater for "' + query + '"</div>';
+      return;
+    }
+
+    var html = '';
+    results.forEach(function(r, i) {
+      html += '<button class="search-result-item" data-idx="' + i + '">';
+      html += '<div class="search-result-type">' + r.type + '</div>';
+      html += '<div class="search-result-title">' + r.title + '</div>';
+      html += '<div class="search-result-snippet">' + r.snippet + '</div>';
+      html += '</button>';
+    });
+    searchResults.innerHTML = html;
+
+    // Bind result clicks
+    searchResults.querySelectorAll('.search-result-item').forEach(function(item) {
+      item.addEventListener('click', function() {
+        var idx = parseInt(this.dataset.idx);
+        closeSearch();
+        results[idx].action();
+      });
+    });
+  }
+
+  function bindSearchEvents() {
+    searchBtn.addEventListener('click', openSearch);
+    searchClose.addEventListener('click', closeSearch);
+
+    searchClear.addEventListener('click', function() {
+      searchInput.value = '';
+      searchClear.classList.remove('visible');
+      searchTags.querySelectorAll('.search-tag').forEach(function(t) { t.classList.remove('active'); });
+      searchResults.innerHTML = '<div class="search-empty">Søg efter et emne eller tryk på et tag</div>';
+      searchInput.focus();
+    });
+
+    searchInput.addEventListener('input', function() {
+      var val = this.value;
+      searchClear.classList.toggle('visible', val.length > 0);
+      searchTags.querySelectorAll('.search-tag').forEach(function(t) { t.classList.remove('active'); });
+      performSearch(val);
     });
   }
 

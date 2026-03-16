@@ -33,6 +33,44 @@
     </div>
   </div>
 
+  <!-- ════ TOP BAR ════ -->
+  <div class="top-bar" id="topBar">
+    <button class="top-bar-btn" id="menuBtn" aria-label="Menu">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+    <button class="top-bar-btn" id="searchBtn" aria-label="Søg">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="16.5" y1="16.5" x2="21" y2="21"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- ════ MENU OVERLAY + SIDE PANEL ════ -->
+  <div class="menu-overlay" id="menuOverlay"></div>
+  <div class="menu-panel" id="menuPanel">
+    <div class="menu-header">
+      <h2>Menu</h2>
+      <button class="menu-close" id="menuClose" aria-label="Luk">×</button>
+    </div>
+    <div class="menu-content" id="menuContent"></div>
+  </div>
+
+  <!-- ════ SEARCH OVERLAY ════ -->
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-header">
+      <div class="search-input-wrap">
+        <input type="text" class="search-input" id="searchInput" placeholder="Søg i indhold...">
+        <button class="search-clear" id="searchClear" aria-label="Ryd">×</button>
+      </div>
+      <button class="search-close" id="searchClose" aria-label="Luk">×</button>
+    </div>
+    <div class="search-tags" id="searchTags"></div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+
   <!-- ════ BOTTOM NAV ════ -->
   <nav class="bottom-nav" id="bottomNav">
     <button class="nav-item active" data-view="hjem">
@@ -80,68 +118,80 @@
       <div class="cirkel-svg-container">
         <svg viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg" id="cirkelSvg">
           <!-- Forbindelseslinjer -->
-          <g class="connections" opacity="0.2">
-            <line x1="260" y1="260" x2="260" y2="65" stroke="#D4A373" stroke-width="1" stroke-dasharray="4,4"/>
-            <line x1="260" y1="260" x2="429" y2="135" stroke="#D4A373" stroke-width="1" stroke-dasharray="4,4"/>
-            <line x1="260" y1="260" x2="429" y2="385" stroke="#D4A373" stroke-width="1" stroke-dasharray="4,4"/>
-            <line x1="260" y1="260" x2="260" y2="455" stroke="#D4A373" stroke-width="1" stroke-dasharray="4,4"/>
-            <line x1="260" y1="260" x2="91" y2="385" stroke="#D4A373" stroke-width="1" stroke-dasharray="4,4"/>
-            <line x1="260" y1="260" x2="91" y2="135" stroke="#D4A373" stroke-width="1" stroke-dasharray="4,4"/>
-            <line x1="260" y1="65" x2="429" y2="135" stroke="#D4A373" stroke-width="0.7" stroke-dasharray="3,5"/>
-            <line x1="429" y1="135" x2="429" y2="385" stroke="#D4A373" stroke-width="0.7" stroke-dasharray="3,5"/>
-            <line x1="429" y1="385" x2="260" y2="455" stroke="#D4A373" stroke-width="0.7" stroke-dasharray="3,5"/>
-            <line x1="260" y1="455" x2="91" y2="385" stroke="#D4A373" stroke-width="0.7" stroke-dasharray="3,5"/>
-            <line x1="91" y1="385" x2="91" y2="135" stroke="#D4A373" stroke-width="0.7" stroke-dasharray="3,5"/>
-            <line x1="91" y1="135" x2="260" y2="65" stroke="#D4A373" stroke-width="0.7" stroke-dasharray="3,5"/>
+          <g class="connections" opacity="0.5">
+            <!-- Centrum til alle ydre -->
+            <line x1="260" y1="260" x2="260" y2="65" stroke="#D4A373" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <line x1="260" y1="260" x2="429" y2="135" stroke="#D4A373" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <line x1="260" y1="260" x2="429" y2="385" stroke="#D4A373" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <line x1="260" y1="260" x2="260" y2="455" stroke="#D4A373" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <line x1="260" y1="260" x2="91" y2="385" stroke="#D4A373" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <line x1="260" y1="260" x2="91" y2="135" stroke="#D4A373" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <!-- Alle ydre til hinanden (15 forbindelser) -->
+            <line x1="260" y1="65" x2="429" y2="135" stroke="#D4A373" stroke-width="1" stroke-dasharray="3,5"/>
+            <line x1="260" y1="65" x2="429" y2="385" stroke="#D4A373" stroke-width="1" stroke-dasharray="3,5"/>
+            <line x1="260" y1="65" x2="260" y2="455" stroke="#D4A373" stroke-width="1" stroke-dasharray="3,5"/>
+            <line x1="260" y1="65" x2="91" y2="385" stroke="#D4A373" stroke-width="1" stroke-dasharray="3,5"/>
+            <line x1="260" y1="65" x2="91" y2="135" stroke="#D4A373" stroke-width="1" stroke-dasharray="3,5"/>
+            <line x1="429" y1="135" x2="429" y2="385" stroke="#D4A373" stroke-width="1" stroke-dasharray="3,5"/>
+            <line x1="429" y1="135" x2="260" y2="455" stroke="#D4A373" stroke-width="1" stroke-dasharray="3,5"/>
+            <line x1="429" y1="135" x2="91" y2="385" stroke="#D4A373" stroke-width="1" stroke-dasharray="3,5"/>
+            <line x1="429" y1="135" x2="91" y2="135" stroke="#D4A373" stroke-width="1" stroke-dasharray="3,5"/>
+            <line x1="429" y1="385" x2="260" y2="455" stroke="#D4A373" stroke-width="1" stroke-dasharray="3,5"/>
+            <line x1="429" y1="385" x2="91" y2="385" stroke="#D4A373" stroke-width="1" stroke-dasharray="3,5"/>
+            <line x1="429" y1="385" x2="91" y2="135" stroke="#D4A373" stroke-width="1" stroke-dasharray="3,5"/>
+            <line x1="260" y1="455" x2="91" y2="385" stroke="#D4A373" stroke-width="1" stroke-dasharray="3,5"/>
+            <line x1="260" y1="455" x2="91" y2="135" stroke="#D4A373" stroke-width="1" stroke-dasharray="3,5"/>
+            <line x1="91" y1="385" x2="91" y2="135" stroke="#D4A373" stroke-width="1" stroke-dasharray="3,5"/>
           </g>
 
           <!-- Centrum: Stressregulering -->
           <g class="cirkel-node" data-cirkel="centrum" role="button" tabindex="0">
-            <circle cx="260" cy="260" r="66" fill="#6B2D5B" class="cirkel-circle"/>
-            <text x="260" y="252" text-anchor="middle" fill="white" font-size="14" font-family="Georgia" class="cirkel-tekst-1">Stressregulering</text>
-            <text x="260" y="272" text-anchor="middle" fill="white" font-size="14" font-family="Georgia" class="cirkel-tekst-2">i din hverdag</text>
+            <circle cx="260" cy="260" r="69" fill="#6B2D5B" class="cirkel-circle"/>
+            <text x="260" y="252" text-anchor="middle" fill="white" font-size="14.5" font-family="Georgia" class="cirkel-tekst-1">Stressregulering</text>
+            <text x="260" y="273" text-anchor="middle" fill="white" font-size="14.5" font-family="Georgia" class="cirkel-tekst-2">i din hverdag</text>
           </g>
 
           <!-- 1: Tre tilstande (top) -->
           <g class="cirkel-node" data-cirkel="tilstande" role="button" tabindex="0">
-            <circle cx="260" cy="65" r="53" fill="#8B3D7B" class="cirkel-circle"/>
-            <text x="260" y="58" text-anchor="middle" fill="white" font-size="12.5" font-family="Georgia" class="cirkel-tekst-1">Tre tilstande</text>
-            <text x="260" y="75" text-anchor="middle" fill="white" font-size="12.5" font-family="Georgia" class="cirkel-tekst-2">i din arbejdsdag</text>
+            <circle cx="260" cy="65" r="56" fill="#8B3D7B" class="cirkel-circle"/>
+            <text x="260" y="58" text-anchor="middle" fill="white" font-size="13.5" font-family="Georgia" class="cirkel-tekst-1">Tre tilstande</text>
+            <text x="260" y="75" text-anchor="middle" fill="white" font-size="13.5" font-family="Georgia" class="cirkel-tekst-2">i din arbejdsdag</text>
           </g>
 
           <!-- 2: Ledelse (top-right) -->
           <g class="cirkel-node" data-cirkel="ledelse" role="button" tabindex="0">
-            <circle cx="429" cy="135" r="53" fill="#8B3D7B" class="cirkel-circle"/>
-            <text x="429" y="128" text-anchor="middle" fill="white" font-size="12.5" font-family="Georgia" class="cirkel-tekst-1">Ledelse og</text>
-            <text x="429" y="145" text-anchor="middle" fill="white" font-size="12.5" font-family="Georgia" class="cirkel-tekst-2">arbejdskultur</text>
+            <circle cx="429" cy="135" r="56" fill="#8B3D7B" class="cirkel-circle"/>
+            <text x="429" y="128" text-anchor="middle" fill="white" font-size="13.5" font-family="Georgia" class="cirkel-tekst-1">Ledelse og</text>
+            <text x="429" y="145" text-anchor="middle" fill="white" font-size="13.5" font-family="Georgia" class="cirkel-tekst-2">arbejdskultur</text>
           </g>
 
           <!-- 3: Samarbejdsmønstre (bottom-right) -->
           <g class="cirkel-node" data-cirkel="samarbejde" role="button" tabindex="0">
-            <circle cx="429" cy="385" r="53" fill="#8B3D7B" class="cirkel-circle"/>
-            <text x="429" y="378" text-anchor="middle" fill="white" font-size="12.5" font-family="Georgia" class="cirkel-tekst-1">Samarbejds-</text>
-            <text x="429" y="395" text-anchor="middle" fill="white" font-size="12.5" font-family="Georgia" class="cirkel-tekst-2">mønstre</text>
+            <circle cx="429" cy="385" r="56" fill="#8B3D7B" class="cirkel-circle"/>
+            <text x="429" y="371" text-anchor="middle" fill="white" font-size="13.5" font-family="Georgia" class="cirkel-tekst-1">Dine</text>
+            <text x="429" y="388" text-anchor="middle" fill="white" font-size="13.5" font-family="Georgia" class="cirkel-tekst-2">samarbejds-</text>
+            <text x="429" y="405" text-anchor="middle" fill="white" font-size="13.5" font-family="Georgia" class="cirkel-tekst-3">mønstre</text>
           </g>
 
           <!-- 4: Krop og bevægelse (bottom) -->
           <g class="cirkel-node" data-cirkel="krop" role="button" tabindex="0">
-            <circle cx="260" cy="455" r="53" fill="#8B3D7B" class="cirkel-circle"/>
-            <text x="260" y="448" text-anchor="middle" fill="white" font-size="12.5" font-family="Georgia" class="cirkel-tekst-1">Krop og</text>
-            <text x="260" y="465" text-anchor="middle" fill="white" font-size="12.5" font-family="Georgia" class="cirkel-tekst-2">bevægelse</text>
+            <circle cx="260" cy="455" r="56" fill="#8B3D7B" class="cirkel-circle"/>
+            <text x="260" y="448" text-anchor="middle" fill="white" font-size="13.5" font-family="Georgia" class="cirkel-tekst-1">Krop og</text>
+            <text x="260" y="465" text-anchor="middle" fill="white" font-size="13.5" font-family="Georgia" class="cirkel-tekst-2">bevægelse</text>
           </g>
 
           <!-- 5: Åndedræt (bottom-left) -->
           <g class="cirkel-node" data-cirkel="aandedraet" role="button" tabindex="0">
-            <circle cx="91" cy="385" r="53" fill="#8B3D7B" class="cirkel-circle"/>
-            <text x="91" y="378" text-anchor="middle" fill="white" font-size="12.5" font-family="Georgia" class="cirkel-tekst-1">Åndedræt</text>
-            <text x="91" y="395" text-anchor="middle" fill="white" font-size="12.5" font-family="Georgia" class="cirkel-tekst-2">og pauser</text>
+            <circle cx="91" cy="385" r="56" fill="#8B3D7B" class="cirkel-circle"/>
+            <text x="91" y="378" text-anchor="middle" fill="white" font-size="13.5" font-family="Georgia" class="cirkel-tekst-1">Åndedræt</text>
+            <text x="91" y="395" text-anchor="middle" fill="white" font-size="13.5" font-family="Georgia" class="cirkel-tekst-2">og pauser</text>
           </g>
 
           <!-- 6: Mentalt pres (top-left) -->
           <g class="cirkel-node" data-cirkel="resiliens" role="button" tabindex="0">
-            <circle cx="91" cy="135" r="53" fill="#8B3D7B" class="cirkel-circle"/>
-            <text x="91" y="128" text-anchor="middle" fill="white" font-size="12.5" font-family="Georgia" class="cirkel-tekst-1">Mentalt pres</text>
-            <text x="91" y="145" text-anchor="middle" fill="white" font-size="12.5" font-family="Georgia" class="cirkel-tekst-2">og resiliens</text>
+            <circle cx="91" cy="135" r="56" fill="#8B3D7B" class="cirkel-circle"/>
+            <text x="91" y="128" text-anchor="middle" fill="white" font-size="13.5" font-family="Georgia" class="cirkel-tekst-1">Mentalt pres</text>
+            <text x="91" y="145" text-anchor="middle" fill="white" font-size="13.5" font-family="Georgia" class="cirkel-tekst-2">og resiliens</text>
           </g>
         </svg>
       </div>
