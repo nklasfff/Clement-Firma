@@ -628,6 +628,81 @@ const OEVELSER = [
       "Lad der være 10 sekunders stilhed efter de tre vejrtrækninger.",
       "Åbn med: 'Godt. Vi er her. Lad os begynde.' — Mærk forskellen i rummet."
     ]
+  },
+  {
+    titel: "Skærmpause for øjnene",
+    tid: "2 min",
+    sted: "Ved skrivebordet",
+    cirkel: "krop",
+    temaer: ["skaerm", "generelt"],
+    intro: "Dine øjne er direkte forbundet til dit nervesystem — når de er spændte og overbelastede, sender de konstante stresssignaler til hjernen. Efter timer foran skærmen låser øjenmusklerne sig i nærfokus, og det skaber træthed, hovedpine og en følelse af at være 'brugt op'. Denne øvelse nulstiller øjnenes muskler og giver dit nervesystem en dyb pause.",
+    steps: [
+      "Læn dig tilbage fra skærmen. Luk øjnene og læg håndfladerne let over dem — mærk varmen og mørket. Hold i 20 sekunder.",
+      "Åbn øjnene og kig på det mest fjerne punkt du kan se — ud af vinduet eller mod den fjerneste væg. Hold blikket der i 20 sekunder. Lad øjnene slappe af i afstanden.",
+      "Lav langsomme øjencirkler: kig op, til højre, ned, til venstre. Tre cirkler i hver retning. Mærk strækket i de små muskler omkring øjnene.",
+      "Blink bevidst 10-15 gange i træk — hurtige, lette blink. Skærmarbejde halverer din naturlige blinkfrekvens, og det udtørrer øjnene.",
+      "Afslut med at kigge ud i det fjerne igen. Tag tre dybe vejrtrækninger. Mærk forskellen — øjnene er blødere, blikket er roligere, nervesystemet har fået en pause."
+    ]
+  },
+  {
+    titel: "Nakke-og-skulder-reset",
+    tid: "3 min",
+    sted: "Ved skrivebordet",
+    cirkel: "krop",
+    temaer: ["skaerm", "generelt"],
+    intro: "Nakken og skuldrene er kroppens stresslager — det er her spænding fra skærmarbejde, pres og bekymring samler sig time efter time. Spændt fascia i nakke og skuldre sender konstante alarmsignaler til nervesystemet og kan udløse hovedpine, koncentrationsbesvær og en følelse af at være 'låst'. Denne øvelse løsner de mest belastede muskelgrupper og giver dit nervesystem besked om at det er sikkert at slippe.",
+    steps: [
+      "Sid oprejst og sænk skuldrene bevidst væk fra ørerne. Mærk hvor højt de sad — det er din krops stressrespons. Lav tre langsomme skulderrul baglæns: op mod ørerne, bagud, og ned. Mærk brystkassen åbne sig.",
+      "Drej hovedet langsomt mod højre — kun så langt det er behageligt. Hold i 15 sekunder og ånd dybt. Mærk strækket langs venstre side af halsen. Gentag mod venstre.",
+      "Sænk højre øre mod højre skulder — uden at hæve skulderen. Hold i 15 sekunder. Mærk strækket langs venstre side af nakken. Gentag den anden side.",
+      "Flét fingrene bag hovedet. Pres hovedet let bagud mod hænderne mens hænderne holder imod. Hold i 5 sekunder og slip. Gentag tre gange — dette aktiverer og afspænder de dybe nakkemuskler.",
+      "Afslut med tre dybe vejrtrækninger. Ved hver udånding: slip skuldrene bevidst. Mærk tyngden forlade nakke og skuldre. Dit nervesystem har fået besked om at alarmen er slukket."
+    ]
+  },
+  {
+    titel: "Hovedpine-regulering",
+    tid: "4 min",
+    sted: "Ved skrivebordet eller et stille sted",
+    cirkel: "krop",
+    temaer: ["skaerm", "generelt"],
+    intro: "Spændingshovedpine fra skærmarbejde er ikke 'bare ondt i hovedet' — det er dit nervesystems alarm om at kroppen har været i konstant spænding for længe. Stramme muskler i pande, tindinger, kæbe og nakke komprimerer nerver og blodkar. Denne øvelse kombinerer akupressur, muskelafspænding og åndedræt for at adressere de tre vigtigste kilder til skærmrelateret hovedpine.",
+    steps: [
+      "Start med kæben — den glemte stressholder. Lad munden åbne let så tænderne ikke rører hinanden. Læg fingerspidserne på kæbeleddet (foran ørerne) og lav små, bløde cirkler i 20 sekunder. Mærk spændingen slippe.",
+      "Placer begge tommelfingre i nakkebunden — lige hvor kraniet møder nakken. Pres let opad og indad mens du langsomt bøjer hovedet fremad. Hold trykket i 20 sekunder med lukkede øjne. Her sidder occipitalnerverne, som ofte er kilden til spændingshovedpine.",
+      "Placer fingerspidserne på begge tindinger. Lav langsomme, bløde cirkler med et let tryk. Ånd dybt ind gennem næsen og langsomt ud gennem munden. 30 sekunder. Lad trykket være blidt — det er berøringen der signalerer sikkerhed til nervesystemet.",
+      "Luk øjnene. Forestil dig at dit åndedræt strømmer op til toppen af hovedet ved indånding og ned langs nakken ved udånding — som en blød bølge. Gentag 5-6 gange. Denne visualisering kombineret med åndedræt sænker muskelspændingen i hele hovedet.",
+      "Afslut med at gnide håndfladerne hurtigt mod hinanden til de er varme. Læg dem over øjnene. Mærk varmen. Sid stille i 20 sekunder. Når du fjerner hænderne, mærk forskellen — et lettere hoved, en blødere pande, et roligere nervesystem."
+    ]
+  },
+  {
+    titel: "Sensorisk landing",
+    tid: "3 min",
+    sted: "Skrivebordet, mødelokale, eller et stille sted",
+    cirkel: "krop",
+    temaer: ["generelt"],
+    intro: "Åbne kontorlandskaber, konstant støj, telefonsamtaler, skærmskift og mennesker i periferien — dit nervesystem behandler det hele, også det du ikke bevidst registrerer. Sensorisk overbelastning aktiverer det samme alarmsystem som en trussel, og resultatet er udmattelse, irritabilitet og en følelse af at 'ikke kunne rumme mere'. Denne øvelse lukker bevidst ned for sensorisk input og giver dit nervesystem mulighed for at nulstille.",
+    steps: [
+      "Stop alt hvad du laver. Hvis du kan, sæt høretelefoner på uden musik — bare stilhed. Hvis du har ørepropper, brug dem. Bare det at reducere lydinput sænker nervesystemets arousal mærkbart.",
+      "Luk øjnene eller sænk blikket mod skrivebordet. Visuelt input er den største sensoriske belastning i åbne kontorer. Giv øjnene og synssystemet en bevidst pause i 30 sekunder.",
+      "Læg hænderne fladt på bordpladen eller i skødet. Fokusér al din opmærksomhed på berøringssansen — temperaturen, teksturen, tyngden af dine hænder. Når du giver nervesystemet én rolig sans at fokusere på, slipper det de andre.",
+      "Tag fem langsomme vejrtrækninger med forlænget udånding: ind for 4, ud for 7. Ved hver udånding, forestil dig at du skruer ned for en lydstyrkeknap — alle indtryk bliver lidt fjernere, lidt mere dæmpede.",
+      "Åbn øjnene langsomt. Kig på én ting. Lyt til én lyd. Mærk én berøring. Vend langsomt tilbage til omgivelserne — på dine betingelser, i dit tempo. Du har nulstillet dit sensoriske system."
+    ]
+  },
+  {
+    titel: "Mikro-bevægelse ved skrivebordet",
+    tid: "2 min",
+    sted: "Ved skrivebordet",
+    cirkel: "krop",
+    temaer: ["skaerm", "generelt"],
+    intro: "Stillesiddende arbejde aktiverer det samme system som kroppens 'freeze'-respons — efter bare 45 minutter uden bevægelse begynder stresshormonerne at stige. Din krop er designet til bevægelse, og når den ikke får det, sender den alarmssignaler som indre uro, stivhed og koncentrationsbesvær. Denne øvelse genaktiverer kroppens bevægelsessystem direkte ved skrivebordet — diskret nok til ethvert kontormiljø.",
+    steps: [
+      "Pres begge fødder hårdt mod gulvet i 5 sekunder — som om du vil rejse dig, men bliver siddende. Slip. Gentag tre gange. Dette aktiverer de store muskelgrupper i benene og sender 'bevægelse'-signaler til nervesystemet.",
+      "Sid på kanten af stolen. Vip bækkenet langsomt fremad og bagud — som en blød vuggende bevægelse. 5-6 gentagelser. Dette mobiliserer lænden og ryggen, der låser sig fast ved stillesiddende arbejde.",
+      "Stræk begge arme over hovedet med flettede fingre. Pres håndfladerne mod loftet og stræk — mærk hele siden af kroppen forlænge sig. Hold i 10 sekunder. Læn dig let til højre i 5 sekunder, derefter til venstre.",
+      "Klem begge hænder hårdt sammen i 5 sekunder og slip helt. Spred fingrene vidt ud og hold i 5 sekunder. Gentag tre gange. Ryst hænderne løst i 10 sekunder. Dine hænder og underarme bærer en enorm belastning fra tastatur og mus.",
+      "Afslut med en 'usynlig' hel-krops-aktivering: spænd alle muskler i kroppen samtidig — ben, mave, arme, ansigt — hold i 5 sekunder og slip alt på én gang. Tag en dyb vejrtrækning. Mærk kontrasten mellem spænding og afslapning. Dit nervesystem har fået en genstart."
+    ]
   }
 ];
 
