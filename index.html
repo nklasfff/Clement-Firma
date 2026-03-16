@@ -10,8 +10,31 @@
 </head>
 <body>
 
+  <!-- ════ ONBOARDING ════ -->
+  <div class="onboarding" id="onboarding">
+    <div class="onboarding-inner">
+      <img src="assets/images/hero.png" alt="Clement" class="onboarding-image">
+      <h1>Velkommen til<br>Clement Firma</h1>
+      <p class="onboarding-sub">Trivsel på arbejdspladsen — baseret på nervesystemets intelligens</p>
+      <div class="onboarding-divider"></div>
+      <p class="onboarding-prompt">Hvordan vil du bruge denne app?</p>
+      <div class="onboarding-choices">
+        <button class="onboarding-choice" data-rolle="medarbejder">
+          <span class="choice-icon">◉</span>
+          <span class="choice-titel">Jeg er medarbejder</span>
+          <span class="choice-beskrivelse">Redskaber til din egen trivsel, regulering og hverdagsbalance</span>
+        </button>
+        <button class="onboarding-choice" data-rolle="leder">
+          <span class="choice-icon">◈</span>
+          <span class="choice-titel">Jeg er leder</span>
+          <span class="choice-beskrivelse">Forstå og understøt dit teams nervesystem og trivsel</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- ════ BOTTOM NAV ════ -->
-  <nav class="bottom-nav">
+  <nav class="bottom-nav" id="bottomNav">
     <button class="nav-item active" data-view="hjem">
       <span class="nav-icon">◉</span>
       <span class="nav-label">Hjem</span>
@@ -31,7 +54,7 @@
   </nav>
 
   <!-- ════ VIEW: HJEM ════ -->
-  <div class="view active" data-view="hjem">
+  <div class="view" data-view="hjem">
     <header class="hero">
       <div class="hero-inner">
         <img src="assets/images/hero.png" alt="Clement" class="hero-image">
@@ -42,22 +65,16 @@
       </div>
     </header>
 
-    <!-- Perspektiv Toggle -->
-    <div class="perspektiv-bar">
-      <button class="perspektiv-btn active" data-perspektiv="medarbejder">Medarbejder</button>
-      <button class="perspektiv-btn" data-perspektiv="leder">Leder</button>
-    </div>
-
-    <!-- Lotus separator -->
-    <div class="lotus-separator">
-      <img src="assets/images/lotus.png" alt="" class="lotus-icon">
+    <!-- Rolle-indikator -->
+    <div class="rolle-bar">
+      <span class="rolle-label" id="rolleLabel">Indhold tilpasset dig som <strong>medarbejder</strong></span>
+      <button class="rolle-skift" id="rolleSkift">Skift rolle</button>
     </div>
 
     <!-- Cirkel Navigation -->
     <section class="cirkel-nav-section">
       <div class="cirkel-intro">
         <h2>De syv dimensioner</h2>
-        <p class="perspektiv-hint" id="perspektivHint">Du ser indholdet som <strong>medarbejder</strong></p>
       </div>
 
       <div class="cirkel-svg-container">
@@ -137,10 +154,6 @@
   <div class="view" data-view="cirkel">
     <div class="view-header">
       <button class="back-btn" id="cirkelBack">← Tilbage</button>
-      <div class="perspektiv-bar perspektiv-bar-small">
-        <button class="perspektiv-btn active" data-perspektiv="medarbejder">Medarbejder</button>
-        <button class="perspektiv-btn" data-perspektiv="leder">Leder</button>
-      </div>
     </div>
 
     <div class="cirkel-detail-header" id="cirkelDetailHeader">
@@ -166,10 +179,6 @@
     <div class="view-header">
       <h1 class="view-title">Nervesystemstrappen</h1>
       <p class="view-sub">Hvor er du lige nu? Tryk på det trin der passer bedst.</p>
-      <div class="perspektiv-bar perspektiv-bar-small">
-        <button class="perspektiv-btn active" data-perspektiv="medarbejder">Medarbejder</button>
-        <button class="perspektiv-btn" data-perspektiv="leder">Leder</button>
-      </div>
     </div>
 
     <div class="trappen-container">
@@ -206,10 +215,6 @@
     <div class="view-header">
       <h1 class="view-title">Hvad møder du lige nu?</h1>
       <p class="view-sub">Vælg et tema for at udforske det i dybden</p>
-      <div class="perspektiv-bar perspektiv-bar-small">
-        <button class="perspektiv-btn active" data-perspektiv="medarbejder">Medarbejder</button>
-        <button class="perspektiv-btn" data-perspektiv="leder">Leder</button>
-      </div>
     </div>
 
     <div class="tema-grid" id="temaGrid"></div>
@@ -219,9 +224,6 @@
   <!-- ════ VIEW: ØVELSER ════ -->
   <div class="view" data-view="oevelser">
     <div class="view-header">
-      <div class="lotus-header">
-        <img src="assets/images/lotus.png" alt="" class="lotus-header-icon">
-      </div>
       <h1 class="view-title">Øvelser</h1>
       <p class="view-sub">Kan udføres diskret, lige hvor du er</p>
     </div>
@@ -230,7 +232,6 @@
   </div>
 
   <footer>
-    <img src="assets/images/kolibri.png" alt="Clement" class="footer-kolibri">
     <p>Clement Firma — Trivsel på arbejdspladsen</p>
     <p class="footer-sub">Baseret på Annemarie Clements nervesystemsarbejde</p>
   </footer>

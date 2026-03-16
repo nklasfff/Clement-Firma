@@ -12,15 +12,14 @@
   var aktivTema = null;
   var aktivTrin = null;
 
-  // ── Kolibri signatur HTML ──
-  var kolibriHTML = '<div class="kolibri-signatur"><img src="assets/images/kolibri.png" alt=""></div>';
-
   // ── DOM refs ──
+  var onboarding = document.getElementById('onboarding');
+  var bottomNav = document.getElementById('bottomNav');
   var views = document.querySelectorAll('.view');
   var navItems = document.querySelectorAll('.nav-item');
-  var perspektivBtns = document.querySelectorAll('.perspektiv-btn');
-  var perspektivHint = document.getElementById('perspektivHint');
   var cirkelNodes = document.querySelectorAll('.cirkel-node');
+  var rolleLabel = document.getElementById('rolleLabel');
+  var rolleSkift = document.getElementById('rolleSkift');
 
   // Cirkel detail
   var cirkelDetailIkon = document.getElementById('cirkelDetailIkon');
@@ -44,11 +43,58 @@
 
   // ── Init ──
   function init() {
+    // Check om bruger allerede har valgt rolle
+    var gemt = localStorage.getItem('clementRolle');
+    if (gemt) {
+      aktivPerspektiv = gemt;
+      startApp();
+    } else {
+      visOnboarding();
+    }
+  }
+
+  // ── Onboarding ──
+  function visOnboarding() {
+    onboarding.classList.remove('hidden');
+    bottomNav.classList.add('hidden');
+
+    var choices = onboarding.querySelectorAll('.onboarding-choice');
+    choices.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        aktivPerspektiv = this.dataset.rolle;
+        localStorage.setItem('clementRolle', aktivPerspektiv);
+        startApp();
+      });
+    });
+  }
+
+  function startApp() {
+    onboarding.classList.add('hidden');
+    bottomNav.classList.remove('hidden');
+    opdaterRolleLabel();
     opdaterCirkelTekster();
     renderTemaer();
     renderOevelser();
     bindEvents();
     handleHash();
+  }
+
+  // ── Rolle ──
+  function opdaterRolleLabel() {
+    if (rolleLabel) {
+      rolleLabel.innerHTML = 'Indhold tilpasset dig som <strong>' + aktivPerspektiv + '</strong>';
+    }
+  }
+
+  function skiftRolle() {
+    aktivPerspektiv = aktivPerspektiv === 'medarbejder' ? 'leder' : 'medarbejder';
+    localStorage.setItem('clementRolle', aktivPerspektiv);
+    opdaterRolleLabel();
+    opdaterCirkelTekster();
+    renderTemaer();
+    if (aktivCirkel) renderCirkelDetail(aktivCirkel);
+    if (aktivTrin) visTrappenSvar(aktivTrin);
+    if (aktivTema) visTemaDetalje(aktivTema);
   }
 
   // ── Navigation ──
@@ -102,28 +148,10 @@
     // Hash change
     window.addEventListener('hashchange', handleHash);
 
-    // Perspektiv toggle (all)
-    perspektivBtns.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        aktivPerspektiv = this.dataset.perspektiv;
-
-        // Update all perspektiv buttons
-        perspektivBtns.forEach(function(b) {
-          b.classList.toggle('active', b.dataset.perspektiv === aktivPerspektiv);
-        });
-
-        if (perspektivHint) {
-          perspektivHint.innerHTML = 'Du ser indholdet som <strong>' + aktivPerspektiv + '</strong>';
-        }
-
-        opdaterCirkelTekster();
-
-        // Refresh current content
-        if (aktivCirkel) renderCirkelDetail(aktivCirkel);
-        if (aktivTrin) visTrappenSvar(aktivTrin);
-        if (aktivTema) visTemaDetalje(aktivTema);
-      });
-    });
+    // Rolle skift
+    if (rolleSkift) {
+      rolleSkift.addEventListener('click', skiftRolle);
+    }
 
     // Cirkel klik
     cirkelNodes.forEach(function(node) {
@@ -204,7 +232,6 @@
     });
     html += '</ul>';
     html += '<div class="overblik-tip">' + indhold.overblik.tip + '</div>';
-    html += kolibriHTML;
     panelOverblik.innerHTML = html;
 
     // Dybde
@@ -212,7 +239,6 @@
     indhold.dybde.forEach(function(afsnit) {
       html += '<p class="dybde-afsnit">' + afsnit + '</p>';
     });
-    html += kolibriHTML;
     panelDybde.innerHTML = html;
 
     // Øvelse — find relateret øvelse
@@ -238,7 +264,6 @@
       });
       html += '</ol>';
       html += '</div>';
-      html += kolibriHTML;
     } else {
       html = '<p style="color:var(--text-light); padding:20px;">Ingen specifik øvelse til denne cirkel endnu.</p>';
     }
@@ -275,7 +300,6 @@
     html += '</div>';
 
     html += '</div>';
-    html += kolibriHTML;
 
     trappenResponse.innerHTML = html;
     trappenResponse.classList.add('visible');
@@ -338,7 +362,6 @@
     }
 
     html += '</div>';
-    html += kolibriHTML;
 
     temaExpanded.innerHTML = html;
     temaExpanded.classList.add('visible');
