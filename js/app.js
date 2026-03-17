@@ -222,11 +222,43 @@
       window.location.hash = viewName;
     }
 
+    var baseView = viewName.split('/')[0];
+
+    // Nulstil tilstande når man forlader en side
+    if (baseView !== 'trappen' && aktivTrin) {
+      aktivTrin = null;
+      trappeTrin.forEach(function(t) { t.classList.remove('selected'); });
+      if (trappenResponse) {
+        trappenResponse.innerHTML = '';
+        trappenResponse.classList.remove('visible');
+      }
+    }
+    if (baseView !== 'temaer' && aktivTema) {
+      aktivTema = null;
+      if (temaExpanded) {
+        temaExpanded.innerHTML = '';
+        temaExpanded.classList.remove('visible');
+      }
+      document.querySelectorAll('.tema-card').forEach(function(c) { c.classList.remove('active'); });
+    }
+    if (baseView !== 'cirkel') {
+      aktivCirkel = null;
+      // Reset tabs til overblik
+      tabs.forEach(function(t) { t.classList.toggle('active', t.dataset.tab === 'overblik'); });
+      tabPanels.forEach(function(p) { p.classList.toggle('active', p.dataset.panel === 'overblik'); });
+    }
+    // Reset øvelser filter
+    if (baseView !== 'oevelser') {
+      document.querySelectorAll('.oevelser-filter-btn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.dataset.filter === 'alle');
+      });
+    }
+
     views.forEach(function(v) {
       v.classList.remove('active', 'fade-in');
     });
 
-    var target = document.querySelector('.view[data-view="' + viewName.split('/')[0] + '"]');
+    var target = document.querySelector('.view[data-view="' + baseView + '"]');
     if (target) {
       target.classList.add('active', 'fade-in');
       window.scrollTo(0, 0);
@@ -234,7 +266,7 @@
 
     // Update nav
     navItems.forEach(function(item) {
-      item.classList.toggle('active', item.dataset.view === viewName.split('/')[0]);
+      item.classList.toggle('active', item.dataset.view === baseView);
     });
 
     updateHeroVisibility();
@@ -303,6 +335,13 @@
         navigateTo('hjem');
       });
     }
+
+    // Tilbage-knapper på trappen, temaer, øvelser
+    document.querySelectorAll('.back-to-hjem').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        navigateTo('hjem');
+      });
+    });
 
     // Tabs
     tabs.forEach(function(tab) {
