@@ -6,11 +6,91 @@
 (function() {
   'use strict';
 
+  // ── SVG ikoner ──
+  function svgWrap(s, inner) {
+    return '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + inner + '</svg>';
+  }
+  var IKONER = {
+    bookmark:     function(s) { return svgWrap(s || 16, '<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>'); },
+    bookmarkFill: function(s) { return '<svg width="' + (s || 16) + '" height="' + (s || 16) + '" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>'; },
+    share:        function(s) { return svgWrap(s || 16, '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>'); }
+  };
+
   // ── State ──
   var aktivPerspektiv = 'medarbejder';
   var aktivCirkel = null;
   var aktivTema = null;
   var aktivTrin = null;
+
+  // ── Favoritter ──
+  function getFavoritter() {
+    try { return JSON.parse(localStorage.getItem('cf_favoritter') || '[]'); } catch (e) { return []; }
+  }
+  function saveFavoritter(fav) { localStorage.setItem('cf_favoritter', JSON.stringify(fav)); }
+  function isFavorit(type, id) { return getFavoritter().some(function(f) { return f.type === type && f.id === id; }); }
+  function toggleFavorit(type, id, titel) {
+    var fav = getFavoritter();
+    var idx = -1;
+    for (var i = 0; i < fav.length; i++) { if (fav[i].type === type && fav[i].id === id) { idx = i; break; } }
+    if (idx !== -1) { fav.splice(idx, 1); saveFavoritter(fav); return false; }
+    fav.push({ type: type, id: id, titel: titel, dato: new Date().toISOString().slice(0, 10) });
+    saveFavoritter(fav);
+    return true;
+  }
+  function escapeAttr(str) { return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;'); }
+  function buildActionBar(type, id, titel, shareText) {
+    var saved = isFavorit(type, id);
+    var iconHtml = saved ? IKONER.bookmarkFill(16) : IKONER.bookmark(16);
+    var labelHtml = saved ? 'Gemt' : 'Gem';
+    return '<div class="action-bar" data-action-type="' + type + '" data-action-id="' + escapeAttr(id) + '" data-action-titel="' + escapeAttr(titel) + '" data-action-share="' + escapeAttr(shareText) + '">' +
+      '<button class="action-btn action-btn-save" title="Gem som favorit">' + iconHtml + '<span>' + labelHtml + '</span></button>' +
+      '<button class="action-btn action-btn-share" title="Del">' + IKONER.share(16) + '<span>Del</span></button>' +
+      '</div>';
+  }
+  function bindActionBars(container) {
+    container.querySelectorAll('.action-bar').forEach(function(bar) {
+      var saveBtn = bar.querySelector('.action-btn-save');
+      var shareBtn = bar.querySelector('.action-btn-share');
+
+      saveBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var type = bar.dataset.actionType;
+        var id = bar.dataset.actionId;
+        var titel = bar.dataset.actionTitel;
+        var added = toggleFavorit(type, id, titel);
+        var span = saveBtn.querySelector('span');
+        if (added) {
+          saveBtn.querySelector('svg').outerHTML = IKONER.bookmarkFill(16);
+          span.textContent = 'Gemt';
+        } else {
+          saveBtn.querySelector('svg').outerHTML = IKONER.bookmark(16);
+          span.textContent = 'Gem';
+        }
+        updateFavoritBadge();
+      });
+
+      shareBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var text = bar.dataset.actionTitel + '\n\n' + bar.dataset.actionShare;
+        if (navigator.share) {
+          navigator.share({ title: bar.dataset.actionTitel, text: text }).catch(function() {});
+        } else {
+          navigator.clipboard.writeText(text).then(function() {
+            var span = shareBtn.querySelector('span');
+            span.textContent = 'Kopieret!';
+            setTimeout(function() { span.textContent = 'Del'; }, 2000);
+          }).catch(function() {});
+        }
+      });
+    });
+  }
+  function updateFavoritBadge() {
+    var badge = document.getElementById('favoritBadge');
+    if (!badge) return;
+    var count = getFavoritter().length;
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'inline-flex' : 'none';
+  }
 
   // ── DOM refs ──
   var onboarding = document.getElementById('onboarding');
@@ -216,6 +296,14 @@
       navigateTo('hjem');
     });
 
+    // Favoritter back
+    var favBack = document.getElementById('favBack');
+    if (favBack) {
+      favBack.addEventListener('click', function() {
+        navigateTo('hjem');
+      });
+    }
+
     // Tabs
     tabs.forEach(function(tab) {
       tab.addEventListener('click', function() {
@@ -281,6 +369,7 @@
     indhold.dybde.forEach(function(afsnit) {
       html += '<p class="dybde-afsnit">' + afsnit + '</p>';
     });
+    html += buildActionBar('fordybelse', cirkelId, data.titel + ' — Fordybelse', indhold.dybde.join('\n\n'));
 
     // Dynamiske sammenhænge
     var sammenhaenge = hentSammenhaenge(cirkelId);
@@ -314,6 +403,7 @@
     }
 
     panelDybde.innerHTML = html;
+    bindActionBars(panelDybde);
 
     // Bind sammenhænge expand/collapse
     panelDybde.querySelectorAll('.sammenhaeng-toggle').forEach(function(btn) {
@@ -404,10 +494,13 @@
     html += '<p>' + svar.oevelse + '</p>';
     html += '</div>';
 
+    html += buildActionBar('trappen', trinId, data.navn, svar.beskrivelse + '\n\nHandling: ' + svar.handling + '\n\nPrøv nu: ' + svar.oevelse);
+
     html += '</div>';
 
     trappenResponse.innerHTML = html;
     trappenResponse.classList.add('visible');
+    bindActionBars(trappenResponse);
   }
 
   // ── Temaer ──
@@ -499,10 +592,13 @@
       html += '</div>';
     }
 
+    html += buildActionBar('tema', temaId, data.titel, perspektiv.intro + '\n\n' + perspektiv.tekst);
+
     html += '</div>';
 
     temaExpanded.innerHTML = html;
     temaExpanded.classList.add('visible');
+    bindActionBars(temaExpanded);
 
     // Bind relaterede cirkel-tags
     temaExpanded.querySelectorAll('.tag[data-cirkel]').forEach(function(tag) {
@@ -578,6 +674,7 @@
       html += '<div class="oevelse-guide-progress"><div class="oevelse-guide-progress-bar"></div></div>';
       html += '<button class="oevelse-guide-btn oevelse-guide-next" style="display:none;">Næste trin</button>';
       html += '</div>';
+      html += buildActionBar('oevelse', o.titel, o.titel, o.intro + '\n\n' + o.steps.join('\n'));
       html += '<button class="oevelse-toggle">Vis øvelse</button>';
       html += '</div>';
       html += '</div>';
@@ -585,11 +682,14 @@
 
     oevelserGrid.innerHTML = html;
 
+    bindActionBars(oevelserGrid);
+
     // Bind expand/collapse
     oevelserGrid.querySelectorAll('.oevelse-card').forEach(function(card) {
       card.addEventListener('click', function(e) {
-        // Don't toggle if clicking guide buttons
+        // Don't toggle if clicking guide buttons or action bar
         if (e.target.closest('.oevelse-guide-controls')) return;
+        if (e.target.closest('.action-bar')) return;
 
         var isExpanded = this.classList.contains('expanded');
 
@@ -734,6 +834,91 @@
     });
   }
 
+  // ── Favoritter view ──
+  function renderFavoritter() {
+    var container = document.getElementById('favoritterContent');
+    if (!container) return;
+    var fav = getFavoritter();
+
+    if (fav.length === 0) {
+      container.innerHTML = '<div class="favoritter-empty">' +
+        '<div class="favoritter-empty-icon">' + IKONER.bookmark(32) + '</div>' +
+        '<p>Du har ikke gemt noget endnu.</p>' +
+        '<p class="favoritter-empty-hint">Tryk på ' + IKONER.bookmark(14) + ' Gem når du finder indhold, du vil vende tilbage til.</p>' +
+        '</div>';
+      return;
+    }
+
+    var typeLabels = { oevelse: 'Øvelse', fordybelse: 'Fordybelse', trappen: 'Nervesystemet', tema: 'Tema' };
+    var typeIcons = { oevelse: '◎', fordybelse: '◉', trappen: '☰', tema: '◈' };
+
+    var groups = {};
+    fav.forEach(function(f) {
+      if (!groups[f.type]) groups[f.type] = [];
+      groups[f.type].push(f);
+    });
+
+    var html = '';
+    Object.keys(groups).forEach(function(type) {
+      html += '<div class="favoritter-group">';
+      html += '<div class="favoritter-group-title"><span class="favoritter-group-icon">' + (typeIcons[type] || '') + '</span> ' + (typeLabels[type] || type).toUpperCase() + '</div>';
+      groups[type].forEach(function(f) {
+        html += '<div class="favoritter-item" data-fav-type="' + f.type + '" data-fav-id="' + escapeAttr(f.id) + '">' +
+          '<div class="favoritter-item-info">' +
+          '<div class="favoritter-item-titel">' + f.titel + '</div>' +
+          '<div class="favoritter-item-dato">Gemt ' + f.dato + '</div>' +
+          '</div>' +
+          '<button class="favoritter-item-remove" data-fav-type="' + f.type + '" data-fav-id="' + escapeAttr(f.id) + '" title="Fjern">&times;</button>' +
+          '</div>';
+      });
+      html += '</div>';
+    });
+
+    container.innerHTML = html;
+
+    // Bind clicks to navigate
+    container.querySelectorAll('.favoritter-item').forEach(function(item) {
+      item.addEventListener('click', function(e) {
+        if (e.target.closest('.favoritter-item-remove')) return;
+        var type = this.getAttribute('data-fav-type');
+        var id = this.getAttribute('data-fav-id');
+        if (type === 'oevelse') { navigateTo('oevelser'); }
+        else if (type === 'fordybelse') {
+          aktivCirkel = id;
+          renderCirkelDetail(id);
+          navigateTo('cirkel/' + id);
+          setTimeout(function() {
+            tabs.forEach(function(t) { t.classList.toggle('active', t.dataset.tab === 'dybde'); });
+            tabPanels.forEach(function(p) { p.classList.toggle('active', p.dataset.panel === 'dybde'); });
+          }, 100);
+        }
+        else if (type === 'trappen') { navigateTo('trappen'); }
+        else if (type === 'tema') {
+          navigateTo('temaer');
+          setTimeout(function() { aktivTema = id; visTemaDetalje(id); }, 100);
+        }
+      });
+    });
+
+    // Bind remove buttons
+    container.querySelectorAll('.favoritter-item-remove').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var type = this.getAttribute('data-fav-type');
+        var id = this.getAttribute('data-fav-id');
+        toggleFavorit(type, id, '');
+        renderFavoritter();
+        updateFavoritBadge();
+      });
+    });
+  }
+
+  function showFavoritter() {
+    renderFavoritter();
+    navigateTo('favoritter');
+    navItems.forEach(function(item) { item.classList.remove('active'); });
+  }
+
   // ── Hero visibility (for white top-bar icons) ──
   function updateHeroVisibility() {
     var hash = window.location.hash.slice(1) || 'hjem';
@@ -772,6 +957,8 @@
     html += '<button class="menu-item" data-nav="trappen"><span class="menu-item-icon">☰</span>Nervesystemstrappen</button>';
     html += '<button class="menu-item" data-nav="temaer"><span class="menu-item-icon">◈</span>Temaer</button>';
     html += '<button class="menu-item" data-nav="oevelser"><span class="menu-item-icon">◎</span>Øvelser</button>';
+    var favCount = getFavoritter().length;
+    html += '<button class="menu-item menu-item-favoritter" id="menuFavoritter"><span class="menu-item-icon">' + IKONER.bookmark(15) + '</span>Mine favoritter <span class="menu-favorit-badge" id="favoritBadge" style="' + (favCount > 0 ? '' : 'display:none') + '">' + favCount + '</span></button>';
     html += '</div>';
 
     html += '<div class="menu-divider"></div>';
@@ -926,6 +1113,15 @@
         navigateTo(this.dataset.nav);
       });
     });
+
+    // Bind favoritter link
+    var favLink = document.getElementById('menuFavoritter');
+    if (favLink) {
+      favLink.addEventListener('click', function() {
+        closeMenu();
+        showFavoritter();
+      });
+    }
 
     // Bind rolle skift in menu
     var menuRolleBtn = document.getElementById('menuRolleSkift');

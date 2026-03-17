@@ -2085,6 +2085,180 @@ footer {
   to { opacity: 0.5; }
 }
 
+/* ── Action Bars (Gem / Del) ── */
+.action-bar {
+  display: flex;
+  gap: 10px;
+  padding: 14px 0 4px;
+  margin-top: 16px;
+  border-top: 1px solid rgba(107, 45, 91, 0.1);
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 1.5px solid var(--primary-pale);
+  border-radius: 20px;
+  background: var(--white);
+  color: var(--primary);
+  font-family: Georgia, serif;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background: var(--primary-pale);
+  border-color: var(--primary-light);
+}
+
+.action-btn:active {
+  transform: scale(0.96);
+}
+
+.action-btn svg {
+  flex-shrink: 0;
+}
+
+/* ── Menu favorit badge ── */
+.menu-favorit-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background: var(--primary);
+  color: var(--white);
+  font-size: 0.7rem;
+  font-weight: bold;
+  margin-left: 6px;
+}
+
+.menu-item-favoritter {
+  position: relative;
+}
+
+.menu-item-favoritter svg {
+  vertical-align: -2px;
+}
+
+/* ── Favoritter view ── */
+.favoritter-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+}
+
+.favoritter-empty-icon {
+  margin-bottom: 16px;
+  color: var(--accent);
+  opacity: 0.5;
+}
+
+.favoritter-empty p {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.favoritter-empty-hint {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.favoritter-empty-hint svg {
+  vertical-align: -2px;
+  color: var(--primary);
+}
+
+.favoritter-group {
+  margin-bottom: 24px;
+}
+
+.favoritter-group-title {
+  font-size: 0.72rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--primary);
+  padding: 0 20px 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.favoritter-group-icon {
+  font-size: 0.9rem;
+}
+
+.favoritter-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  margin: 0 16px 6px;
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.favoritter-item:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-1px);
+}
+
+.favoritter-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.favoritter-item-titel {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.favoritter-item-dato {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.favoritter-item-remove {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  margin-left: 12px;
+}
+
+.favoritter-item-remove:hover {
+  background: var(--rose-bg);
+  color: var(--rose);
+}
+
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .hero-inner {
