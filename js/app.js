@@ -244,15 +244,19 @@
     var baseView = viewName.split('/')[0];
 
     // Nulstil tilstande når man forlader en side
-    if (baseView !== 'trappen' && aktivTrin) {
-      aktivTrin = null;
-      trappeTrin.forEach(function(t) { t.classList.remove('selected'); });
-      if (trappenResponse) {
-        trappenResponse.innerHTML = '';
-        trappenResponse.classList.remove('visible');
+    if (baseView !== 'trappen') {
+      if (aktivTrin) {
+        aktivTrin = null;
+        trappeTrin.forEach(function(t) { t.classList.remove('selected'); });
+        if (trappenResponse) {
+          trappenResponse.innerHTML = '';
+          trappenResponse.classList.remove('visible');
+        }
+        var checkinBekraeft = document.getElementById('trappenCheckinBekraeft');
+        if (checkinBekraeft) { checkinBekraeft.innerHTML = ''; checkinBekraeft.style.display = 'none'; }
       }
-      var checkinBekraeft = document.getElementById('trappenCheckinBekraeft');
-      if (checkinBekraeft) { checkinBekraeft.innerHTML = ''; checkinBekraeft.style.display = 'none'; }
+      // Nulstil session-trackers så næste besøg kan registrere nye check-ins
+      trappenSessionCheckins = {};
     }
     if (baseView !== 'temaer' && aktivTema) {
       aktivTema = null;
@@ -391,6 +395,20 @@
     trappeTrin.forEach(function(trin) {
       trin.addEventListener('click', function() {
         var trinId = this.dataset.trin;
+
+        // Toggle: klik på samme trin lukker det
+        if (aktivTrin === trinId) {
+          this.classList.remove('selected');
+          aktivTrin = null;
+          if (trappenResponse) {
+            trappenResponse.innerHTML = '';
+            trappenResponse.classList.remove('visible');
+          }
+          var checkinBekraeft = document.getElementById('trappenCheckinBekraeft');
+          if (checkinBekraeft) { checkinBekraeft.innerHTML = ''; checkinBekraeft.style.display = 'none'; }
+          return;
+        }
+
         trappeTrin.forEach(function(t) { t.classList.remove('selected'); });
         this.classList.add('selected');
         aktivTrin = trinId;
@@ -667,12 +685,18 @@
     container.innerHTML = html;
   }
 
+  // Track which trin has been checked in this session to avoid duplicates
+  var trappenSessionCheckins = {};
+
   function visTrappenSvar(trinId) {
     var data = TRAPPEN[trinId];
     if (!data) return;
 
-    // Register check-in
-    saveTrappenCheckin(trinId);
+    // Register check-in only once per trin per session
+    if (!trappenSessionCheckins[trinId]) {
+      trappenSessionCheckins[trinId] = true;
+      saveTrappenCheckin(trinId);
+    }
     renderTrappenCheckinBekraeft(trinId);
     renderTrappenMoenster();
 
@@ -1964,7 +1988,10 @@
 
       if (t.navn.toLowerCase().indexOf(q) !== -1) { match = true; snippet = indhold.beskrivelse; }
       if (!match && indhold.beskrivelse.toLowerCase().indexOf(q) !== -1) { match = true; snippet = indhold.beskrivelse; }
-      if (!match && indhold.handling.toLowerCase().indexOf(q) !== -1) { match = true; snippet = indhold.handling; }
+      if (!match && indhold.handlinger) {
+        var handlStr = indhold.handlinger.join(' ');
+        if (handlStr.toLowerCase().indexOf(q) !== -1) { match = true; snippet = indhold.handlinger[0]; }
+      }
 
       if (match) {
         results.push({
@@ -2139,24 +2166,16 @@
     var container = document.getElementById('virksomhedContent');
     if (!container) return;
 
-    // Inline SVG helpers for this page
+    // Inline SVG helpers
     var svgBuilding = '<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="9" y1="6" x2="9" y2="6.01"/><line x1="15" y1="6" x2="15" y2="6.01"/><line x1="9" y1="10" x2="9" y2="10.01"/><line x1="15" y1="10" x2="15" y2="10.01"/><line x1="9" y1="14" x2="9" y2="14.01"/><line x1="15" y1="14" x2="15" y2="14.01"/><line x1="9" y1="18" x2="15" y2="18"/></svg>';
     var svgChevDown = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>';
-    var svgLeaf = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75"/></svg>';
-    var svgLightning = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>';
-    var svgChat = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
-    var svgWind = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>';
-    var svgUsers = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
-    var svgHeart = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
-    var svgTarget = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>';
-    var svgBrain = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 0-4 4c0 .74.2 1.43.56 2.03A4 4 0 0 0 6 12c0 .74.2 1.43.56 2.03A4 4 0 0 0 6 16a4 4 0 0 0 4 4h0a4 4 0 0 0 4-4c0-.74-.2-1.43-.56-2.03A4 4 0 0 0 14 12c0-.74-.2-1.43-.56-2.03A4 4 0 0 0 14 6a4 4 0 0 0-2-4z"/><path d="M12 2v20"/></svg>';
     var svgMail = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>';
     var svgPhone = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
     var svgLinkedIn = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>';
 
     var html = '';
 
-    // ===== Welcome Landing =====
+    // ===== Velkomst =====
     html += '<div class="virksomhed-welcome">';
     html += '<div class="virksomhed-welcome-inner">';
     html += '<div class="virksomhed-welcome-medallion">';
@@ -2164,75 +2183,73 @@
     html += '</div>';
     html += '<h2 class="virksomhed-welcome-title">Trivsel der mærkes — hele vejen ind i organisationen</h2>';
     html += '<p class="virksomhed-welcome-subtitle">Til dig, der overvejer et samarbejde med Anne Marie Clement</p>';
-    html += '<p class="virksomhed-welcome-text">Anne Marie Clement har i over 20 år arbejdet med nervesystemet som nøgle til trivsel, balance og bæredygtig performance. Hendes tilgang bygger på polyvagal teori, tilknytningsforskning og kropslig bevidsthed — oversat til redskaber, der virker i rigtige arbejdsliv.</p>';
-    html += '<p class="virksomhed-welcome-text">Nedenfor kan du læse om samarbejdsformer, tilgang og erfaring. Du er også velkommen til at udforske hele appen — cirkelmodellen, temaer, øvelser og nervesystemets trappe — som giver et indblik i det faglige fundament bag arbejdet.</p>';
+    html += '<p class="virksomhed-welcome-text">Denne side er skrevet til dig, der har ansvar for mennesker i en organisation — og som mærker, at trivsel kræver mere end frugtordninger og stresskurser.</p>';
+    html += '<p class="virksomhed-welcome-text">Anne Marie Clement arbejder med nervesystemet som indgang til trivsel, ledelse og samarbejde. Det er en tilgang, der rammer dybere end de fleste — fordi den handler om biologi, ikke bare holdninger.</p>';
     html += '<div class="virksomhed-welcome-scroll">';
-    html += '<button class="virksomhed-welcome-scroll-btn" id="virksomhedScrollDown">' + svgChevDown + ' Læs mere om samarbejdet</button>';
+    html += '<button class="virksomhed-welcome-scroll-btn" id="virksomhedScrollDown">' + svgChevDown + ' Læs mere</button>';
     html += '</div>';
     html += '</div>';
     html += '</div>';
 
-    // ===== Quick-nav to rest of app =====
-    html += '<div class="virksomhed-appnav">';
-    html += '<p class="virksomhed-appnav-label">Udforsk det faglige fundament</p>';
-    html += '<div class="virksomhed-appnav-grid">';
-    html += '<button class="virksomhed-appnav-btn" data-goto="hjem">' + svgLeaf + '<span>Cirkelmodellen</span></button>';
-    html += '<button class="virksomhed-appnav-btn" data-goto="trappen">' + svgLightning + '<span>Nervesystemets trappe</span></button>';
-    html += '<button class="virksomhed-appnav-btn" data-goto="temaer">' + svgChat + '<span>Temaer</span></button>';
-    html += '<button class="virksomhed-appnav-btn" data-goto="oevelser">' + svgWind + '<span>Øvelser</span></button>';
-    html += '</div>';
-    html += '</div>';
-
-    // ===== Faglig præsentation =====
+    // ===== Hovedindhold =====
     html += '<div class="virksomhed-faglig" id="virksomhedFaglig">';
 
-    // Section: Hvad Anne Marie tilbyder virksomheder
+    // --- Problemet I kender ---
     html += '<div class="virksomhed-section">';
-    html += '<h3 class="virksomhed-section-title">Hvad adskiller Anne Maries tilgang?</h3>';
-    html += '<p class="virksomhed-text">De fleste trivselsforløb handler om at lære at håndtere stress. Anne Marie går et lag dybere — hun arbejder med nervesystemet som nøgle til både individuel trivsel og sund arbejdskultur.</p>';
-
-    html += '<div class="virksomhed-cards">';
-    html += '<div class="virksomhed-card virksomhed-card-primary">';
-    html += '<div class="virksomhed-card-icon">' + svgBrain + '</div>';
-    html += '<h4>Polyvagal forståelse</h4>';
-    html += '<p>Porges\' polyvagale teori giver et præcist sprog for, hvorfor vi reagerer som vi gør under pres. Det flytter fokus fra skyld og viljestyring til nervesystem — og åbner for reel, varig forandring.</p>';
+    html += '<h3 class="virksomhed-section-title">Problemet I kender</h3>';
+    html += '<p class="virksomhed-text">De fleste organisationer oplever det samme mønster: medarbejdere der kører for hurtigt, ledere der bærer for meget, og en kultur hvor stress er normaliseret. I måler trivslen, men tallene flytter sig ikke. I tilbyder kurser, men effekten forsvinder efter tre uger.</p>';
+    html += '<p class="virksomhed-text">Det skyldes, at de fleste tilgange arbejder med symptomerne — ikke med det, der driver dem. Nervesystemet er den usynlige motor bag det meste af det, I oplever: konflikter der eskalerer, møder der ikke virker, ledere der mister overblikket under pres, og medarbejdere der langsomt trækker sig.</p>';
     html += '</div>';
 
-    html += '<div class="virksomhed-card virksomhed-card-rose">';
-    html += '<div class="virksomhed-card-icon">' + svgHeart + '</div>';
-    html += '<h4>Kropslig bevidsthed</h4>';
-    html += '<p>Mange medarbejdere lever med et nervesystem i konstant alarmberedskab uden at vide det. Anne Marie giver konkrete, diskrete redskaber til at regulere sig selv — midt i arbejdsdagen.</p>';
-    html += '</div>';
-
-    html += '<div class="virksomhed-card virksomhed-card-amber">';
-    html += '<div class="virksomhed-card-icon">' + svgUsers + '</div>';
-    html += '<h4>Relationel intelligens</h4>';
-    html += '<p>Samarbejde handler om nervesystemer, der mødes. Anne Marie hjælper teams med at forstå, hvordan deres tilstande smitter — og hvordan de kan skabe psykologisk tryghed sammen.</p>';
-    html += '</div>';
-
-    html += '<div class="virksomhed-card virksomhed-card-sage">';
-    html += '<div class="virksomhed-card-icon">' + svgTarget + '</div>';
-    html += '<h4>Bæredygtig performance</h4>';
-    html += '<p>Ægte produktivitet kommer ikke fra pres, men fra regulerede nervesystemer. Anne Marie arbejder med at skabe betingelser, hvor høj performance og trivsel ikke er modsætninger.</p>';
-    html += '</div>';
-    html += '</div>';
-    html += '</div>';
-
-    // Section: Samarbejdsformer
+    // --- Anne Maries tilgang ---
     html += '<div class="virksomhed-section">';
-    html += '<h3 class="virksomhed-section-title">Konkrete samarbejdsformer</h3>';
-    html += '<p class="virksomhed-text">Anne Marie tilbyder fleksible forløb, der kan tilpasses jeres organisations størrelse, behov og ambitionsniveau.</p>';
+    html += '<h3 class="virksomhed-section-title">En anden indgang</h3>';
+    html += '<p class="virksomhed-text">Anne Marie Clement har i over 20 år arbejdet med nervesystemet som nøgle til trivsel og performance. Hendes tilgang bygger på polyvagal teori og tilknytningsforskning — oversat til et sprog og en praksis, der giver mening i en travl arbejdsdag.</p>';
+    html += '<p class="virksomhed-text">Det handler ikke om at tale om følelser i mødelokalet. Det handler om at give mennesker en konkret forståelse af, hvad der sker i deres krop under pres — og praktiske redskaber til at regulere sig selv og hinanden. Diskret, hurtigt, midt i hverdagen.</p>';
+
+    html += '<div class="virksomhed-kernepunkter">';
+
+    html += '<div class="virksomhed-kernepunkt">';
+    html += '<div class="virksomhed-kernepunkt-dot virksomhed-dot-sage"></div>';
+    html += '<div class="virksomhed-kernepunkt-tekst">';
+    html += '<strong>For medarbejderen</strong>';
+    html += '<p>Konkrete 2-minutters øvelser der kan bruges ved skrivebordet. Grounding, åndedræt og sensorisk regulering — uden at nogen behøver vide det.</p>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div class="virksomhed-kernepunkt">';
+    html += '<div class="virksomhed-kernepunkt-dot virksomhed-dot-amber"></div>';
+    html += '<div class="virksomhed-kernepunkt-tekst">';
+    html += '<strong>For lederen</strong>';
+    html += '<p>Forståelse af, hvordan dit eget nervesystem smitter teamet — og redskaber til at være den regulerende kraft i rummet, også når presset er højt.</p>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div class="virksomhed-kernepunkt">';
+    html += '<div class="virksomhed-kernepunkt-dot virksomhed-dot-primary"></div>';
+    html += '<div class="virksomhed-kernepunkt-tekst">';
+    html += '<strong>For organisationen</strong>';
+    html += '<p>Et fælles sprog for trivsel, der ikke kræver terapi-baggrund. Når alle forstår nervesystemets tre tilstande, ændrer samtalerne sig — og dermed kulturen.</p>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '</div>'; // end kernepunkter
+    html += '</div>';
+
+    // --- Samarbejdsformer ---
+    html += '<div class="virksomhed-section">';
+    html += '<h3 class="virksomhed-section-title">Hvad et samarbejde kan se ud</h3>';
 
     html += '<div class="virksomhed-forloeb">';
 
     html += '<div class="virksomhed-forloeb-item">';
     html += '<div class="virksomhed-forloeb-header">';
     html += '<span class="virksomhed-forloeb-tag">Keynote</span>';
-    html += '<h4>Foredrag & keynotes</h4>';
+    html += '<h4>Foredrag</h4>';
     html += '</div>';
-    html += '<p>Anne Marie holder foredrag der bevæger — bogstaveligt. Deltagerne får ikke bare viden, men en kropslig erfaring af, hvad regulering betyder. Velegnet til kick-offs, ledersamlinger og trivselsarrangementer.</p>';
+    html += '<p>Anne Marie holder foredrag, der giver deltagerne en kropslig erfaring — ikke bare information. Velegnet til kick-offs, ledersamlinger eller som afsæt for et trivselsinitiativ.</p>';
     html += '<div class="virksomhed-forloeb-detaljer">';
-    html += '<span>60-90 minutter</span><span>Op til 500 deltagere</span><span>Interaktive elementer</span>';
+    html += '<span>60-90 minutter</span><span>Op til 500 deltagere</span>';
     html += '</div>';
     html += '</div>';
 
@@ -2241,90 +2258,73 @@
     html += '<span class="virksomhed-forloeb-tag">Workshop</span>';
     html += '<h4>Teamworkshops</h4>';
     html += '</div>';
-    html += '<p>Halv- eller heldagsworkshops hvor teams lærer at genkende egne og hinandens nervesystemtilstande — og får konkrete redskaber til at regulere sig selv og støtte hinanden i hverdagen.</p>';
+    html += '<p>Halv- eller heldags workshops, hvor teams lærer at genkende egne og hinandens tilstande — og får redskaber til at regulere sig selv og støtte hinanden.</p>';
     html += '<div class="virksomhed-forloeb-detaljer">';
-    html += '<span>3-7 timer</span><span>8-30 deltagere</span><span>Skræddersyet indhold</span>';
+    html += '<span>3-7 timer</span><span>8-30 deltagere</span>';
     html += '</div>';
     html += '</div>';
 
     html += '<div class="virksomhed-forloeb-item">';
     html += '<div class="virksomhed-forloeb-header">';
     html += '<span class="virksomhed-forloeb-tag virksomhed-forloeb-tag-alt">Forløb</span>';
-    html += '<h4>Lederudviklingsforløb</h4>';
+    html += '<h4>Lederudvikling</h4>';
     html += '</div>';
-    html += '<p>Et sammenhængende forløb for ledere, der vil forstå, hvordan deres eget nervesystem sætter tonen for hele teamet. Kombinerer teori, personlig refleksion og praktiske redskaber.</p>';
+    html += '<p>Et sammenhængende forløb for ledere, der vil forstå, hvordan deres nervesystem sætter tonen for hele teamet. Teori, refleksion og praksis i en form, der passer ind i en leders hverdag.</p>';
     html += '<div class="virksomhed-forloeb-detaljer">';
-    html += '<span>4-8 sessioner</span><span>Individuel sparring</span><span>Handlingsplaner</span>';
+    html += '<span>4-8 sessioner</span><span>Individuel sparring</span>';
     html += '</div>';
     html += '</div>';
 
     html += '<div class="virksomhed-forloeb-item">';
     html += '<div class="virksomhed-forloeb-header">';
     html += '<span class="virksomhed-forloeb-tag virksomhed-forloeb-tag-alt">App</span>';
-    html += '<h4>Denne app til jeres medarbejdere</h4>';
+    html += '<h4>Denne app som dagligt redskab</h4>';
     html += '</div>';
-    html += '<p>Clement Firma kan bruges som et supplerende redskab i et samarbejde — en app jeres medarbejdere kan bruge diskret i hverdagen til regulering, pauser og forståelse af eget nervesystem.</p>';
+    html += '<p>Clement Firma kan stilles til rådighed for jeres medarbejdere som et stille, dagligt supplement. Øvelser, check-ins og viden — direkte i lommen, uden at det kræver en workshop først.</p>';
     html += '<div class="virksomhed-forloeb-detaljer">';
-    html += '<span>Tilpasset jeres organisation</span><span>Selvstændigt eller som supplement</span>';
+    html += '<span>Kan bruges selvstændigt eller som del af et forløb</span>';
     html += '</div>';
     html += '</div>';
 
-    html += '</div>';
+    html += '</div>'; // end forloeb
     html += '</div>';
 
-    // Section: Erfaring / kendte virksomheder
+    // --- Hvad gør det relevant for jer? ---
     html += '<div class="virksomhed-section">';
-    html += '<h3 class="virksomhed-section-title">Erfaring med store organisationer</h3>';
-    html += '<p class="virksomhed-text">Anne Marie har samarbejdet med nogle af Danmarks mest ambitiøse virksomheder om at skabe arbejdspladser, hvor mennesker trives og performer:</p>';
-
-    html += '<div class="virksomhed-logoer">';
-    html += '<div class="virksomhed-logo-item"><span class="virksomhed-logo-navn">Novo Nordisk</span></div>';
-    html += '<div class="virksomhed-logo-item"><span class="virksomhed-logo-navn">Unilever</span></div>';
-    html += '<div class="virksomhed-logo-item"><span class="virksomhed-logo-navn">PFA</span></div>';
-    html += '<div class="virksomhed-logo-item"><span class="virksomhed-logo-navn">TV2</span></div>';
-    html += '</div>';
-
-    html += '<p class="virksomhed-text" style="margin-top: 16px;">Fælles for disse samarbejder er, at de gik ud over overfladen — og ind i det, der virkelig flytter: en grundlæggende forståelse af, hvordan nervesystemet påvirker alt fra beslutningsevne til samarbejde.</p>';
-    html += '</div>';
-
-    // Section: Hvem henvender det sig til
-    html += '<div class="virksomhed-section">';
-    html += '<h3 class="virksomhed-section-title">Hvem er det relevant for?</h3>';
-    html += '<p class="virksomhed-text">Anne Maries tilgang er relevant for organisationer, der oplever:</p>';
+    html += '<h3 class="virksomhed-section-title">Hvornår giver det mening?</h3>';
+    html += '<p class="virksomhed-text">Et samarbejde med Anne Marie er relevant, hvis I genkender noget af dette:</p>';
     html += '<ul class="virksomhed-list">';
-    html += '<li><strong>Højt stressniveau</strong> — medarbejdere der kører på autopilot uden at mærke signalerne</li>';
-    html += '<li><strong>Konflikter i teams</strong> — samarbejdsmønstre der afspejler dysregulerede nervesystemer</li>';
-    html += '<li><strong>Ledere under pres</strong> — der ubevidst smitter deres stress videre til teamet</li>';
-    html += '<li><strong>Høj personaleudskiftning</strong> — hvor trivslen ikke holder folk fastholdt</li>';
-    html += '<li><strong>Forandringstræthed</strong> — organisationer der har brug for en ny indgang til trivsel</li>';
-    html += '<li><strong>Ambition om bæredygtig kultur</strong> — virksomheder der vil investere i mennesker, ikke kun processer</li>';
+    html += '<li>Stressniveauet er højt, men ingen taler om det direkte</li>';
+    html += '<li>Konflikter i teams, der ikke løser sig trods gode intentioner</li>';
+    html += '<li>Ledere der selv er under pres og ubevidst viderefører det</li>';
+    html += '<li>Medarbejdere der trækker sig, mister motivation eller siger op</li>';
+    html += '<li>Trivselsundersøgelser, der ikke fører til reel forandring</li>';
+    html += '<li>Et ønske om at gøre noget anderledes — med dybde og respekt</li>';
     html += '</ul>';
+    html += '</div>';
+
+    // --- Udforsk appen ---
+    html += '<div class="virksomhed-section">';
+    html += '<h3 class="virksomhed-section-title">Se hvad jeres medarbejdere kan få</h3>';
+    html += '<p class="virksomhed-text">Denne app er et eksempel på, hvad Anne Marie bygger til organisationer. Brug den selv — prøv øvelserne, tjek ind på trappen, læs temaerne. Det giver et bedre indblik end enhver præsentation.</p>';
+    html += '<div class="virksomhed-appnav-grid">';
+    html += '<button class="virksomhed-appnav-btn" data-goto="trappen"><span>Nervesystemets trappe</span></button>';
+    html += '<button class="virksomhed-appnav-btn" data-goto="temaer"><span>Temaer</span></button>';
+    html += '<button class="virksomhed-appnav-btn" data-goto="oevelser"><span>Øvelser</span></button>';
+    html += '<button class="virksomhed-appnav-btn" data-goto="dynamik"><span>Dynamikken bag modellen</span></button>';
+    html += '</div>';
     html += '</div>';
 
     html += '</div>'; // end .virksomhed-faglig
 
-    // ===== Bridge section =====
-    html += '<div class="virksomhed-bridge">';
-    html += '<div class="virksomhed-bridge-inner">';
-    html += '<h3 class="virksomhed-bridge-title">Se det faglige fundament</h3>';
-    html += '<p class="virksomhed-bridge-text">Denne app er det samme redskab, Anne Marie deler med deltagerne i sine forløb. Udforsk cirkelmodellen, nervesystemets trappe, temaer og øvelser — og se, hvad jeres medarbejdere kan få adgang til.</p>';
-    html += '<div class="virksomhed-bridge-btns">';
-    html += '<button class="virksomhed-bridge-btn" data-goto="hjem">' + svgLeaf + ' Cirkelmodellen</button>';
-    html += '<button class="virksomhed-bridge-btn" data-goto="trappen">' + svgLightning + ' Trappen</button>';
-    html += '<button class="virksomhed-bridge-btn" data-goto="temaer">' + svgChat + ' Temaer</button>';
-    html += '<button class="virksomhed-bridge-btn" data-goto="oevelser">' + svgWind + ' Øvelser</button>';
-    html += '</div>';
-    html += '</div>';
-    html += '</div>';
-
-    // ===== Contact CTA =====
+    // ===== Kontakt =====
     html += '<div class="virksomhed-cta">';
-    html += '<h3 class="virksomhed-cta-title">Klar til en samtale?</h3>';
-    html += '<p class="virksomhed-cta-text">Anne Marie tager gerne en uforpligtende samtale om, hvordan et samarbejde kan se ud for jeres organisation.</p>';
+    html += '<h3 class="virksomhed-cta-title">Lad os tale sammen</h3>';
+    html += '<p class="virksomhed-cta-text">Anne Marie tager gerne en uforpligtende samtale om, hvad der giver mening for jeres organisation. Ingen salgstale — bare en ærlig snak om, hvor I er, og hvad der kunne hjælpe.</p>';
     html += '<div class="virksomhed-cta-info">';
-    html += '<a href="mailto:info@clementfirma.dk" class="virksomhed-cta-btn virksomhed-cta-btn-primary">' + svgMail + ' Skriv til Anne Marie</a>';
-    html += '<a href="tel:+4500000000" class="virksomhed-cta-btn virksomhed-cta-btn-secondary">' + svgPhone + ' Ring for en samtale</a>';
-    html += '<a href="https://linkedin.com" target="_blank" rel="noopener" class="virksomhed-cta-btn virksomhed-cta-btn-linkedin">' + svgLinkedIn + ' Se Anne Maries LinkedIn</a>';
+    html += '<a href="mailto:annemarie@clement.dk" class="virksomhed-cta-btn virksomhed-cta-btn-primary">' + svgMail + ' annemarie@clement.dk</a>';
+    html += '<a href="tel:+4540301085" class="virksomhed-cta-btn virksomhed-cta-btn-secondary">' + svgPhone + ' +45 40 30 10 85</a>';
+    html += '<a href="https://www.linkedin.com/in/annemarie-clement/" target="_blank" rel="noopener" class="virksomhed-cta-btn virksomhed-cta-btn-linkedin">' + svgLinkedIn + ' LinkedIn</a>';
     html += '</div>';
     html += '</div>';
 
@@ -2342,7 +2342,9 @@
     // Bind: all data-goto buttons
     container.querySelectorAll('[data-goto]').forEach(function (btn) {
       btn.addEventListener('click', function () {
-        navigateTo(this.getAttribute('data-goto'));
+        var dest = this.getAttribute('data-goto');
+        if (dest === 'dynamik') renderDynamik();
+        navigateTo(dest);
       });
     });
   }

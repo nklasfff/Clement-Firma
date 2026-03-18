@@ -3319,31 +3319,44 @@ footer {
   border-radius: 10px;
 }
 
-/* Logo Grid */
-.virksomhed-logoer {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 16px;
+/* Kernepunkter */
+.virksomhed-kernepunkter {
+  margin-top: 20px;
 }
 
-.virksomhed-logo-item {
-  background: var(--white);
-  border: 1.5px solid rgba(107, 45, 91, 0.1);
-  border-radius: 14px;
-  padding: 20px 16px;
-  text-align: center;
+.virksomhed-kernepunkt {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(107, 45, 91, 0.08);
 }
 
-.virksomhed-logo-navn {
-  font-family: Georgia, serif;
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--primary);
-  letter-spacing: 0.02em;
+.virksomhed-kernepunkt:last-child { border-bottom: none; }
+
+.virksomhed-kernepunkt-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+.virksomhed-dot-sage { background: var(--sage); }
+.virksomhed-dot-amber { background: var(--amber); }
+.virksomhed-dot-primary { background: var(--primary); }
+
+.virksomhed-kernepunkt-tekst strong {
+  display: block;
+  font-size: 0.92rem;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.virksomhed-kernepunkt-tekst p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  line-height: 1.65;
+  margin: 0;
 }
 
 /* List */
