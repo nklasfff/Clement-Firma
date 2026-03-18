@@ -257,24 +257,56 @@ body.hero-visible .hamburger-line {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 24px 16px;
-  border-bottom: 1px solid rgba(107, 45, 91, 0.08);
+  padding: 16px 24px;
+  background: var(--primary);
+  color: var(--white);
 }
 
-.menu-header h2 {
-  font-size: 1.2rem;
-  color: var(--primary);
-  font-weight: 400;
+.menu-header-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.menu-header-initials {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--white);
+  flex-shrink: 0;
+}
+
+.menu-header-text h2 {
+  font-size: 1.05rem;
+  color: var(--white);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.menu-header-sub {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.7);
+  font-style: italic;
 }
 
 .menu-close {
   background: none;
   border: none;
   font-size: 1.6rem;
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.7);
   cursor: pointer;
   padding: 4px 8px;
   line-height: 1;
+}
+
+.menu-close:hover {
+  color: var(--white);
 }
 
 .menu-content {
@@ -333,45 +365,115 @@ body.hero-visible .hamburger-line {
   margin: 8px 24px;
 }
 
-.menu-about {
-  padding: 0 24px;
-  margin-bottom: 24px;
+/* Menu perspektiv */
+.menu-perspektiv {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
-.menu-about p {
-  font-size: 0.88rem;
-  color: var(--text-light);
-  line-height: 1.7;
+.menu-perspektiv-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
 }
 
-.menu-rolle-info {
-  padding: 16px 24px;
-  background: var(--primary-pale);
-  margin: 0 16px 16px;
-  border-radius: var(--radius-sm);
-}
-
-.menu-rolle-info p {
-  font-size: 0.85rem;
-  color: var(--text-light);
-  margin-bottom: 8px;
+.menu-perspektiv-label {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
 }
 
 .menu-rolle-btn {
   background: none;
-  border: 1.5px solid var(--primary);
+  border: none;
   color: var(--primary);
   font-family: Georgia, serif;
-  font-size: 0.8rem;
-  padding: 5px 14px;
-  border-radius: 20px;
+  font-size: 0.85rem;
+  padding: 0;
   cursor: pointer;
   transition: var(--transition);
 }
 
 .menu-rolle-btn:hover {
-  background: var(--primary);
-  color: var(--white);
+  color: var(--primary-light);
+}
+
+/* Menu about section */
+.menu-about-section {
+  text-align: center;
+}
+
+.menu-about-photo-wrap {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 8px auto 14px;
+  border: 2px solid rgba(107, 45, 91, 0.12);
+}
+
+.menu-about-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.menu-about-bio {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  line-height: 1.7;
+  text-align: left;
+}
+
+/* Menu contact items */
+.menu-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  font-family: Georgia, serif;
+  font-size: 0.92rem;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(107, 45, 91, 0.06);
+  transition: color 0.2s ease;
+}
+
+.menu-contact-item:last-child {
+  border-bottom: none;
+}
+
+.menu-contact-item:hover {
+  color: var(--primary);
+}
+
+.menu-contact-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--primary-pale);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-style: normal;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+/* Menu virksomhed item highlight */
+.menu-item-virksomhed {
+  color: var(--primary);
+  font-weight: 600;
 }
 
 /* ── Menu Settings ── */
@@ -463,7 +565,6 @@ body.hero-visible .hamburger-line {
 
 /* Menu privacy & about */
 .menu-privacy-text {
-  padding: 0 24px;
   font-size: 0.82rem;
   color: var(--text-light);
   line-height: 1.6;
@@ -472,62 +573,44 @@ body.hero-visible .hamburger-line {
 
 .menu-text-btn {
   display: block;
-  margin: 12px 24px 0;
-  padding: 8px 16px;
-  background: none;
-  border: 1.5px solid var(--rose);
-  color: var(--rose);
+  width: 100%;
+  padding: 10px 16px;
+  background: var(--primary-pale);
+  border: none;
+  color: var(--primary);
   font-family: Georgia, serif;
-  font-size: 0.82rem;
-  border-radius: 20px;
+  font-size: 0.85rem;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: var(--transition);
+  text-align: center;
+  margin-bottom: 8px;
 }
 
 .menu-text-btn:hover {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.menu-text-btn-delete {
+  background: var(--rose-bg);
+  color: var(--rose);
+}
+
+.menu-text-btn-delete:hover {
   background: var(--rose);
   color: var(--white);
 }
 
-.menu-about-app {
-  padding: 0 24px;
+.menu-section-footer {
+  text-align: center;
+  padding-bottom: 20px;
 }
 
-.menu-about-app p {
-  font-size: 0.85rem;
-  color: var(--text-light);
-  line-height: 1.6;
-  margin-bottom: 8px;
-}
-
-.menu-about-app p strong {
-  color: var(--primary);
-  font-weight: 600;
-}
-
-.menu-about-links {
-  display: flex;
-  gap: 0;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-top: 4px;
-}
-
-.menu-about-link {
-  color: var(--primary);
-  font-size: 0.82rem;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-
-.menu-about-link:hover {
-  color: var(--accent);
-}
-
-.menu-about-sep {
-  margin: 0 8px;
+.menu-footer-version {
+  font-size: 0.78rem;
   color: var(--text-muted);
-  font-size: 0.82rem;
+  font-style: italic;
 }
 
 /* ── Search Overlay ── */

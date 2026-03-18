@@ -1659,43 +1659,63 @@
 
   // ── Menu ──
   function renderMenuContent() {
-    var rolleText = aktivPerspektiv === 'leder' ? 'leder' : 'medarbejder';
+    var rolleText = aktivPerspektiv === 'leder' ? 'leder' : (aktivPerspektiv === 'virksomhed' ? 'virksomhed' : 'medarbejder');
+    var rolleIcon = aktivPerspektiv === 'leder' ? '◈' : (aktivPerspektiv === 'virksomhed' ? '◆' : '◉');
     var html = '';
 
-    // Rolle info
-    html += '<div class="menu-rolle-info">';
-    html += '<p>Du bruger appen som <strong>' + rolleText + '</strong></p>';
-    html += '<button class="menu-rolle-btn" id="menuRolleSkift">Skift rolle</button>';
+    // ── Dit perspektiv ──
+    html += '<div class="menu-section">';
+    html += '<div class="menu-section-title">Dit perspektiv</div>';
+    html += '<div class="menu-perspektiv">';
+    html += '<span class="menu-perspektiv-icon">' + rolleIcon + '</span>';
+    html += '<span class="menu-perspektiv-label">' + rolleText.charAt(0).toUpperCase() + rolleText.slice(1) + '</span>';
     html += '</div>';
-
-    // Om Anne Marie
-    html += '<div class="menu-about">';
-    html += '<div class="menu-section-title">Om Anne Marie Clement</div>';
-    html += '<p>Anne Marie Clement har i over 20 år arbejdet med nervesystemet som nøgle til trivsel og balance. ';
-    html += 'Hendes tilgang bygger på polyvagal teori, tilknytningsforskning og kropslig bevidsthed — ';
-    html += 'oversat til praktiske redskaber der virker i hverdagen og på arbejdspladsen.</p>';
+    html += '<button class="menu-rolle-btn" id="menuRolleSkift">→ Skift perspektiv</button>';
     html += '</div>';
 
     html += '<div class="menu-divider"></div>';
 
-    // Navigation
+    // ── Om Anne Marie Clement ──
+    html += '<div class="menu-section menu-about-section">';
+    html += '<div class="menu-section-title">Om Anne Marie Clement</div>';
+    html += '<div class="menu-about-photo-wrap"><img src="assets/images/hero.png" alt="Anne Marie Clement" class="menu-about-photo"></div>';
+    html += '<p class="menu-about-bio">Anne Marie Clement er nervesystemsspecialist med over 20 års erfaring. ';
+    html += 'Hun tilbyder foredrag, workshops og forløb for virksomheder — og individuel coaching for ledere og medarbejdere. ';
+    html += 'Hendes tilgang bygger på polyvagal teori, tilknytningsforskning og kropslig bevidsthed — oversat til praktiske redskaber der virker i hverdagen.</p>';
+    html += '</div>';
+
+    html += '<div class="menu-divider"></div>';
+
+    // ── Navigation ──
     html += '<div class="menu-section">';
-    html += '<div class="menu-section-title">Indhold</div>';
+    html += '<div class="menu-section-title">Navigation</div>';
     html += '<button class="menu-item" data-nav="hjem"><span class="menu-item-icon">◉</span>Hjem</button>';
-    html += '<button class="menu-item" data-nav="trappen"><span class="menu-item-icon">☰</span>Nervesystemstrappen</button>';
+    html += '<button class="menu-item" data-nav="trappen"><span class="menu-item-icon">☰</span>Nervesystemets trappe</button>';
     html += '<button class="menu-item" data-nav="temaer"><span class="menu-item-icon">◈</span>Temaer</button>';
     html += '<button class="menu-item" data-nav="oevelser"><span class="menu-item-icon">◎</span>Øvelser</button>';
     html += '<button class="menu-item" data-nav="dynamik"><span class="menu-item-icon">⬡</span>Dynamikken bag cirkelmodellen</button>';
-    html += '<button class="menu-item" data-nav="virksomhed"><span class="menu-item-icon">◆</span>Samarbejde med virksomheder</button>';
+    html += '<button class="menu-item menu-item-virksomhed" data-nav="virksomhed"><span class="menu-item-icon">◆</span>Samarbejde med virksomheder</button>';
     var favCount = getFavoritter().length;
     html += '<button class="menu-item menu-item-favoritter" id="menuFavoritter"><span class="menu-item-icon">' + IKONER.bookmark(15) + '</span>Mine favoritter <span class="menu-favorit-badge" id="favoritBadge" style="' + (favCount > 0 ? '' : 'display:none') + '">' + favCount + '</span></button>';
     html += '</div>';
 
     html += '<div class="menu-divider"></div>';
 
-    // Notifikationer
+    // ── Kontakt ──
     html += '<div class="menu-section">';
-    html += '<div class="menu-section-title">Notifikationer</div>';
+    html += '<div class="menu-section-title">Kontakt</div>';
+    html += '<a class="menu-contact-item" href="tel:+4540301085"><span class="menu-contact-icon">✆</span>+45 40 30 10 85</a>';
+    html += '<a class="menu-contact-item" href="mailto:annemarie@clement.dk"><span class="menu-contact-icon">✉</span>annemarie@clement.dk</a>';
+    html += '<a class="menu-contact-item" href="https://www.linkedin.com/in/annemarie-clement/" target="_blank" rel="noopener"><span class="menu-contact-icon">in</span>LinkedIn</a>';
+    html += '<a class="menu-contact-item" href="https://www.instagram.com/annemarieclementt/" target="_blank" rel="noopener"><span class="menu-contact-icon">✦</span>Instagram</a>';
+    html += '<a class="menu-contact-item" href="https://www.clement.dk" target="_blank" rel="noopener"><span class="menu-contact-icon">⊕</span>Hjemmeside</a>';
+    html += '</div>';
+
+    html += '<div class="menu-divider"></div>';
+
+    // ── Indstillinger ──
+    html += '<div class="menu-section">';
+    html += '<div class="menu-section-title">Indstillinger</div>';
 
     html += '<div class="menu-setting">';
     html += '<div class="menu-setting-row">';
@@ -1717,50 +1737,7 @@
     html += '<div class="menu-setting-row">';
     html += '<div class="menu-setting-info"><span class="menu-setting-name">Ugentlig opsummering</span>';
     html += '<span class="menu-setting-desc">Overblik over din uges trivsel og øvelser</span></div>';
-    html += '<label class="menu-toggle"><input type="checkbox" data-setting="ugentlig"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
-    html += '</div>';
-    html += '</div>';
-
-    if (aktivPerspektiv === 'leder') {
-      html += '<div class="menu-setting">';
-      html += '<div class="menu-setting-row">';
-      html += '<div class="menu-setting-info"><span class="menu-setting-name">Team check-in påmindelse</span>';
-      html += '<span class="menu-setting-desc">Påmindelse om at tjekke ind med dit team</span></div>';
-      html += '<label class="menu-toggle"><input type="checkbox" checked data-setting="teamcheckin"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
-      html += '</div>';
-      html += '</div>';
-    }
-
-    html += '<div class="menu-setting-note">Påmindelser sendes diskret og kan altid slås fra</div>';
-    html += '</div>';
-
-    html += '<div class="menu-divider"></div>';
-
-    // Daglige påmindelser / tidspunkter
-    html += '<div class="menu-section">';
-    html += '<div class="menu-section-title">Pausehjælp</div>';
-
-    html += '<div class="menu-setting">';
-    html += '<div class="menu-setting-row">';
-    html += '<div class="menu-setting-info"><span class="menu-setting-name">Pause-påmindelser</span>';
-    html += '<span class="menu-setting-desc">Blid notifikation hvert 45. minut i arbejdstiden</span></div>';
-    html += '<label class="menu-toggle"><input type="checkbox" checked data-setting="pause"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
-    html += '</div>';
-    html += '</div>';
-
-    html += '<div class="menu-setting">';
-    html += '<div class="menu-setting-row">';
-    html += '<div class="menu-setting-info"><span class="menu-setting-name">Åndedrætspause</span>';
-    html += '<span class="menu-setting-desc">En guidet vejrtrækning midt på dagen</span></div>';
-    html += '<label class="menu-toggle"><input type="checkbox" data-setting="aandedraet"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
-    html += '</div>';
-    html += '</div>';
-
-    html += '<div class="menu-setting">';
-    html += '<div class="menu-setting-row">';
-    html += '<div class="menu-setting-info"><span class="menu-setting-name">Afslutningsritual</span>';
-    html += '<span class="menu-setting-desc">Påmindelse om at lukke arbejdsdagen bevidst</span></div>';
-    html += '<label class="menu-toggle"><input type="checkbox" checked data-setting="afslutning"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
+    html += '<label class="menu-toggle"><input type="checkbox" checked data-setting="ugentlig"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
     html += '</div>';
     html += '</div>';
 
@@ -1768,70 +1745,20 @@
 
     html += '<div class="menu-divider"></div>';
 
-    // Indstillinger
-    html += '<div class="menu-section">';
-    html += '<div class="menu-section-title">Generelt</div>';
-
-    html += '<div class="menu-setting">';
-    html += '<div class="menu-setting-row">';
-    html += '<div class="menu-setting-info"><span class="menu-setting-name">Mørk tilstand</span>';
-    html += '<span class="menu-setting-desc">Dæmpet visning til aftenbrug</span></div>';
-    html += '<label class="menu-toggle"><input type="checkbox" data-setting="dark"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
-    html += '</div>';
-    html += '</div>';
-
-    html += '<div class="menu-setting">';
-    html += '<div class="menu-setting-row">';
-    html += '<div class="menu-setting-info"><span class="menu-setting-name">Haptisk feedback</span>';
-    html += '<span class="menu-setting-desc">Let vibration ved interaktioner</span></div>';
-    html += '<label class="menu-toggle"><input type="checkbox" checked data-setting="haptic"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
-    html += '</div>';
-    html += '</div>';
-
-    html += '<div class="menu-setting">';
-    html += '<div class="menu-setting-row">';
-    html += '<div class="menu-setting-info"><span class="menu-setting-name">Lydeffekter</span>';
-    html += '<span class="menu-setting-desc">Beroligende lyde ved åndedrætsøvelser</span></div>';
-    html += '<label class="menu-toggle"><input type="checkbox" data-setting="lyd"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
-    html += '</div>';
-    html += '</div>';
-
-    html += '</div>';
-
-    html += '<div class="menu-divider"></div>';
-
-    // Privatliv & data
+    // ── Privatliv & data ──
     html += '<div class="menu-section">';
     html += '<div class="menu-section-title">Privatliv & data</div>';
-    html += '<p class="menu-privacy-text">Dine data opbevares kun lokalt på din enhed. Ingen personlige oplysninger deles med tredjepart. Appen kræver ingen login og indsamler ingen brugerdata.</p>';
+    html += '<p class="menu-privacy-text">Denne app gemmer kun data lokalt på din enhed. Ingen sporing, ingen cookies, ingen tredjeparter.</p>';
 
-    html += '<div class="menu-setting">';
-    html += '<div class="menu-setting-row">';
-    html += '<div class="menu-setting-info"><span class="menu-setting-name">Anonym brugsstatistik</span>';
-    html += '<span class="menu-setting-desc">Hjælp os med at forbedre appen</span></div>';
-    html += '<label class="menu-toggle"><input type="checkbox" data-setting="analytics"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
-    html += '</div>';
-    html += '</div>';
-
-    html += '<button class="menu-text-btn" data-action="sletdata">Slet alle lokale data</button>';
+    html += '<button class="menu-text-btn menu-text-btn-share" data-action="share">✦ Del Clement Firma</button>';
+    html += '<button class="menu-text-btn menu-text-btn-delete" data-action="sletdata">✕ Nulstil alle data</button>';
     html += '</div>';
 
     html += '<div class="menu-divider"></div>';
 
-    // Om appen
-    html += '<div class="menu-section">';
-    html += '<div class="menu-section-title">Om appen</div>';
-    html += '<div class="menu-about-app">';
-    html += '<p><strong>Clement Firma</strong> v1.0</p>';
-    html += '<p>Udviklet i samarbejde med Anne Marie Clement, baseret på over 20 års erfaring med nervesystemsarbejde, polyvagal teori og tilknytningsforskning.</p>';
-    html += '<p class="menu-about-links">';
-    html += '<span class="menu-about-link">Vilkår</span>';
-    html += '<span class="menu-about-sep">·</span>';
-    html += '<span class="menu-about-link">Privatlivspolitik</span>';
-    html += '<span class="menu-about-sep">·</span>';
-    html += '<span class="menu-about-link">Kontakt</span>';
-    html += '</p>';
-    html += '</div>';
+    // ── Om appen ──
+    html += '<div class="menu-section menu-section-footer">';
+    html += '<p class="menu-footer-version">Clement Firma v1.0</p>';
     html += '</div>';
 
     menuContent.innerHTML = html;
@@ -1862,6 +1789,41 @@
       menuRolleBtn.addEventListener('click', function() {
         skiftRolle();
         renderMenuContent();
+      });
+    }
+
+    // Bind share button
+    var shareBtn = menuContent.querySelector('[data-action="share"]');
+    if (shareBtn) {
+      shareBtn.addEventListener('click', function() {
+        var shareData = {
+          title: 'Clement Firma',
+          text: 'Trivsel på arbejdspladsen — baseret på nervesystemets intelligens',
+          url: window.location.href
+        };
+        if (navigator.share) {
+          navigator.share(shareData).catch(function() {});
+        } else {
+          navigator.clipboard.writeText(shareData.url).then(function() {
+            shareBtn.textContent = '✓ Link kopieret!';
+            setTimeout(function() { shareBtn.textContent = '✦ Del Clement Firma'; }, 2000);
+          }).catch(function() {});
+        }
+      });
+    }
+
+    // Bind delete data button
+    var deleteBtn = menuContent.querySelector('[data-action="sletdata"]');
+    if (deleteBtn) {
+      deleteBtn.addEventListener('click', function() {
+        if (confirm('Er du sikker? Dette sletter alle dine gemte data, favoritter og procesnotater.')) {
+          localStorage.removeItem('cf_favoritter');
+          localStorage.removeItem('cf_proces');
+          localStorage.removeItem('cf_trappen_checkins');
+          localStorage.removeItem('clementRolle');
+          closeMenu();
+          location.reload();
+        }
       });
     }
 
