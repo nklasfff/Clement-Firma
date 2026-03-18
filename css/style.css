@@ -2320,16 +2320,27 @@ footer {
   }
 
   /* TRIN 4: Flyt hamburger-menu ind i rammen */
+  .menu-overlay {
+    max-width: 700px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+  }
+
   .menu-panel {
     left: calc(50% - 350px);
-    transform: translateX(calc(-100% - (50vw - 350px)));
+    transform: translateX(-100%);
+    transition: transform 0.3s ease, visibility 0.3s ease;
+    visibility: hidden;
   }
 
   .menu-panel.open {
     transform: translateX(0);
+    visibility: visible;
   }
 
-  .menu-overlay {
+  /* TRIN 5: Soege-overlay inden for rammen */
+  .search-overlay {
     max-width: 700px;
     left: 0;
     right: 0;
