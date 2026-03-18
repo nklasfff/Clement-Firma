@@ -328,9 +328,15 @@
   <div class="view" data-view="oevelser">
     <div class="view-header">
       <button class="back-btn back-to-hjem">← Tilbage</button>
-      <h1 class="view-title">Øvelser</h1>
-      <p class="view-sub">Konkrete redskaber du kan bruge lige nu — diskret, hvor du er</p>
-      <p class="view-intro">Hver øvelse er designet til at kunne bruges midt i arbejdsdagen — ved skrivebordet, før et møde eller i en pause. Du behøver ikke forberedelse eller udstyr. Vælg en kategori, fold en øvelse ud, og lad dig guide trin for trin.</p>
+      <h1 class="view-title">Øvelser &amp; refleksioner</h1>
+      <p class="view-sub">Konkrete redskaber og stille rum til eftertanke</p>
+      <p class="view-intro">Her finder du både øvelser, der regulerer dit nervesystem i hverdagen, og refleksionsspørgsmål, der hjælper dig med at se dybere ind i dine mønstre. Øvelserne har hver en lille refleksion, du kan bruge bagefter. Længere nede finder du selvstændige refleksioner — og til sidst kan du følge din egen proces.</p>
+    </div>
+
+    <!-- Del 1: Øvelser med indlejrede refleksioner -->
+    <div class="oevelser-section-label" id="oevelserSectionLabel">
+      <span class="oevelser-section-icon">◎</span>
+      <span>Øvelser</span>
     </div>
 
     <div class="oevelser-filter" id="oevelserFilter">
@@ -342,6 +348,24 @@
     </div>
 
     <div class="oevelser-grid" id="oevelserGrid"></div>
+
+    <!-- Del 2: Selvstændige refleksioner -->
+    <div class="oevelser-divider"></div>
+    <div class="oevelser-section-label">
+      <span class="oevelser-section-icon">◈</span>
+      <span>Refleksioner</span>
+    </div>
+    <p class="oevelser-section-intro">Refleksioner kræver ikke handling — kun ærlighed. Sæt dig et stille sted, læs spørgsmålet, og lad svaret komme. Der er ingen rigtige svar. Der er kun dine.</p>
+    <div class="refleksioner-grid" id="refleksionerGrid"></div>
+
+    <!-- Del 3: Din proces -->
+    <div class="oevelser-divider"></div>
+    <div class="oevelser-section-label">
+      <span class="oevelser-section-icon">◉</span>
+      <span>Din proces</span>
+    </div>
+    <p class="oevelser-section-intro">Hold øje med din udvikling. Hver gang du gennemfører en øvelse eller skriver en refleksion, gemmes det her — så du kan se, hvad der virker for dig.</p>
+    <div class="din-proces-container" id="dinProcesContainer"></div>
   </div>
 
   <!-- ════ VIEW: VIRKSOMHED ════ -->

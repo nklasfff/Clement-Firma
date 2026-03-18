@@ -526,7 +526,8 @@ const OEVELSER = [
       "Tag tre dybe vejrtrækninger — indånd gennem næsen, udånd langsomt gennem munden.",
       "Kig på tre ting i rummet og navngiv dem stille for dig selv.",
       "Mærk temperaturen i rummet. Lyt til én lyd. Du er her. Du er tilstede."
-    ]
+    ],
+    refleksion: "Hvad lagde du mærke til i kroppen, da du landede? Var der et sted der holdt mere end andre?"
   },
   {
     titel: "Møde-reset",
@@ -541,7 +542,8 @@ const OEVELSER = [
       "Hold vejret i 7 sekunder.",
       "Pust langsomt ud gennem munden i 8 sekunder.",
       "Gentag to gange. Sæt derefter en intention: Hvad vil du bidrage med? Hvad har du brug for?"
-    ]
+    ],
+    refleksion: "Mærkede du en forskel i din tilstedeværelse efter øvelsen? Hvordan vil du beskrive skiftet?"
   },
   {
     titel: "Deadline-åndedræt",
@@ -557,7 +559,8 @@ const OEVELSER = [
       "Pust ud i 4 sekunder.",
       "Hold vejret i 4 sekunder. Gentag hele cyklussen 4 gange.",
       "Check ind igen: Har tilstanden ændret sig? Ofte er du flyttet et trin ned på trappen."
-    ]
+    ],
+    refleksion: "Hvilken tilstand startede du i — og hvor endte du? Hvad fortæller det dig om dit stressmønster lige nu?"
   },
   {
     titel: "Konflikt-parkering",
@@ -573,7 +576,8 @@ const OEVELSER = [
       "Ånd ind i det område. Ikke for at ændre det — bare for at mærke det.",
       "Spørg dig selv: 'Hvad har jeg brug for lige nu?' (ikke 'Hvad skal den anden gøre?')",
       "Parkér situationen bevidst: 'Jeg vender tilbage med et reguleret nervesystem.'"
-    ]
+    ],
+    refleksion: "Hvad opdagede du om din reaktion? Er der et mønster i hvad der trigger dig på arbejdet?"
   },
   {
     titel: "Afslutningsritual",
@@ -588,7 +592,8 @@ const OEVELSER = [
       "Tre dybe vejrtrækninger med forlænget udånding.",
       "Luk computeren bevidst — ikke bare klap den i. Mærk handlingen.",
       "Sig til dig selv: 'Dagen er slut. Jeg har gjort nok.' — og mene det."
-    ]
+    ],
+    refleksion: "Hvad tager du med fra i dag — ikke en opgave, men en følelse eller en erkendelse?"
   },
   {
     titel: "Vagus-aktivering",
@@ -603,7 +608,8 @@ const OEVELSER = [
       "Hold vejret i 4 sekunder.",
       "Pust langsomt ud gennem munden i 6-8 sekunder — jo længere udånding, jo stærkere effekt.",
       "Gentag 8-10 gange. Mærk roen brede sig fra brystet og ud i kroppen."
-    ]
+    ],
+    refleksion: "Hvor i kroppen mærkede du roen først? Kan du huske den fornemmelse næste gang presset stiger?"
   },
   {
     titel: "Morgenlanding",
@@ -618,7 +624,8 @@ const OEVELSER = [
       "Tag tre dybe vejrtrækninger. Lad udåndingen være lang.",
       "Sæt en intention for dagen — ikke en to-do, men en kvalitet: 'Tilstedeværelse.' 'Ro.' 'Fokus.'",
       "Åbn øjnene. Du har givet dit nervesystem en morgengave."
-    ]
+    ],
+    refleksion: "Hvilken kvalitet valgte du for dagen? Hvad ville det betyde, hvis du faktisk bar den med dig?"
   },
   {
     titel: "Team co-regulering",
@@ -633,7 +640,8 @@ const OEVELSER = [
       "Guid: 'Tre fælles vejrtrækninger. Indånd... og langsomt udånd...'",
       "Lad der være 10 sekunders stilhed efter de tre vejrtrækninger.",
       "Åbn med: 'Godt. Vi er her. Lad os begynde.' — Mærk forskellen i rummet."
-    ]
+    ],
+    refleksion: "Lagde du mærke til en forandring i rummets energi? Hvad sker der med dit team, når I lander sammen?"
   },
   {
     titel: "Skærmpause for øjnene",
@@ -648,7 +656,8 @@ const OEVELSER = [
       "Lav langsomme øjencirkler: kig op, til højre, ned, til venstre. Tre cirkler i hver retning. Mærk strækket i de små muskler omkring øjnene.",
       "Blink bevidst 10-15 gange i træk — hurtige, lette blink. Skærmarbejde halverer din naturlige blinkfrekvens, og det udtørrer øjnene.",
       "Afslut med at kigge ud i det fjerne igen. Tag tre dybe vejrtrækninger. Mærk forskellen — øjnene er blødere, blikket er roligere, nervesystemet har fået en pause."
-    ]
+    ],
+    refleksion: "Hvor meget af din træthed sidder i øjnene? Hvornår på dagen mærker du det mest?"
   },
   {
     titel: "Nakke-og-skulder-reset",
@@ -663,7 +672,8 @@ const OEVELSER = [
       "Sænk højre øre mod højre skulder — uden at hæve skulderen. Hold i 15 sekunder. Mærk strækket langs venstre side af nakken. Gentag den anden side.",
       "Flét fingrene bag hovedet. Pres hovedet let bagud mod hænderne mens hænderne holder imod. Hold i 5 sekunder og slip. Gentag tre gange — dette aktiverer og afspænder de dybe nakkemuskler.",
       "Afslut med tre dybe vejrtrækninger. Ved hver udånding: slip skuldrene bevidst. Mærk tyngden forlade nakke og skuldre. Dit nervesystem har fået besked om at alarmen er slukket."
-    ]
+    ],
+    refleksion: "Lagde du mærke til hvor højt skuldrene sad? Hvad gør du normalt, når spændingen bygger sig op?"
   },
   {
     titel: "Hovedpine-regulering",
@@ -678,7 +688,8 @@ const OEVELSER = [
       "Placer fingerspidserne på begge tindinger. Lav langsomme, bløde cirkler med et let tryk. Ånd dybt ind gennem næsen og langsomt ud gennem munden. 30 sekunder. Lad trykket være blidt — det er berøringen der signalerer sikkerhed til nervesystemet.",
       "Luk øjnene. Forestil dig at dit åndedræt strømmer op til toppen af hovedet ved indånding og ned langs nakken ved udånding — som en blød bølge. Gentag 5-6 gange. Denne visualisering kombineret med åndedræt sænker muskelspændingen i hele hovedet.",
       "Afslut med at gnide håndfladerne hurtigt mod hinanden til de er varme. Læg dem over øjnene. Mærk varmen. Sid stille i 20 sekunder. Når du fjerner hænderne, mærk forskellen — et lettere hoved, en blødere pande, et roligere nervesystem."
-    ]
+    ],
+    refleksion: "Hvornår begynder hovedpinen typisk? Er der et mønster — og kan du nå at bryde det tidligere?"
   },
   {
     titel: "Sensorisk landing",
@@ -693,7 +704,8 @@ const OEVELSER = [
       "Læg hænderne fladt på bordpladen eller i skødet. Fokusér al din opmærksomhed på berøringssansen — temperaturen, teksturen, tyngden af dine hænder. Når du giver nervesystemet én rolig sans at fokusere på, slipper det de andre.",
       "Tag fem langsomme vejrtrækninger med forlænget udånding: ind for 4, ud for 7. Ved hver udånding, forestil dig at du skruer ned for en lydstyrkeknap — alle indtryk bliver lidt fjernere, lidt mere dæmpede.",
       "Åbn øjnene langsomt. Kig på én ting. Lyt til én lyd. Mærk én berøring. Vend langsomt tilbage til omgivelserne — på dine betingelser, i dit tempo. Du har nulstillet dit sensoriske system."
-    ]
+    ],
+    refleksion: "Hvad overrasker dig mest om din sensoriske belastning? Hvad kunne du ændre i dit arbejdsmiljø?"
   },
   {
     titel: "Mikro-bevægelse ved skrivebordet",
@@ -708,7 +720,52 @@ const OEVELSER = [
       "Stræk begge arme over hovedet med flettede fingre. Pres håndfladerne mod loftet og stræk — mærk hele siden af kroppen forlænge sig. Hold i 10 sekunder. Læn dig let til højre i 5 sekunder, derefter til venstre.",
       "Klem begge hænder hårdt sammen i 5 sekunder og slip helt. Spred fingrene vidt ud og hold i 5 sekunder. Gentag tre gange. Ryst hænderne løst i 10 sekunder. Dine hænder og underarme bærer en enorm belastning fra tastatur og mus.",
       "Afslut med en 'usynlig' hel-krops-aktivering: spænd alle muskler i kroppen samtidig — ben, mave, arme, ansigt — hold i 5 sekunder og slip alt på én gang. Tag en dyb vejrtrækning. Mærk kontrasten mellem spænding og afslapning. Dit nervesystem har fået en genstart."
-    ]
+    ],
+    refleksion: "Hvad sker der i din krop, når du sidder stille for længe? Hvor mærker du det først?"
+  }
+];
+
+// ── Standalone refleksioner (5 stk) ──
+const REFLEKSIONER = [
+  {
+    id: "forbindelse",
+    titel: "Forbindelse",
+    ikon: "◎",
+    farve: "sage",
+    spoergsmaal: "Hvornår følte du dig sidst ægte forbundet med en kollega — ikke bare professionelt, men menneskeligt? Hvad skabte den forbindelse?",
+    uddybning: "Vi er neurologisk designet til forbindelse. Dit nervesystem regulerer sig bedst i trygge relationer. Læg mærke til de øjeblikke på arbejdet, hvor du føler dig set og hørt — de er ikke bare rare. De er regulerende."
+  },
+  {
+    id: "moenstre",
+    titel: "Mønstre",
+    ikon: "◈",
+    farve: "amber",
+    spoergsmaal: "Hvilket mønster gentager sig i din arbejdsdag, som du gerne ville ændre? Hvad tror du mønsteret beskytter dig mod?",
+    uddybning: "Mønstre er nervesystemets autopilot — de opstod for at beskytte dig. At se dem er første skridt. At forstå hvad de beskytter, er andet. Forandring begynder ikke med viljestyrke, men med nysgerrighed."
+  },
+  {
+    id: "styrke",
+    titel: "Styrke",
+    ikon: "◉",
+    farve: "primary",
+    spoergsmaal: "Hvad er du god til, som du aldrig får anerkendelse for? Hvad ville det betyde, hvis du selv anerkendte det?",
+    uddybning: "Mange af dine vigtigste bidrag er usynlige — den ro du bringer, den omsorg du viser, de konflikter du forebygger. Dit nervesystem har brug for at du ser dine egne styrker, ikke kun dem andre definerer."
+  },
+  {
+    id: "grænser",
+    titel: "Grænser",
+    ikon: "◇",
+    farve: "rose",
+    spoergsmaal: "Hvor siger du ja, når din krop siger nej? Hvad ville der ske, hvis du lyttede til kroppen i stedet?",
+    uddybning: "Grænser er ikke egoistiske — de er neurobiologisk nødvendige. Hver gang du overskrider dine egne grænser, sender du et signal til nervesystemet om at dine behov ikke tæller. Over tid fører det til udmattelse, frustration og afkobling."
+  },
+  {
+    id: "retning",
+    titel: "Retning",
+    ikon: "◆",
+    farve: "accent",
+    spoergsmaal: "Hvis dit arbejdsliv kunne føles anderledes om seks måneder — ikke opgaverne, men fornemmelsen — hvordan ville det føles?",
+    uddybning: "Forandring starter ikke med en plan, men med en fornemmelse. Når du kan mærke den tilstand du ønsker dig hen imod, giver du dit nervesystem et mål at orientere sig efter. Det er ikke drømmeri — det er regulering gennem retning."
   }
 ];
 

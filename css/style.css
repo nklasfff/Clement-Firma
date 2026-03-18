@@ -1970,6 +1970,411 @@ body.hero-visible .hamburger-line {
 
 .oevelse-toggle:hover { color: var(--primary); }
 
+/* ── Øvelser section structure ── */
+.oevelser-section-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 700px;
+  margin: 0 auto 12px;
+  padding: 0 24px;
+  font-family: Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.oevelser-section-icon {
+  font-size: 1.3rem;
+  color: var(--accent);
+}
+
+.oevelser-section-intro {
+  max-width: 700px;
+  margin: 0 auto 20px;
+  padding: 0 24px;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  line-height: 1.65;
+}
+
+.oevelser-divider {
+  max-width: 700px;
+  margin: 40px auto 28px;
+  padding: 0 24px;
+  position: relative;
+}
+
+.oevelser-divider::after {
+  content: '';
+  display: block;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-light), var(--accent), var(--accent-light), transparent);
+  opacity: 0.5;
+}
+
+/* ── Embedded refleksion i øvelse ── */
+.oevelse-refleksion {
+  display: none;
+  margin-top: 16px;
+  padding: 16px 18px;
+  background: var(--primary-pale);
+  border-radius: 10px;
+  border-left: 3px solid var(--accent);
+}
+
+.oevelse-card.expanded .oevelse-refleksion {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+.oevelse-refleksion-header {
+  font-family: Georgia, serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.oevelse-refleksion-tekst {
+  font-size: 0.9rem;
+  color: var(--text);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* ── Refleksioner (Del 2) ── */
+.refleksioner-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 24px 20px;
+}
+
+.refleksion-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  border-left: 4px solid var(--accent);
+}
+
+.refleksion-card-sage { border-left-color: var(--sage); }
+.refleksion-card-amber { border-left-color: var(--amber); }
+.refleksion-card-primary { border-left-color: var(--primary); }
+.refleksion-card-rose { border-left-color: var(--rose); }
+.refleksion-card-accent { border-left-color: var(--accent); }
+
+.refleksion-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-1px);
+}
+
+.refleksion-card.active {
+  box-shadow: var(--shadow-lg);
+}
+
+.refleksion-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 22px 0;
+}
+
+.refleksion-card-ikon {
+  font-size: 1.3rem;
+  color: var(--accent);
+}
+
+.refleksion-card-titel {
+  font-family: Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.refleksion-card-spoergsmaal {
+  padding: 10px 22px 18px;
+  font-size: 0.92rem;
+  color: var(--text);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.refleksion-card-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+
+.refleksion-card.active .refleksion-card-body {
+  max-height: 500px;
+}
+
+.refleksion-card-uddybning {
+  padding: 0 22px 14px;
+  font-size: 0.88rem;
+  color: var(--text-light);
+  line-height: 1.6;
+  border-top: 1px solid rgba(107, 45, 91, 0.08);
+  padding-top: 14px;
+}
+
+.refleksion-card-input {
+  display: block;
+  width: calc(100% - 44px);
+  margin: 0 22px 12px;
+  padding: 12px 14px;
+  border: 1.5px solid rgba(107, 45, 91, 0.15);
+  border-radius: 10px;
+  font-family: Georgia, serif;
+  font-size: 0.88rem;
+  color: var(--text);
+  resize: vertical;
+  background: var(--bg);
+  transition: border-color 0.3s ease;
+  line-height: 1.5;
+}
+
+.refleksion-card-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: var(--white);
+}
+
+.refleksion-card-input::placeholder {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.refleksion-card-actions {
+  padding: 0 22px 18px;
+}
+
+.refleksion-gem-btn {
+  background: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: 20px;
+  padding: 8px 22px;
+  font-family: Georgia, serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.refleksion-gem-btn:hover {
+  background: var(--primary-light);
+}
+
+/* ── Din proces (Del 3) ── */
+.din-proces-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 24px 60px;
+}
+
+.proces-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.proces-stat {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.proces-stat-tal {
+  font-family: Georgia, serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.proces-stat-label {
+  font-size: 0.78rem;
+  color: var(--text-light);
+}
+
+.proces-journal {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 22px;
+  margin-bottom: 24px;
+}
+
+.proces-journal-title {
+  font-family: Georgia, serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+
+.proces-journal-hint {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+.proces-journal-input {
+  display: block;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid rgba(107, 45, 91, 0.15);
+  border-radius: 10px;
+  font-family: Georgia, serif;
+  font-size: 0.88rem;
+  color: var(--text);
+  resize: vertical;
+  background: var(--bg);
+  transition: border-color 0.3s ease;
+  line-height: 1.5;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+}
+
+.proces-journal-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: var(--white);
+}
+
+.proces-journal-input::placeholder {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.proces-journal-gem {
+  background: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: 20px;
+  padding: 8px 22px;
+  font-family: Georgia, serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.proces-journal-gem:hover {
+  background: var(--primary-light);
+}
+
+/* Timeline */
+.proces-tidslinje {
+  margin-top: 8px;
+}
+
+.proces-tidslinje-title {
+  font-family: Georgia, serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 16px;
+}
+
+.proces-entry {
+  display: flex;
+  gap: 14px;
+  padding-bottom: 18px;
+  position: relative;
+}
+
+.proces-entry:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 20px;
+  bottom: 0;
+  width: 2px;
+  background: var(--accent-light);
+}
+
+.proces-entry-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.proces-entry-oevelse .proces-entry-dot { background: var(--sage); }
+.proces-entry-refleksion .proces-entry-dot { background: var(--accent); }
+.proces-entry-journal .proces-entry-dot { background: var(--primary-pale); border: 2px solid var(--primary); box-sizing: border-box; }
+
+.proces-entry-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.proces-entry-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.proces-entry-titel {
+  font-family: Georgia, serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+
+.proces-entry-svar {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  line-height: 1.5;
+  font-style: italic;
+  margin-bottom: 3px;
+}
+
+.proces-entry-dato {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.proces-mere {
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  padding: 8px 0;
+}
+
+.proces-tom {
+  text-align: center;
+  padding: 30px 20px;
+  color: var(--text-light);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.proces-tom-hint {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
 .oevelse-card.hidden-by-filter {
   display: none;
 }

@@ -179,6 +179,8 @@
     opdaterCirkelTekster();
     renderTemaer();
     renderOevelser();
+    renderRefleksioner();
+    renderDinProces();
     renderMenuContent();
     renderSearchTags();
     bindEvents();
@@ -708,6 +710,31 @@
 
   var aktivFilter = 'alle';
 
+  // ── Proces-tracking (localStorage) ──
+  function getProces() {
+    try { return JSON.parse(localStorage.getItem('cf_proces') || '{"oevelser":[],"refleksioner":[],"journal":[]}'); }
+    catch (e) { return { oevelser: [], refleksioner: [], journal: [] }; }
+  }
+  function saveProces(p) { localStorage.setItem('cf_proces', JSON.stringify(p)); }
+
+  function markerOevelseGennemfoert(titel) {
+    var p = getProces();
+    p.oevelser.push({ titel: titel, dato: new Date().toISOString().slice(0, 10), tid: new Date().toLocaleTimeString('da-DK', { hour: '2-digit', minute: '2-digit' }) });
+    saveProces(p);
+  }
+
+  function gemRefleksionSvar(id, titel, svar) {
+    var p = getProces();
+    p.refleksioner.push({ id: id, titel: titel, svar: svar, dato: new Date().toISOString().slice(0, 10) });
+    saveProces(p);
+  }
+
+  function gemJournalNotat(tekst) {
+    var p = getProces();
+    p.journal.push({ tekst: tekst, dato: new Date().toISOString().slice(0, 10), tid: new Date().toLocaleTimeString('da-DK', { hour: '2-digit', minute: '2-digit' }) });
+    saveProces(p);
+  }
+
   function renderOevelser() {
     var html = '';
     OEVELSER.forEach(function(o, i) {
@@ -729,8 +756,17 @@
         html += '<li data-step="' + (idx + 1) + '">' + step + '</li>';
       });
       html += '</ol>';
+
+      // Embedded refleksion
+      if (o.refleksion) {
+        html += '<div class="oevelse-refleksion">';
+        html += '<div class="oevelse-refleksion-header">Refleksion efter øvelsen</div>';
+        html += '<p class="oevelse-refleksion-tekst">' + o.refleksion + '</p>';
+        html += '</div>';
+      }
+
       html += '<div class="oevelse-guide-controls">';
-      html += '<button class="oevelse-guide-btn btn-secondary oevelse-guide-start">Start guidet</button>';
+      html += '<button class="oevelse-guide-btn btn-secondary oevelse-guide-start">Start øvelse</button>';
       html += '<div class="oevelse-guide-progress"><div class="oevelse-guide-progress-bar"></div></div>';
       html += '<button class="oevelse-guide-btn oevelse-guide-next" style="display:none;">Næste trin</button>';
       html += '</div>';
@@ -747,13 +783,11 @@
     // Bind expand/collapse
     oevelserGrid.querySelectorAll('.oevelse-card').forEach(function(card) {
       card.addEventListener('click', function(e) {
-        // Don't toggle if clicking guide buttons or action bar
         if (e.target.closest('.oevelse-guide-controls')) return;
         if (e.target.closest('.action-bar')) return;
 
         var isExpanded = this.classList.contains('expanded');
 
-        // Collapse all and reset guide states
         oevelserGrid.querySelectorAll('.oevelse-card').forEach(function(c) {
           c.classList.remove('expanded');
           var btn = c.querySelector('.oevelse-toggle');
@@ -761,7 +795,6 @@
           resetGuide(c);
         });
 
-        // Toggle this
         if (!isExpanded) {
           this.classList.add('expanded');
           var toggleBtn = this.querySelector('.oevelse-toggle');
@@ -787,8 +820,187 @@
       });
     });
 
-    // Apply current filter
     applyFilter(aktivFilter);
+  }
+
+  // ── Refleksioner (Del 2) ──
+  function renderRefleksioner() {
+    var container = document.getElementById('refleksionerGrid');
+    if (!container) return;
+    var html = '';
+
+    REFLEKSIONER.forEach(function(r) {
+      html += '<div class="refleksion-card refleksion-card-' + r.farve + '" data-ref-id="' + r.id + '">';
+      html += '<div class="refleksion-card-header">';
+      html += '<span class="refleksion-card-ikon">' + r.ikon + '</span>';
+      html += '<h3 class="refleksion-card-titel">' + r.titel + '</h3>';
+      html += '</div>';
+      html += '<p class="refleksion-card-spoergsmaal">' + r.spoergsmaal + '</p>';
+      html += '<div class="refleksion-card-body">';
+      html += '<p class="refleksion-card-uddybning">' + r.uddybning + '</p>';
+      html += '<textarea class="refleksion-card-input" placeholder="Skriv dine tanker her..." rows="3"></textarea>';
+      html += '<div class="refleksion-card-actions">';
+      html += '<button class="refleksion-gem-btn" data-ref-id="' + r.id + '" data-ref-titel="' + escapeAttr(r.titel) + '">Gem refleksion</button>';
+      html += '</div>';
+      html += '</div>';
+      html += '</div>';
+    });
+
+    container.innerHTML = html;
+
+    // Bind card expand
+    container.querySelectorAll('.refleksion-card').forEach(function(card) {
+      card.addEventListener('click', function(e) {
+        if (e.target.closest('.refleksion-card-input')) return;
+        if (e.target.closest('.refleksion-gem-btn')) return;
+        var wasActive = this.classList.contains('active');
+        container.querySelectorAll('.refleksion-card').forEach(function(c) { c.classList.remove('active'); });
+        if (!wasActive) this.classList.add('active');
+      });
+    });
+
+    // Bind gem buttons
+    container.querySelectorAll('.refleksion-gem-btn').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var card = this.closest('.refleksion-card');
+        var textarea = card.querySelector('.refleksion-card-input');
+        var svar = textarea.value.trim();
+        if (!svar) {
+          textarea.focus();
+          textarea.style.borderColor = 'var(--rose)';
+          setTimeout(function() { textarea.style.borderColor = ''; }, 2000);
+          return;
+        }
+        var id = this.dataset.refId;
+        var titel = this.dataset.refTitel;
+        gemRefleksionSvar(id, titel, svar);
+        this.textContent = 'Gemt!';
+        this.style.background = 'var(--sage)';
+        var self = this;
+        setTimeout(function() {
+          self.textContent = 'Gem refleksion';
+          self.style.background = '';
+          textarea.value = '';
+          renderDinProces();
+        }, 1500);
+      });
+    });
+  }
+
+  // ── Din proces (Del 3) ──
+  function renderDinProces() {
+    var container = document.getElementById('dinProcesContainer');
+    if (!container) return;
+    var p = getProces();
+    var html = '';
+
+    // Stats overview
+    var totalOev = p.oevelser.length;
+    var totalRef = p.refleksioner.length;
+    var totalJournal = p.journal.length;
+    var unikkeOev = [];
+    p.oevelser.forEach(function(o) { if (unikkeOev.indexOf(o.titel) === -1) unikkeOev.push(o.titel); });
+
+    html += '<div class="proces-stats">';
+    html += '<div class="proces-stat">';
+    html += '<span class="proces-stat-tal">' + totalOev + '</span>';
+    html += '<span class="proces-stat-label">Øvelser gennemført</span>';
+    html += '</div>';
+    html += '<div class="proces-stat">';
+    html += '<span class="proces-stat-tal">' + unikkeOev.length + '</span>';
+    html += '<span class="proces-stat-label">Forskellige øvelser</span>';
+    html += '</div>';
+    html += '<div class="proces-stat">';
+    html += '<span class="proces-stat-tal">' + totalRef + '</span>';
+    html += '<span class="proces-stat-label">Refleksioner skrevet</span>';
+    html += '</div>';
+    html += '<div class="proces-stat">';
+    html += '<span class="proces-stat-tal">' + totalJournal + '</span>';
+    html += '<span class="proces-stat-label">Journalnotater</span>';
+    html += '</div>';
+    html += '</div>';
+
+    // Journal input
+    html += '<div class="proces-journal">';
+    html += '<h4 class="proces-journal-title">Skriv et notat til dig selv</h4>';
+    html += '<p class="proces-journal-hint">Hvad fylder lige nu? En observation, en intention, en erkendelse. Det behøver ikke være perfekt.</p>';
+    html += '<textarea class="proces-journal-input" id="procesJournalInput" placeholder="Skriv frit..." rows="3"></textarea>';
+    html += '<button class="proces-journal-gem" id="procesJournalGem">Gem notat</button>';
+    html += '</div>';
+
+    // Timeline
+    var allEntries = [];
+    p.oevelser.forEach(function(o) { allEntries.push({ type: 'oevelse', titel: o.titel, dato: o.dato, tid: o.tid || '' }); });
+    p.refleksioner.forEach(function(r) { allEntries.push({ type: 'refleksion', titel: r.titel, dato: r.dato, svar: r.svar }); });
+    p.journal.forEach(function(j) { allEntries.push({ type: 'journal', tekst: j.tekst, dato: j.dato, tid: j.tid || '' }); });
+
+    // Sort newest first
+    allEntries.sort(function(a, b) { return b.dato.localeCompare(a.dato); });
+
+    if (allEntries.length > 0) {
+      html += '<div class="proces-tidslinje">';
+      html += '<h4 class="proces-tidslinje-title">Din tidslinje</h4>';
+
+      var shown = Math.min(allEntries.length, 20);
+      for (var i = 0; i < shown; i++) {
+        var entry = allEntries[i];
+        html += '<div class="proces-entry proces-entry-' + entry.type + '">';
+        html += '<div class="proces-entry-dot"></div>';
+        html += '<div class="proces-entry-content">';
+        if (entry.type === 'oevelse') {
+          html += '<div class="proces-entry-label">Øvelse gennemført</div>';
+          html += '<div class="proces-entry-titel">' + entry.titel + '</div>';
+        } else if (entry.type === 'refleksion') {
+          html += '<div class="proces-entry-label">Refleksion</div>';
+          html += '<div class="proces-entry-titel">' + entry.titel + '</div>';
+          html += '<div class="proces-entry-svar">' + entry.svar + '</div>';
+        } else if (entry.type === 'journal') {
+          html += '<div class="proces-entry-label">Journalnotat</div>';
+          html += '<div class="proces-entry-svar">' + entry.tekst + '</div>';
+        }
+        html += '<div class="proces-entry-dato">' + entry.dato + (entry.tid ? ' kl. ' + entry.tid : '') + '</div>';
+        html += '</div>';
+        html += '</div>';
+      }
+
+      if (allEntries.length > 20) {
+        html += '<div class="proces-mere">+ ' + (allEntries.length - 20) + ' tidligere</div>';
+      }
+
+      html += '</div>';
+    } else {
+      html += '<div class="proces-tom">';
+      html += '<p>Du har ikke gennemført nogen øvelser eller skrevet refleksioner endnu.</p>';
+      html += '<p class="proces-tom-hint">Start med en øvelse herover — din proces begynder med det første skridt.</p>';
+      html += '</div>';
+    }
+
+    container.innerHTML = html;
+
+    // Bind journal gem
+    var gemBtn = document.getElementById('procesJournalGem');
+    var journalInput = document.getElementById('procesJournalInput');
+    if (gemBtn && journalInput) {
+      gemBtn.addEventListener('click', function() {
+        var tekst = journalInput.value.trim();
+        if (!tekst) {
+          journalInput.focus();
+          journalInput.style.borderColor = 'var(--rose)';
+          setTimeout(function() { journalInput.style.borderColor = ''; }, 2000);
+          return;
+        }
+        gemJournalNotat(tekst);
+        journalInput.value = '';
+        gemBtn.textContent = 'Gemt!';
+        gemBtn.style.background = 'var(--sage)';
+        setTimeout(function() {
+          gemBtn.textContent = 'Gem notat';
+          gemBtn.style.background = '';
+          renderDinProces();
+        }, 1200);
+      });
+    }
   }
 
   function resetGuide(card) {
@@ -861,6 +1073,12 @@
       if (nextBtn2) nextBtn2.style.display = 'none';
       // Mark all done
       lis.forEach(function(li) { li.classList.remove('step-active'); li.classList.add('step-done'); });
+      // Track completion
+      var idx = parseInt(card.getAttribute('data-index'));
+      if (OEVELSER[idx]) {
+        markerOevelseGennemfoert(OEVELSER[idx].titel);
+        renderDinProces();
+      }
     }
   }
 
