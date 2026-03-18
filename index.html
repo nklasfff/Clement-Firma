@@ -255,10 +255,13 @@
   <div class="view" data-view="trappen">
     <div class="view-header">
       <button class="back-btn back-to-hjem">← Tilbage</button>
-      <h1 class="view-title">Nervesystemstrappen</h1>
-      <p class="view-sub">Hvor er du lige nu? Mærk efter i kroppen — og tryk på det trin der passer bedst.</p>
+      <h1 class="view-title">Nervesystemets trappe</h1>
+      <p class="view-sub">Dit nervesystem har tre tilstande. At forstå dem er det første skridt mod at regulere dem.</p>
       <p class="view-intro">Dit nervesystem skifter mellem tre tilstande i løbet af arbejdsdagen. Ingen af dem er forkerte — men det hjælper at genkende, hvor du er lige nu. Når du ved det, kan du vælge den rette handling i stedet for at reagere på autopilot.</p>
     </div>
+
+    <!-- Hvor er du lige nu? -->
+    <div class="trappen-checkin-label">Hvor er du lige nu?</div>
 
     <div class="trappen-container">
       <div class="trappe-trin trappe-trin-groen" data-trin="groen">
@@ -308,7 +311,17 @@
       </div>
     </div>
 
+    <!-- Check-in bekræftelse -->
+    <div class="trappen-checkin-bekraeft" id="trappenCheckinBekraeft"></div>
+
+    <!-- Dit mønster -->
+    <div class="trappen-moenster-container" id="trappenMoenster"></div>
+
+    <!-- Trin-detalje response -->
     <div class="trappen-response" id="trappenResponse"></div>
+
+    <!-- Forstå dit nervesystem -->
+    <div class="trappen-forstaaelse" id="trappenForstaaelse"></div>
   </div>
 
   <!-- ════ VIEW: TEMAER ════ -->

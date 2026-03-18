@@ -181,6 +181,8 @@
     renderOevelser();
     renderRefleksioner();
     renderDinProces();
+    renderTrappenMoenster();
+    renderTrappenForstaaelse();
     renderMenuContent();
     renderSearchTags();
     bindEvents();
@@ -226,6 +228,7 @@
     opdaterRolleLabel();
     opdaterCirkelTekster();
     renderTemaer();
+    renderTrappenForstaaelse();
     if (aktivCirkel) renderCirkelDetail(aktivCirkel);
     if (aktivTrin) visTrappenSvar(aktivTrin);
     if (aktivTema) visTemaDetalje(aktivTema);
@@ -247,6 +250,8 @@
         trappenResponse.innerHTML = '';
         trappenResponse.classList.remove('visible');
       }
+      var checkinBekraeft = document.getElementById('trappenCheckinBekraeft');
+      if (checkinBekraeft) { checkinBekraeft.innerHTML = ''; checkinBekraeft.style.display = 'none'; }
     }
     if (baseView !== 'temaer' && aktivTema) {
       aktivTema = null;
@@ -528,9 +533,136 @@
   }
 
   // ── Trappen ──
+  // Check-in tracking
+  function getTrappenCheckins() {
+    try { return JSON.parse(localStorage.getItem('cf_trappen_checkins') || '[]'); } catch (e) { return []; }
+  }
+  function saveTrappenCheckin(trinId) {
+    var checkins = getTrappenCheckins();
+    checkins.push({
+      trin: trinId,
+      dato: new Date().toISOString().slice(0, 10),
+      tid: new Date().toLocaleTimeString('da-DK', { hour: '2-digit', minute: '2-digit' })
+    });
+    saveTrappenCheckins(checkins);
+  }
+  function saveTrappenCheckins(c) { localStorage.setItem('cf_trappen_checkins', JSON.stringify(c)); }
+
+  function renderTrappenCheckinBekraeft(trinId) {
+    var container = document.getElementById('trappenCheckinBekraeft');
+    if (!container) return;
+    var data = TRAPPEN[trinId];
+    if (!data) return;
+    var tid = new Date().toLocaleTimeString('da-DK', { hour: '2-digit', minute: '2-digit' });
+    var farveClass = data.farve;
+
+    container.innerHTML = '<div class="checkin-bekraeft checkin-bekraeft-' + farveClass + '">' +
+      '<span class="checkin-bekraeft-dot checkin-dot-' + farveClass + '"></span>' +
+      '<span>Registreret &middot; ' + tid + '</span>' +
+      '</div>';
+    container.style.display = 'block';
+  }
+
+  function renderTrappenMoenster() {
+    var container = document.getElementById('trappenMoenster');
+    if (!container) return;
+    var checkins = getTrappenCheckins();
+    if (checkins.length === 0) {
+      container.innerHTML = '';
+      container.style.display = 'none';
+      return;
+    }
+
+    var html = '<div class="moenster-card">';
+    html += '<div class="moenster-header">';
+    html += '<h4>Dit mønster</h4>';
+    html += '</div>';
+
+    // Build 7-day calendar (current week Mon-Sun)
+    var today = new Date();
+    var dayOfWeek = today.getDay(); // 0=Sun, 1=Mon...
+    var mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    var monday = new Date(today);
+    monday.setDate(today.getDate() + mondayOffset);
+
+    var dagNavne = ['Ma', 'Ti', 'On', 'To', 'Fr', 'Lø', 'Sø'];
+
+    html += '<div class="moenster-uge">';
+    for (var d = 0; d < 7; d++) {
+      var dag = new Date(monday);
+      dag.setDate(monday.getDate() + d);
+      var dagStr = dag.toISOString().slice(0, 10);
+      var isToday = dagStr === today.toISOString().slice(0, 10);
+
+      // Find checkins for this day
+      var dagCheckins = checkins.filter(function(c) { return c.dato === dagStr; });
+      var lastCheckin = dagCheckins.length > 0 ? dagCheckins[dagCheckins.length - 1] : null;
+
+      var dotClass = 'moenster-dot-empty';
+      if (lastCheckin) {
+        dotClass = 'moenster-dot-' + (TRAPPEN[lastCheckin.trin] ? TRAPPEN[lastCheckin.trin].farve : 'empty');
+      }
+
+      html += '<div class="moenster-dag' + (isToday ? ' moenster-dag-idag' : '') + '">';
+      html += '<span class="moenster-dag-navn">' + dagNavne[d] + '</span>';
+      html += '<span class="moenster-dag-dot ' + dotClass + '"></span>';
+      html += '</div>';
+    }
+    html += '</div>';
+
+    // Insight text
+    var totalCheckins = checkins.length;
+    var thisWeekCheckins = checkins.filter(function(c) {
+      return c.dato >= monday.toISOString().slice(0, 10);
+    });
+
+    if (thisWeekCheckins.length <= 2) {
+      html += '<p class="moenster-indsigt">Du har mærket ind ' + thisWeekCheckins.length + ' gang' + (thisWeekCheckins.length !== 1 ? 'e' : '') + ' denne uge. Det er helt okay — der er ingen krav her. Jo oftere du mærker ind, jo tydeligere bliver mønsteret.</p>';
+    } else {
+      // Count tilstande this week
+      var groenCount = thisWeekCheckins.filter(function(c) { return c.trin === 'groen'; }).length;
+      var gulCount = thisWeekCheckins.filter(function(c) { return c.trin === 'gul'; }).length;
+      var roedCount = thisWeekCheckins.filter(function(c) { return c.trin === 'roed'; }).length;
+      var dominant = groenCount >= gulCount && groenCount >= roedCount ? 'grøn' : gulCount >= roedCount ? 'gul' : 'rød';
+      html += '<p class="moenster-indsigt">Denne uge har du oftest mærket dig i <strong>' + dominant + '</strong> tilstand. At se sit mønster er første skridt mod at ændre det.</p>';
+    }
+
+    html += '</div>';
+    container.innerHTML = html;
+    container.style.display = 'block';
+  }
+
+  function renderTrappenForstaaelse() {
+    var container = document.getElementById('trappenForstaaelse');
+    if (!container) return;
+    var perspektiv = getDataPerspektiv();
+    var tekster = TRAPPEN_FORSTAAELSE[perspektiv];
+    if (!tekster) return;
+
+    var rolleLabel = perspektiv === 'leder' ? 'leder' : 'medarbejder';
+    var html = '<div class="forstaaelse-section">';
+    html += '<div class="forstaaelse-divider"></div>';
+    html += '<h3 class="forstaaelse-title">Forstå dit nervesystem som ' + rolleLabel + '</h3>';
+
+    tekster.forEach(function(t) {
+      html += '<div class="forstaaelse-card">';
+      html += '<h4 class="forstaaelse-card-title">' + t.titel + '</h4>';
+      html += '<p class="forstaaelse-card-tekst">' + t.tekst + '</p>';
+      html += '</div>';
+    });
+
+    html += '</div>';
+    container.innerHTML = html;
+  }
+
   function visTrappenSvar(trinId) {
     var data = TRAPPEN[trinId];
     if (!data) return;
+
+    // Register check-in
+    saveTrappenCheckin(trinId);
+    renderTrappenCheckinBekraeft(trinId);
+    renderTrappenMoenster();
 
     var svar = data[getDataPerspektiv()];
     var farveClass = data.farve === 'sage' ? 'sage-border' : data.farve === 'amber' ? 'amber-border' : 'rose-border';
@@ -539,24 +671,57 @@
     html += '<h3>' + data.navn + '</h3>';
     html += '<p>' + svar.beskrivelse + '</p>';
 
-    html += '<strong style="display:block; color:var(--primary); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">Kropslige signaler</strong>';
+    // Kropslige signaler
+    html += '<div class="trappen-signaler-section">';
+    html += '<strong>Kropslige signaler</strong>';
     html += '<ul class="trappen-signaler">';
     svar.kropsSignaler.forEach(function(s) {
       html += '<li>' + s + '</li>';
     });
     html += '</ul>';
-
-    html += '<div class="trappen-handling">';
-    html += '<strong>Handling</strong>';
-    html += '<p>' + svar.handling + '</p>';
     html += '</div>';
 
+    // Handlinger (now bullet list)
+    html += '<div class="trappen-handling">';
+    html += '<strong>Handlinger</strong>';
+    if (svar.handlinger) {
+      html += '<ul class="trappen-handlinger-list">';
+      svar.handlinger.forEach(function(h) {
+        html += '<li>' + h + '</li>';
+      });
+      html += '</ul>';
+    } else {
+      html += '<p>' + svar.handling + '</p>';
+    }
+    html += '</div>';
+
+    // Hvad mærker andre?
+    if (svar.hvadMaerkerAndre) {
+      html += '<div class="trappen-andre">';
+      html += '<strong>Hvad mærker andre?</strong>';
+      var andre = svar.hvadMaerkerAndre;
+      var keys = Object.keys(andre);
+      keys.forEach(function(key) {
+        var label = key.charAt(0).toUpperCase() + key.slice(1);
+        if (key === 'kolleger') label = 'Dine kolleger';
+        if (key === 'teamet') label = 'Hele teamet';
+        if (key === 'medarbejderne') label = 'Dine medarbejdere';
+        if (key === 'organisationen') label = 'Organisationen';
+        html += '<div class="trappen-andre-sub">';
+        html += '<h5>' + label + '</h5>';
+        html += '<p>' + andre[key] + '</p>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+
+    // Prøv nu
     html += '<div class="trappen-oevelse">';
     html += '<strong>Prøv nu</strong>';
     html += '<p>' + svar.oevelse + '</p>';
     html += '</div>';
 
-    html += buildActionBar('trappen', trinId, data.navn, svar.beskrivelse + '\n\nHandling: ' + svar.handling + '\n\nPrøv nu: ' + svar.oevelse);
+    html += buildActionBar('trappen', trinId, data.navn, svar.beskrivelse);
 
     html += '</div>';
 

@@ -341,8 +341,17 @@ const TRAPPEN = {
         "Du kan tænke klart og se nuancer",
         "Du har overskud til humor og nysgerrighed"
       ],
-      handling: "Brug denne tilstand: Tag den sværeste eller vigtigste opgave nu. Dit nervesystem er klar til kompleks tænkning, kreativt arbejde og vigtige samtaler.",
-      oevelse: "Mærk denne tilstand bevidst — læg mærke til hvordan kroppen føles lige nu. Jo bedre du kender din grønne tilstand, desto hurtigere kan du finde tilbage til den."
+      handlinger: [
+        "Tag den sværeste eller vigtigste opgave nu — dit nervesystem er klar til kompleks tænkning",
+        "Brug tiden til vigtige samtaler, feedback og kreativt arbejde",
+        "Beskyt tilstanden: tag dine pauser, drik vand, bevæg dig",
+        "Mærk bevidst hvordan kroppen føles — jo bedre du kender grøn, desto hurtigere finder du tilbage"
+      ],
+      oevelse: "Mærk denne tilstand bevidst — læg mærke til hvordan kroppen føles lige nu. Jo bedre du kender din grønne tilstand, desto hurtigere kan du finde tilbage til den.",
+      hvadMaerkerAndre: {
+        kolleger: "Dine kolleger mærker det. Når du er reguleret, skaber du en roligere energi i rummet. Du lytter bedre, reagerer mere nuanceret, og konflikter løser sig lettere. Du er den kollega, folk søger hen til — fordi dit nervesystem signalerer sikkerhed.",
+        teamet: "Hele teamet arbejder bedre, når flere er i grøn. Samarbejdet flyder, ideerne kommer, og der er plads til fejl uden frygt. Det er denne tilstand, der skaber psykologisk tryghed — ikke en politik, men en kropslig realitet."
+      }
     },
     leder: {
       beskrivelse: "Teamet er i en optimal tilstand for kreativt og strategisk arbejde. Nervesystemerne signalerer sikkerhed, og der er plads til ærlighed, risiko-tagning og innovation.",
@@ -353,8 +362,17 @@ const TRAPPEN = {
         "Idéer flyder frit og der er villighed til at eksperimentere",
         "Konflikter håndteres konstruktivt"
       ],
-      handling: "Planlæg kreative sessioner, strategimøder og vigtige beslutninger til dette tidspunkt. Det er her I kan tage de store skridt.",
-      oevelse: "Navngiv det for teamet: 'Vi er i et godt sted lige nu — lad os bruge det.' Bevidsthed om den gode tilstand forstærker den."
+      handlinger: [
+        "Planlæg kreative sessioner, strategimøder og vigtige beslutninger til dette tidspunkt",
+        "Navngiv det for teamet: 'Vi er i et godt sted — lad os bruge det'",
+        "Giv plads til ærlighed og sårbarhed — det er nu, det er sikkert",
+        "Bevidsthed om den gode tilstand forstærker den — tal om hvad der virker"
+      ],
+      oevelse: "Navngiv det for teamet: 'Vi er i et godt sted lige nu — lad os bruge det.' Bevidsthed om den gode tilstand forstærker den.",
+      hvadMaerkerAndre: {
+        medarbejderne: "Dine medarbejdere mærker din regulering øjeblikkeligt. De tager flere chancer, stiller flere spørgsmål, og kommer med de idéer de ellers holder for sig selv. Dit rolige nervesystem giver dem permission til at være hele mennesker på arbejdet.",
+        organisationen: "Regulerede teams præsterer bedre, har lavere sygefravær og højere fastholdelse. Det er ikke wellness — det er bundlinje. Den grønne tilstand er organisationens vigtigste ressource."
+      }
     }
   },
   gul: {
@@ -362,19 +380,28 @@ const TRAPPEN = {
     undertitel: "Aktivering og alarm",
     farve: "amber",
     medarbejder: {
-      beskrivelse: "Dit nervesystem er aktiveret — det forbereder sig på handling. Det er ikke farligt i sig selv, men det er et signal om at du har brug for regulering. Undgå store beslutninger lige nu.",
+      beskrivelse: "Dit sympatiske nervesystem er aktiveret — kamp-eller-flugt. Du mærker det som stress, uro, irritation eller en intens trang til at handle LIGE NU. Denne tilstand kan trigges af en provokerende mail, en presset deadline, en vanskelig kollega eller en stemme der lyder som noget fra fortiden. Din krop reagerer, som om faren er akut — selvom situationen objektivt set er håndterbar.",
       kropsSignaler: [
-        "Hjertet slår hurtigere, hænderne er måske svede",
-        "Åndedrættes er overfladisk og hurtigt",
-        "Skuldrene er oppe, kæben er spændt",
-        "Du føler dig rastløs, irritabel eller utålmodig",
-        "Du har svært ved at lytte og vil helst bare handle"
+        "Hjertet banker hurtigt — du kan mærke pulsen i halsen",
+        "Musklerne spænder, særligt kæbe, skuldre og hænder",
+        "Åndedrættet er hurtigt og højt i brystet",
+        "Du kan ikke tænke klart — hjernen lukker ned for nuancer",
+        "Du har svært ved at lytte og vil helst bare reagere"
       ],
-      handling: "Pause først, handling bagefter. Dit nervesystem er i alarm, og beslutninger taget herfra er ofte reaktive. Regulér dig selv ned før du reagerer på den provokerende mail eller den stressende deadline.",
-      oevelse: "Sæt begge fødder på gulvet. Tag 4 langsomme vejrtrækninger med forlænget udånding (4 sek ind, 6-8 sek ud). Mærk skuldrene sænke sig. Du bevæger dig ned ad trappen."
+      handlinger: [
+        "STOP før du reagerer. 20 sekunder vagus-åndedræt kan ændre alt: 4 sekunder ind, 8 sekunder ud",
+        "Mærk fødderne mod gulvet — det fortæller dit nervesystem, at du er HER, ikke i faren",
+        "Sig til dig selv: 'Min krop reagerer på pres. Faren er ikke reel lige nu.'",
+        "Hvis du mærker, at du er ved at sende den vrede mail eller sige noget skarpt: gå væk i 2 minutter. Ikke som flugt. Som bevidst regulering."
+      ],
+      oevelse: "Sæt begge fødder på gulvet. Tag 4 langsomme vejrtrækninger med forlænget udånding (4 sek ind, 6-8 sek ud). Mærk skuldrene sænke sig. Du bevæger dig ned ad trappen.",
+      hvadMaerkerAndre: {
+        kolleger: "Dine kolleger mærker det øjeblikkeligt. Nogle trækker sig og undgår dig — de har lært, at det er sikrest. Andre eskalerer, fordi de prøver at 'nå dig' gennem din alarm. Begge dele er normale reaktioner på et dysreguleret nervesystem.",
+        teamet: "Stemningen i teamet bliver elektrisk. Alle er på vagt. Selv de gode samarbejdsstunder er skrøbelige, fordi alle venter på den næste eskalering. Kommunikationen bliver kortere, fejlene flere, og tilliden skrøbelig."
+      }
     },
     leder: {
-      beskrivelse: "Teamet er under pres og nervesystemerne er i alarm. Der er brug for klarhed, struktur og tryghed — ikke flere opgaver.",
+      beskrivelse: "Dit teams nervesystemer er i alarm — og de orienterer sig efter dit. Hvis du også er i panik, forstærker det uroen eksponentielt. Dit vigtigste job lige nu er at være ankeret — den stabile kraft der regulerer rummet ned.",
       kropsSignaler: [
         "Tempoet er skruet op, folk taler hurtigere",
         "Der er kortere tålmodighed og flere afbrydelser",
@@ -382,8 +409,17 @@ const TRAPPEN = {
         "Folk arbejder i siloer og kommunikerer mindre",
         "Fejl og misforståelser stiger"
       ],
-      handling: "Skab klarhed og prioritering. Sig højt: 'Hvad er det vigtigste vi skal nå? Hvad kan vente?' Fjern usikkerhed — det er det mest regulerende du kan gøre for et presset team.",
-      oevelse: "Saml teamet kort. Brug 30 sekunder på fælles åndedræt. Prioritér tre ting. Fjern alt andet fra bordet. Klarhed regulerer."
+      handlinger: [
+        "Skab klarhed og prioritering. Sig højt: 'Hvad er det vigtigste vi skal nå? Hvad kan vente?'",
+        "Fjern usikkerhed — det er det mest regulerende du kan gøre for et presset team",
+        "Sænk dit eget tempo bevidst. Tal langsommere. Dit nervesystem smitter",
+        "Giv tydelig retning: 'Her er de tre ting vi fokuserer på. Resten parkerer vi.'"
+      ],
+      oevelse: "Saml teamet kort. Brug 30 sekunder på fælles åndedræt. Prioritér tre ting. Fjern alt andet fra bordet. Klarhed regulerer.",
+      hvadMaerkerAndre: {
+        medarbejderne: "Dine medarbejdere aflæser dig konstant — det er neurologisk programmeret i hierarkiske relationer. Når du er i alarm, går hele teamet i alarm. Når du regulerer dig ned, mærker de det og følger efter. Du er teamets primære reguleringskilde.",
+        organisationen: "Pressede teams laver flere fejl, har flere konflikter og mister de bedste medarbejdere først. Et team i vedvarende gul tilstand er på vej mod udbrændthed — og prisen betales i sygefravær, flugtuation og tabt innovation."
+      }
     }
   },
   roed: {
@@ -391,19 +427,28 @@ const TRAPPEN = {
     undertitel: "Nedlukning og udmattelse",
     farve: "rose",
     medarbejder: {
-      beskrivelse: "Dit system er overbelastet eller lukket ned. Det er ikke et tegn på svaghed — det er dit nervesystems nødstop. Du har brug for genopladning og omsorg, ikke præstation.",
+      beskrivelse: "Dit nervesystem er lukket ned. Du er træt, tom eller følelsesmæssigt fraværende. Det sker ikke fordi du er svag — det er dit nervesystems nødstop, når presset har varet for længe uden tilstrækkelig recovery. Nedlukning er kroppens måde at beskytte sig selv på. Du har brug for omsorg, ikke præstation.",
       kropsSignaler: [
         "Du føler dig tom, flad eller følelsesløs",
         "Alt føles tungt og meningsløst",
-        "Du har svært ved at koncentrere dig, zoner ud",
+        "Du har svært ved at koncentrere dig, zoner ud i møder",
         "Du har lyst til at isolere dig eller 'gemme dig'",
         "Kroppen føles tung, du er udmattet men kan måske ikke sove"
       ],
-      handling: "Det vigtigste lige nu er omsorg, ikke præstation. Rejs dig. Gå væk fra skærmen i 10 minutter. Drik vand. Mærk dine fødder mod gulvet. Du behøver ikke præstere lige nu.",
-      oevelse: "Blid bevægelse er vejen op fra rød: rejs dig langsomt, stræk armene, gå et par skridt. Mærk kontakten med gulvet. Kold vand i ansigtet. Ring til en person der giver dig ro. Du er ikke alene med dette."
+      handlinger: [
+        "Rejs dig. Gå væk fra skærmen i 10 minutter. Drik vand. Mærk dine fødder mod gulvet",
+        "Blid bevægelse er vejen op: stræk armene, gå et par skridt, mærk kontakten med gulvet",
+        "Kold vand i ansigtet aktiverer vagusnerven og hjælper dit system med at 'genstarte'",
+        "Ring til eller skriv til en person der giver dig ro. Du er ikke alene med dette"
+      ],
+      oevelse: "Blid bevægelse er vejen op fra rød: rejs dig langsomt, stræk armene, gå et par skridt. Mærk kontakten med gulvet. Kold vand i ansigtet. Ring til en person der giver dig ro.",
+      hvadMaerkerAndre: {
+        kolleger: "Dine kolleger mærker dit fravær, selvom du fysisk er til stede. Du svarer kortfattet, undgår øjenkontakt, og trækker dig fra fællesskabet. Nogle kolleger prøver at nå dig — andre respekterer tavsheden men bekymrer sig.",
+        teamet: "Et team med flere i rød tilstand fungerer på overfladen, men mangler energi, kreativitet og forbindelse. Opgaver løses mekanisk, innovation stopper, og den usynlige distance mellem mennesker vokser. Det er ofte her, de bedste mennesker stille og roligt begynder at lede efter noget andet."
+      }
     },
     leder: {
-      beskrivelse: "Teamet er udkørt. Nervesystemerne er i nedlukning, og der produceres dårligt arbejde med risiko for fejl og sygemeldinger. Det er tid til akut aflastning.",
+      beskrivelse: "Teamet er udkørt. Nervesystemerne er i nedlukning, og der produceres dårligt arbejde med risiko for fejl og sygemeldinger. Det er tid til akut aflastning — ikke endnu et motivationsoplæg, men reel reduktion af belastning.",
       kropsSignaler: [
         "Folk virker fraværende og uengagerede",
         "Der er stilhed — men ikke den gode slags",
@@ -411,10 +456,51 @@ const TRAPPEN = {
         "Kvaliteten falder, deadlines glipper",
         "Kynisme og resignation præger samtaler"
       ],
-      handling: "Aflys ikke-kritiske møder. Fjern opgaver fra bordet. Sig højt: 'Vi trækker vejret og prioriterer. Det er okay at gøre mindre lige nu.' Det kræver mod, men det er det ansvarlige.",
-      oevelse: "Model omsorg: send teamet tidligt hjem en dag. Annullér en deadline. Spørg hver enkelt: 'Hvad har du brug for lige nu?' — og mene det. Recovery er ikke luksus, det er nødvendigt."
+      handlinger: [
+        "Aflys ikke-kritiske møder. Fjern opgaver fra bordet. Sig: 'Det er okay at gøre mindre lige nu'",
+        "Model omsorg synligt: send teamet tidligt hjem, annullér en deadline",
+        "Spørg hver enkelt: 'Hvad har du brug for lige nu?' — og mene det",
+        "Skab rammer for recovery: bevægelse, pauser, nedsat tempo. Det kræver mod, men det er ansvarligt"
+      ],
+      oevelse: "Gør omsorg synlig. Et simpelt 'Hvordan går det helt ærligt?' fulgt af tavshed. Sit sammen. Vær til stede. Mennesker vender tilbage fra rød gennem forbindelse, ikke gennem krav.",
+      hvadMaerkerAndre: {
+        medarbejderne: "Dine medarbejdere venter på et signal om at det er okay at være menneske. Når du som leder anerkender at teamet er overbelastet — uden at bagatellisere eller problematisere — giver du dem permission til at trække vejret. Det signal er mere regulerende end enhver strategi.",
+        organisationen: "Vedvarende rød tilstand i teams koster dyrt: sygemeldinger, opsigelser, fejl, tabt innovation og en kultur der langsomt eroderer. At gribe ind tidligt — med omsorg, ikke kontrol — er den mest omkostningseffektive investering en organisation kan lave."
+      }
     }
   }
+};
+
+// ── Forstå dit nervesystem (uddybende trappen-tekster) ──
+const TRAPPEN_FORSTAAELSE = {
+  medarbejder: [
+    {
+      titel: "Hvorfor dine kolleger reagerer på DIT nervesystem",
+      tekst: "Nervesystemer synkroniserer sig med hinanden — særligt i tætte samarbejdsrelationer. Når du er stresset, mærker din sidemand det. Når du er rolig, regulerer du dem ned. Det kaldes co-regulering, og det er ikke noget du vælger — det er biologisk. Det betyder, at det vigtigste du kan gøre for dit team i en presset situation, er at regulere dig selv først. Ikke fordi dine følelser er forkerte — men fordi dine kolleger ubevidst låner din tilstand."
+    },
+    {
+      titel: "Dine reaktioner er ikke din skyld — men de er dit ansvar",
+      tekst: "Hvis du voksede op i et miljø med uforudsigelighed, pres eller mangel på tryghed, har dit nervesystem lært at være på vagt. Det er ikke en fejl — det var en overlevelsesstrategi. Men den strategi kan gøre det svært at være den kollega eller det menneske, du gerne vil være. Når en deadline rammer, og du mærker paniken vælte op, er det ofte ikke opgaven, du reagerer på — det er et ekko fra en tidligere erfaring. At forstå det er ikke en undskyldning. Det er begyndelsen på at vælge anderledes."
+    },
+    {
+      titel: "Regulering kommer før samtale",
+      tekst: "Mange prøver at løse konflikter eller tage svære samtaler, når nervesystemet stadig er i alarm. Men hjernen kan ikke lytte, tænke nuanceret eller finde kreative løsninger, når den er i kamp-eller-flugt. Det er biologisk umuligt. Derfor er rækkefølgen afgørende: først regulering (åndedræt, grounding, pause), så kontakt (øjenkontakt, tilstedeværelse, lytning), og først til sidst samtale. Trappen hjælper dig med at genkende, hvor du er — så du ved, hvad der er muligt lige nu."
+    }
+  ],
+  leder: [
+    {
+      titel: "Hvorfor dit team reagerer på DIT nervesystem",
+      tekst: "Forskning i interpersonel neurobiologi viser, at nervesystemer synkroniserer sig i hierarkiske relationer. Dit teams nervesystemer orienterer sig bogstaveligt talt efter dit. Når du er stresset og reaktiv, forstærkes den reaktion i hele teamet. Når du er rolig og til stede, skaber du en kaskade af regulering. Det hedder co-regulering, og det er den mest kraftfulde ledelsesmekanisme der findes. Din vigtigste forberedelse til ethvert møde er derfor ikke slides — det er din egen regulering."
+    },
+    {
+      titel: "Kultur er nervesystemets sprog",
+      tekst: "Arbejdspladskultur er ikke en vision på væggen — det er det samlede nervesystems tilstand i organisationen. En kultur med psykologisk tryghed er en kultur hvor nervesystemerne signalerer sikkerhed. En kultur med frygt og kontrol er en kultur hvor nervesystemerne er i kronisk alarm. Som leder former du kulturen ikke gennem det du siger, men gennem det din krop signalerer. Dit tempo, dit tonefald, din evne til at rumme fejl og usikkerhed — det er kulturens byggesten."
+    },
+    {
+      titel: "Ledelse fra det rigtige trin på trappen",
+      tekst: "Der er beslutninger du kun bør tage fra grøn: opsigelser, strategiændringer, svære samtaler. Der er opgaver der fungerer i gul: korte sprints, deadline-pres, problemløsning. Og der er øjeblikke i rød, hvor det eneste ansvarlige er at stoppe maskinen. At kende dit eget trin — og turde handle derefter — er den mest modige form for ledelse. Det kræver, at du prioriterer din egen regulering som en strategisk investering, ikke en personlig luksus."
+    }
+  ]
 };
 
 // ── Temaer med dybt indhold ──
