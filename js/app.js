@@ -229,6 +229,7 @@
     opdaterCirkelTekster();
     renderTemaer();
     renderTrappenForstaaelse();
+    renderDynamik();
     if (aktivCirkel) renderCirkelDetail(aktivCirkel);
     if (aktivTrin) visTrappenSvar(aktivTrin);
     if (aktivTema) visTemaDetalje(aktivTema);
@@ -307,6 +308,9 @@
     } else if (hash === 'virksomhed') {
       renderVirksomhed();
       navigateTo('virksomhed', false);
+    } else if (hash === 'dynamik') {
+      renderDynamik();
+      navigateTo('dynamik', false);
     } else {
       navigateTo(hash, false);
     }
@@ -365,6 +369,14 @@
         navigateTo('hjem');
       });
     });
+
+    // Dynamik link fra forsiden
+    var dynamikLink = document.getElementById('dynamikLink');
+    if (dynamikLink) {
+      dynamikLink.addEventListener('click', function() {
+        showDynamik();
+      });
+    }
 
     // Tabs
     tabs.forEach(function(tab) {
@@ -1277,6 +1289,279 @@
     });
   }
 
+  // ── Dynamik side ──
+  function renderDynamik() {
+    var container = document.getElementById('dynamikContent');
+    if (!container) return;
+
+    var perspektiv = getDataPerspektiv();
+    var erLeder = perspektiv === 'leder';
+
+    // Circle labels for SVG
+    var cLabels = [
+      { l1: 'Stressregulering', l2: '' },
+      { l1: 'Tre tilstande', l2: 'i arbejdsdagen' },
+      { l1: erLeder ? 'Dit lederskab' : 'Din leder', l2: erLeder ? '& kulturen' : '& din trivsel' },
+      { l1: 'Samarbejds-', l2: 'mønstre' },
+      { l1: erLeder ? 'Bevægelse' : 'Din krop', l2: erLeder ? 'i teamet' : 'i hverdagen' },
+      { l1: erLeder ? 'Fælles pauser' : 'Dit åndedræt', l2: erLeder ? '& åndedræt' : '& pauser' },
+      { l1: erLeder ? 'Teamets' : 'Dit mentale', l2: erLeder ? 'resiliens' : 'overskud' }
+    ];
+
+    var html = '';
+
+    // Intro
+    html += '<p class="dynamik-lead">Cirkelmodellen er ikke bare en illustration. Den er et spejl af den måde ' + (erLeder ? 'dit team' : 'din arbejdsdag') + ' faktisk fungerer — som ét sammenhængende system, hvor intet område står alene. Forstår du denne dynamik, forstår du også hvorfor forandring kræver mere end én isoleret indsats.</p>';
+
+    // === SECTION 1: Balance ===
+    html += '<div class="dynamik-section">';
+    html += '<h3 class="dynamik-section-title">Når alt er i balance</h3>';
+
+    // SVG balanced
+    html += '<div class="dynamik-svg-wrap">';
+    html += '<svg viewBox="0 0 520 520" class="dynamik-svg">';
+    // Connection lines
+    html += '<g opacity="0.35">';
+    var balPos = {c:[260,260],r:[260,110],p:[390,185],f:[390,335],b:[260,410],a:[130,335],i:[130,185]};
+    var keys = ['r','p','f','b','a','i'];
+    keys.forEach(function(k){
+      html += '<line x1="'+balPos.c[0]+'" y1="'+balPos.c[1]+'" x2="'+balPos[k][0]+'" y2="'+balPos[k][1]+'" stroke="var(--primary)" stroke-width="1" stroke-dasharray="4,4"/>';
+    });
+    for(var x=0;x<keys.length;x++){
+      for(var y=x+1;y<keys.length;y++){
+        html += '<line x1="'+balPos[keys[x]][0]+'" y1="'+balPos[keys[x]][1]+'" x2="'+balPos[keys[y]][0]+'" y2="'+balPos[keys[y]][1]+'" stroke="var(--primary)" stroke-width="0.5" stroke-dasharray="3,5"/>';
+      }
+    }
+    html += '</g>';
+    html += '<circle cx="260" cy="260" r="72" fill="#fff"/>';
+    html += '<circle cx="260" cy="260" r="72" fill="var(--primary)" stroke="var(--primary)" stroke-width="2"/>';
+    html += '<text x="260" y="255" fill="#fff" font-family="Georgia,serif" font-size="14" text-anchor="middle" font-weight="600">' + cLabels[0].l1 + '</text>';
+    html += '<text x="260" y="273" fill="#fff" font-family="Georgia,serif" font-size="12" text-anchor="middle">' + cLabels[0].l2 + '</text>';
+    var balCircles = [
+      {x:260,y:110,idx:1},{x:390,y:185,idx:2},{x:390,y:335,idx:3},
+      {x:260,y:410,idx:4},{x:130,y:335,idx:5},{x:130,y:185,idx:6}
+    ];
+    balCircles.forEach(function(c){
+      html += '<circle cx="'+c.x+'" cy="'+c.y+'" r="56" fill="#fff"/>';
+      html += '<circle cx="'+c.x+'" cy="'+c.y+'" r="56" fill="var(--primary-light)" stroke="var(--primary)" stroke-width="1.5" opacity="0.88"/>';
+      html += '<text x="'+c.x+'" y="'+(c.y-6)+'" fill="#fff" font-family="Georgia,serif" font-size="12" text-anchor="middle">'+cLabels[c.idx].l1+'</text>';
+      html += '<text x="'+c.x+'" y="'+(c.y+10)+'" fill="#fff" font-family="Georgia,serif" font-size="12" text-anchor="middle">'+cLabels[c.idx].l2+'</text>';
+    });
+    html += '</svg>';
+    html += '<p class="dynamik-svg-caption">Systemet i balance — alle områder støtter hinanden</p>';
+    html += '</div>';
+
+    if (erLeder) {
+      html += '<p class="dynamik-text">Når dit team fungerer, arbejder alle syv dimensioner sammen i en gensidig vekselvirkning. Stressregulering bærer kulturen. Åndedræt og pauser giver plads til recovery. Lederskabet skaber tryghed. Samarbejdsmønstre er fleksible nok til at rumme konflikter uden at bryde ned.</p>';
+      html += '<p class="dynamik-text">I denne tilstand er teamets nervesystemer regulerede. Der er plads til kreativitet, ærlighed og innovation. Konflikter håndteres konstruktivt. Folk har overskud til hinanden — og til sig selv. Det er denne tilstand, der skaber psykologisk tryghed.</p>';
+    } else {
+      html += '<p class="dynamik-text">Når din arbejdsdag fungerer, arbejder alle syv dimensioner sammen i en gensidig vekselvirkning. Stressregulering bærer hverdagen. Åndedræt og pauser giver plads til genopladning. Din relation til ledelse og kolleger er tryg. Og dine samarbejdsmønstre er fleksible nok til at rumme konflikter uden at bryde sammen.</p>';
+      html += '<p class="dynamik-text">I denne tilstand er dit nervesystem reguleret. Du har adgang til kreativitet, empati og overblik. Kroppen er afslappet men energisk, åndedrættet er dybt og roligt, og du føler dig tilstede. Det er denne tilstand, der gør godt arbejde muligt.</p>';
+    }
+    html += '<p class="dynamik-text">Læg mærke til figuren. Symmetrien. De lige afstande. Forbindelseslinjerne der fordeler sig jævnt. Du kan se det med det samme — her er noget der fungerer.</p>';
+    html += '</div>';
+
+    // === SECTION 2: Under pressure ===
+    html += '<div class="dynamik-section">';
+    html += '<h3 class="dynamik-section-title">Når systemet er under pres</h3>';
+
+    html += '<div class="dynamik-svg-wrap">';
+    html += '<svg viewBox="0 0 520 520" class="dynamik-svg">';
+    var presPos = {c:[270,255],r:[240,100],p:[405,165],f:[380,355],b:[280,420],a:[115,310],i:[145,200]};
+    html += '<g opacity="0.35">';
+    var pk = ['r','p','f','b','a','i'];
+    pk.forEach(function(k){
+      html += '<line x1="'+presPos.c[0]+'" y1="'+presPos.c[1]+'" x2="'+presPos[k][0]+'" y2="'+presPos[k][1]+'" stroke="var(--primary)" stroke-width="1" stroke-dasharray="4,4"/>';
+    });
+    for(var x2=0;x2<pk.length;x2++){
+      for(var y2=x2+1;y2<pk.length;y2++){
+        html += '<line x1="'+presPos[pk[x2]][0]+'" y1="'+presPos[pk[x2]][1]+'" x2="'+presPos[pk[y2]][0]+'" y2="'+presPos[pk[y2]][1]+'" stroke="var(--primary)" stroke-width="0.5" stroke-dasharray="3,5"/>';
+      }
+    }
+    html += '</g>';
+    html += '<circle cx="270" cy="255" r="68" fill="#fff"/>';
+    html += '<circle cx="270" cy="255" r="68" fill="var(--primary)" stroke="var(--primary)" stroke-width="2"/>';
+    html += '<text x="270" y="250" fill="#fff" font-family="Georgia,serif" font-size="13" text-anchor="middle" font-weight="600">' + cLabels[0].l1 + '</text>';
+    html += '<text x="270" y="266" fill="#fff" font-family="Georgia,serif" font-size="11" text-anchor="middle">' + cLabels[0].l2 + '</text>';
+    var presCircles = [
+      {x:240,y:100,r:48,idx:1,op:'0.7'},{x:405,y:165,r:44,idx:2,op:'0.65'},
+      {x:380,y:355,r:62,idx:3,op:'0.9'},{x:280,y:420,r:50,idx:4,op:'0.75'},
+      {x:115,y:310,r:58,idx:5,op:'0.85'},{x:145,y:200,r:42,idx:6,op:'0.6'}
+    ];
+    presCircles.forEach(function(c){
+      html += '<circle cx="'+c.x+'" cy="'+c.y+'" r="'+c.r+'" fill="#fff"/>';
+      html += '<circle cx="'+c.x+'" cy="'+c.y+'" r="'+c.r+'" fill="var(--primary-light)" stroke="var(--primary)" stroke-width="1.5" opacity="'+c.op+'"/>';
+      html += '<text x="'+c.x+'" y="'+(c.y-5)+'" fill="#fff" font-family="Georgia,serif" font-size="11" text-anchor="middle">'+cLabels[c.idx].l1+'</text>';
+      html += '<text x="'+c.x+'" y="'+(c.y+9)+'" fill="#fff" font-family="Georgia,serif" font-size="11" text-anchor="middle">'+cLabels[c.idx].l2+'</text>';
+    });
+    html += '</svg>';
+    html += '<p class="dynamik-svg-caption">Systemet under pres — symmetrien er brudt</p>';
+    html += '</div>';
+
+    if (erLeder) {
+      html += '<p class="dynamik-text">Men arbejdsdagen ser ikke altid sådan ud. Omstruktureringer, deadlines, konflikter, personalemangel, dårlig ledelse ovenfra — alt dette trækker teamet ud af balance. Og det sker ikke isoleret. Når ét område belastes, mærker alle de andre det.</p>';
+      html += '<p class="dynamik-text">Se på figuren. Sammenlign den med den forrige. Symmetrien er brudt. Nogle cirkler er trukket tættere sammen, andre skubbet fra hinanden. Det er præcis sådan det føles i et team under pres — noget er skævt, men det er svært at sætte fingeren på hvad.</p>';
+    } else {
+      html += '<p class="dynamik-text">Men arbejdsdagen ser ikke altid sådan ud. Deadlines, konflikter, konstante afbrydelser, dårlig ledelse, for mange opgaver — alt dette trækker dig ud af balance. Og det sker ikke isoleret. Når ét område belastes, mærker alle de andre det.</p>';
+      html += '<p class="dynamik-text">Se på figuren. Sammenlign den med den forrige. Symmetrien er brudt. Nogle cirkler er trukket tættere sammen, andre skubbet fra hinanden. Cirklerne har ændret størrelse — det er præcis sådan det føles når du er presset. Noget er skævt, men det er svært at sætte fingeren på hvad det egentlig er.</p>';
+    }
+    html += '<p class="dynamik-text">Og det er fordi det ikke er ét enkelt problem. Det er hele systemet der er trukket ud af sin naturlige balance.</p>';
+    html += '</div>';
+
+    // === SECTION 3: One area dominates ===
+    html += '<div class="dynamik-section">';
+    html += '<h3 class="dynamik-section-title">Når ét område dominerer</h3>';
+
+    html += '<div class="dynamik-svg-wrap">';
+    html += '<svg viewBox="0 0 520 520" class="dynamik-svg">';
+    var domPos = {c:[280,260],r:[255,115],p:[395,200],f:[370,350],b:[260,415],a:[120,320],i:[100,165]};
+    html += '<g opacity="0.35">';
+    var dk = ['r','p','f','b','a','i'];
+    dk.forEach(function(k){
+      html += '<line x1="'+domPos.c[0]+'" y1="'+domPos.c[1]+'" x2="'+domPos[k][0]+'" y2="'+domPos[k][1]+'" stroke="var(--primary)" stroke-width="1" stroke-dasharray="4,4"/>';
+    });
+    for(var x3=0;x3<dk.length;x3++){
+      for(var y3=x3+1;y3<dk.length;y3++){
+        html += '<line x1="'+domPos[dk[x3]][0]+'" y1="'+domPos[dk[x3]][1]+'" x2="'+domPos[dk[y3]][0]+'" y2="'+domPos[dk[y3]][1]+'" stroke="var(--primary)" stroke-width="0.5" stroke-dasharray="3,5"/>';
+      }
+    }
+    html += '</g>';
+    html += '<circle cx="280" cy="260" r="65" fill="#fff"/>';
+    html += '<circle cx="280" cy="260" r="65" fill="var(--primary)" stroke="var(--primary)" stroke-width="2"/>';
+    html += '<text x="280" y="255" fill="#fff" font-family="Georgia,serif" font-size="13" text-anchor="middle" font-weight="600">' + cLabels[0].l1 + '</text>';
+    html += '<text x="280" y="271" fill="#fff" font-family="Georgia,serif" font-size="11" text-anchor="middle">' + cLabels[0].l2 + '</text>';
+    // Big dominant circle — "Uadresseret stress" / "Kulturelt pres"
+    var domLabel = erLeder ? {l1:'Kulturelt',l2:'pres'} : {l1:'Uadresseret',l2:'stress'};
+    html += '<circle cx="100" cy="165" r="78" fill="#fff"/>';
+    html += '<circle cx="100" cy="165" r="78" fill="var(--rose)" stroke="var(--rose)" stroke-width="2" opacity="0.85"/>';
+    html += '<text x="100" y="158" fill="#fff" font-family="Georgia,serif" font-size="14" text-anchor="middle" font-weight="600">'+domLabel.l1+'</text>';
+    html += '<text x="100" y="178" fill="#fff" font-family="Georgia,serif" font-size="14" text-anchor="middle" font-weight="600">'+domLabel.l2+'</text>';
+    var domCircles = [
+      {x:255,y:115,r:42,idx:1,op:'0.6'},{x:395,y:200,r:40,idx:2,op:'0.55'},
+      {x:370,y:350,r:48,idx:3,op:'0.7'},{x:260,y:415,r:44,idx:4,op:'0.65'},
+      {x:120,y:320,r:46,idx:5,op:'0.7'}
+    ];
+    domCircles.forEach(function(c){
+      html += '<circle cx="'+c.x+'" cy="'+c.y+'" r="'+c.r+'" fill="#fff"/>';
+      html += '<circle cx="'+c.x+'" cy="'+c.y+'" r="'+c.r+'" fill="var(--primary-light)" stroke="var(--primary)" stroke-width="1.5" opacity="'+c.op+'"/>';
+      html += '<text x="'+c.x+'" y="'+(c.y-5)+'" fill="#fff" font-family="Georgia,serif" font-size="10" text-anchor="middle">'+cLabels[c.idx].l1+'</text>';
+      html += '<text x="'+c.x+'" y="'+(c.y+8)+'" fill="#fff" font-family="Georgia,serif" font-size="10" text-anchor="middle">'+cLabels[c.idx].l2+'</text>';
+    });
+    html += '</svg>';
+    html += '<p class="dynamik-svg-caption">' + (erLeder ? 'Kulturelt pres trækker hele teamets system mod sig' : 'Uadresseret stress trækker hele dit system ud af balance') + '</p>';
+    html += '</div>';
+
+    if (erLeder) {
+      html += '<p class="dynamik-text">Lad os se nærmere på hvad der sker, når ét specifikt område er under pres — for eksempel kulturelt pres fra organisationen: urealistiske forventninger, manglende ressourcer, eller en ledelse der presser uden at lytte.</p>';
+      html += '<p class="dynamik-text">Presset bliver ikke i sin egen cirkel. Det udvider sig. Det fylder mere. Og i takt med at det vokser, trækker det alle andre områder ud af deres naturlige position:</p>';
+      html += '<ul class="dynamik-list">';
+      html += '<li><strong>Tre tilstande:</strong> Teamet skifter fra grøn til vedvarende gul alarm. Folk kører på adrenalin. Fejlene stiger. Irritation erstatter samarbejde.</li>';
+      html += '<li><strong>Lederskab & kultur:</strong> Din ledelse bliver reaktiv i stedet for strategisk. Du slukker brande i stedet for at bygge. Din regulering falder, og teamet mærker det øjeblikkeligt.</li>';
+      html += '<li><strong>Samarbejdsmønstre:</strong> Samarbejdet stivner. Folk trækker sig ind i siloer. Konflikter håndteres ikke — de parkeres og ulmer.</li>';
+      html += '<li><strong>Krop & bevægelse:</strong> Pauser forsvinder. Folk spiser ved skærmen. Skuldrene sidder oppe ved ørerne hele dagen. Sygefraværet stiger stille og roligt.</li>';
+      html += '<li><strong>Åndedræt & pauser:</strong> Ingen tager pauser. Åndedrættet er overfladisk. Nervesystemet sidder fast i aktivering — og det smitter fra leder til medarbejder.</li>';
+      html += '</ul>';
+    } else {
+      html += '<p class="dynamik-text">Lad os se nærmere på hvad der sker, når ét specifikt område er under pres — for eksempel uadresseret stress der aldrig får plads til at blive reguleret.</p>';
+      html += '<p class="dynamik-text">Stressen bliver ikke i sin egen cirkel. Den udvider sig. Den fylder mere. Og i takt med at den vokser, trækker den alle andre områder ud af deres naturlige position:</p>';
+      html += '<ul class="dynamik-list">';
+      html += '<li><strong>Tre tilstande:</strong> Du sidder fast i gul alarm eller rød nedlukning. Skiftet til grøn tilstand sker sjældnere og varer kortere. Dit nervesystem glemmer gradvist, hvordan ro føles.</li>';
+      html += '<li><strong>Din leder & din trivsel:</strong> Din oplevelse af ledelse farves af din stresstilstand. En leder der normalt føles støttende, begynder at føles krævende. Kommunikationen forværres.</li>';
+      html += '<li><strong>Samarbejdsmønstre:</strong> Dine samarbejdsmønstre stivner. Du trækker dig, overtilpasser eller eskalerer — afhængigt af dit tilknytningsmønster. Relationer der normalt bærer, begynder at knirke.</li>';
+      html += '<li><strong>Din krop:</strong> Kroppen bærer det hele. Spændingshovedpine, dårlig søvn, stivhed i nakke og skuldre, indre uro der ikke vil slippe.</li>';
+      html += '<li><strong>Dit åndedræt:</strong> Åndedrættet bliver overfladisk og hurtigt. Pauserne forsvinder. Nervesystemet mister sin naturlige evne til at skifte mellem aktivering og hvile.</li>';
+      html += '</ul>';
+    }
+    html += '<p class="dynamik-text">Det er ikke svaghed. Det er nervesystemets forsøg på at klare sig. Men prisen er, at hele systemets balance går tabt.</p>';
+    html += '</div>';
+
+    // === SECTION 4: Multiple areas ===
+    html += '<div class="dynamik-section">';
+    html += '<h3 class="dynamik-section-title">Når flere områder belastes samtidig</h3>';
+
+    html += '<div class="dynamik-svg-wrap">';
+    html += '<svg viewBox="0 0 520 520" class="dynamik-svg">';
+    var mulPos = {c:[265,265],r:[220,95],p:[410,175],f:[395,360],b:[240,430],a:[100,340],i:[110,170]};
+    html += '<g opacity="0.35">';
+    var mk = ['r','p','f','b','a','i'];
+    mk.forEach(function(k){
+      html += '<line x1="'+mulPos.c[0]+'" y1="'+mulPos.c[1]+'" x2="'+mulPos[k][0]+'" y2="'+mulPos[k][1]+'" stroke="var(--primary)" stroke-width="1" stroke-dasharray="4,4"/>';
+    });
+    for(var x4=0;x4<mk.length;x4++){
+      for(var y4=x4+1;y4<mk.length;y4++){
+        html += '<line x1="'+mulPos[mk[x4]][0]+'" y1="'+mulPos[mk[x4]][1]+'" x2="'+mulPos[mk[y4]][0]+'" y2="'+mulPos[mk[y4]][1]+'" stroke="var(--primary)" stroke-width="0.5" stroke-dasharray="3,5"/>';
+      }
+    }
+    html += '</g>';
+    html += '<circle cx="265" cy="265" r="62" fill="#fff"/>';
+    html += '<circle cx="265" cy="265" r="62" fill="var(--primary)" stroke="var(--primary)" stroke-width="2"/>';
+    html += '<text x="265" y="260" fill="#fff" font-family="Georgia,serif" font-size="12" text-anchor="middle" font-weight="600">' + cLabels[0].l1 + '</text>';
+    html += '<text x="265" y="276" fill="#fff" font-family="Georgia,serif" font-size="10" text-anchor="middle">' + cLabels[0].l2 + '</text>';
+    var mulCircles = [
+      {x:220,y:95,r:52,idx:1,fill:'var(--amber)',stroke:'var(--amber)',op:'0.85'},
+      {x:410,y:175,r:42,idx:2,fill:'var(--primary-light)',stroke:'var(--primary)',op:'0.55'},
+      {x:395,y:360,r:68,idx:3,fill:'var(--rose)',stroke:'var(--rose)',op:'0.85'},
+      {x:240,y:430,r:38,idx:4,fill:'var(--primary-light)',stroke:'var(--primary)',op:'0.5'},
+      {x:100,y:340,r:60,idx:5,fill:'var(--amber)',stroke:'var(--amber)',op:'0.8'},
+      {x:110,y:170,r:70,idx:6,fill:'var(--rose)',stroke:'var(--rose)',op:'0.85'}
+    ];
+    mulCircles.forEach(function(c){
+      html += '<circle cx="'+c.x+'" cy="'+c.y+'" r="'+c.r+'" fill="#fff"/>';
+      html += '<circle cx="'+c.x+'" cy="'+c.y+'" r="'+c.r+'" fill="'+c.fill+'" stroke="'+c.stroke+'" stroke-width="1.5" opacity="'+c.op+'"/>';
+      html += '<text x="'+c.x+'" y="'+(c.y-5)+'" fill="#fff" font-family="Georgia,serif" font-size="10" text-anchor="middle">'+cLabels[c.idx].l1+'</text>';
+      html += '<text x="'+c.x+'" y="'+(c.y+8)+'" fill="#fff" font-family="Georgia,serif" font-size="10" text-anchor="middle">'+cLabels[c.idx].l2+'</text>';
+    });
+    html += '</svg>';
+    html += '<p class="dynamik-svg-caption">Flere områder under pres — systemet trækkes i flere retninger</p>';
+    html += '</div>';
+
+    if (erLeder) {
+      html += '<p class="dynamik-text">I virkeligheden er det sjældent kun ét område, der er belastet. Et team med kulturelt pres har ofte også dårlige samarbejdsmønstre OG udbrændte medarbejdere OG fravær af pauser OG en leder der selv er dysreguleret. Hvert presset område forstærker de andre.</p>';
+      html += '<p class="dynamik-text">Det er derfor isolerede tiltag ofte rammer et loft. At indføre mindfulness-app uden at adressere arbejdsbyrden. At sende medarbejdere på stresshåndteringskursus uden at ændre kulturen. At tale om psykologisk tryghed uden at modellere den. Hvert tiltag kan noget — men ingen af dem alene kan genskabe balancen i et system, der trækkes i flere retninger samtidig.</p>';
+    } else {
+      html += '<p class="dynamik-text">I virkeligheden er det sjældent kun ét område, der er belastet. En medarbejder med kronisk stress har ofte også forstyrret søvn OG spændt krop OG samarbejdsproblemer OG en leder der ikke ser det. Hvert presset område forstærker de andre.</p>';
+      html += '<p class="dynamik-text">Det er derfor isolerede løsninger ofte rammer et loft. At tage en yogaklasse uden at adressere arbejdspresset. At lære åndedrætøvelser uden at tage pauserne. At tale om stress uden at ændre det der skaber det. Hver tilgang kan noget — men ingen af dem alene kan genskabe balancen i et system, der trækkes i flere retninger.</p>';
+    }
+    html += '</div>';
+
+    // === SECTION 5: Why wholeness matters ===
+    html += '<div class="dynamik-section">';
+    html += '<h3 class="dynamik-section-title">Hvorfor helheden er afgørende</h3>';
+    if (erLeder) {
+      html += '<p class="dynamik-text">Cirkelmodellen er ikke bare et kort — den er en ledelsesfilosofi. Når vi forstår, at alt påvirker alt i et team, ændrer det måden vi arbejder med trivsel på. Vi adresserer ikke symptomer. Vi adresserer systemet.</p>';
+      html += '<p class="dynamik-text">Det er derfor Clements tilgang integrerer nervesystemsforståelse med ledelsesudvikling, teamdynamik og kropslig bevidsthed. Ikke fordi kompleksitet er målet, men fordi arbejdspladsen selv er en integreret helhed. Balance vender tilbage, når vi møder teamet med omsorg, med struktur, og med forståelse for at forandring i ét menneske skaber bevægelse i hele systemet.</p>';
+    } else {
+      html += '<p class="dynamik-text">Cirkelmodellen er ikke bare et kort — den er en livsfilosofi for dit arbejdsliv. Når du forstår, at alt påvirker alt i din arbejdsdag, ændrer det måden du arbejder med din egen trivsel. Du adresserer ikke bare symptomer. Du adresserer systemet.</p>';
+      html += '<p class="dynamik-text">Det er derfor Clements tilgang integrerer nervesystemsforståelse med kropslig bevidsthed, åndedrætsarbejde og relationel intelligens. Ikke fordi kompleksitet er målet, men fordi din arbejdsdag selv er en integreret helhed. Balance vender tilbage, når du giver dig selv lov til at arbejde med hele systemet — en øvelse, en pause, en grænse ad gangen.</p>';
+    }
+    html += '</div>';
+
+    // === Callout: For dig ===
+    html += '<div class="dynamik-callout">';
+    if (erLeder) {
+      html += '<h3 class="dynamik-callout-title">For dig som leder</h3>';
+      html += '<p class="dynamik-text">Når du ser den skæve figur, genkender du måske dit eget team. Den fornemmelse af at alt er lidt forskudt — at I arbejder hårdt, men ikke kan nå hinanden. At energien lækker et sted, du ikke kan se.</p>';
+      html += '<p class="dynamik-text">Vid at det ikke er permanent. Dit team har kapaciteten til balance — det har bare brug for de rette betingelser for at finde tilbage. Og de betingelser starter med dig: din egen regulering, din evne til at sætte grænser, din vilje til at prioritere trivsel over tempo.</p>';
+      html += '<p class="dynamik-text">Udforsk cirklerne ovenfor. Start der, hvor du mærker mest pres. Og vid, at uanset hvor du begynder, arbejder du med hele systemet.</p>';
+    } else {
+      html += '<h3 class="dynamik-callout-title">For dig</h3>';
+      html += '<p class="dynamik-text">Når du ser den skæve figur, genkender du måske din egen hverdag. Den fornemmelse af at alt er lidt forskudt — at du gør dit bedste, men alligevel føler dig udmattet, afkoblet eller ude af balance.</p>';
+      html += '<p class="dynamik-text">Vid at det ikke er din skyld. Dit nervesystem reagerer rationelt på de betingelser, det møder. Og vid at forandring er mulig — ikke alt på én gang, men ét område ad gangen. Én øvelse. Én pause. Én grænse. Hver lille bevægelse sender bølger gennem hele systemet.</p>';
+      html += '<p class="dynamik-text">Udforsk cirklerne ovenfor. Start der, hvor du mærker mest. Og vid, at uanset hvor du begynder, arbejder du med hele dit system.</p>';
+    }
+    html += '</div>';
+
+    // Back to top
+    html += '<button class="dynamik-to-top" onclick="window.scrollTo({top:0,behavior:\'smooth\'})">↑ Tilbage til toppen</button>';
+
+    container.innerHTML = html;
+  }
+
+  function showDynamik() {
+    renderDynamik();
+    navigateTo('dynamik');
+  }
+
   // ── Favoritter view ──
   function renderFavoritter() {
     var container = document.getElementById('favoritterContent');
@@ -1400,6 +1685,7 @@
     html += '<button class="menu-item" data-nav="trappen"><span class="menu-item-icon">☰</span>Nervesystemstrappen</button>';
     html += '<button class="menu-item" data-nav="temaer"><span class="menu-item-icon">◈</span>Temaer</button>';
     html += '<button class="menu-item" data-nav="oevelser"><span class="menu-item-icon">◎</span>Øvelser</button>';
+    html += '<button class="menu-item" data-nav="dynamik"><span class="menu-item-icon">⬡</span>Dynamikken bag cirkelmodellen</button>';
     html += '<button class="menu-item" data-nav="virksomhed"><span class="menu-item-icon">◆</span>Samarbejde med virksomheder</button>';
     var favCount = getFavoritter().length;
     html += '<button class="menu-item menu-item-favoritter" id="menuFavoritter"><span class="menu-item-icon">' + IKONER.bookmark(15) + '</span>Mine favoritter <span class="menu-favorit-badge" id="favoritBadge" style="' + (favCount > 0 ? '' : 'display:none') + '">' + favCount + '</span></button>';
@@ -1556,6 +1842,7 @@
         closeMenu();
         var nav = this.dataset.nav;
         if (nav === 'virksomhed') renderVirksomhed();
+        if (nav === 'dynamik') renderDynamik();
         navigateTo(nav);
       });
     });
