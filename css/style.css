@@ -2281,6 +2281,493 @@ footer {
   .hero-inner { gap: 20px; }
 }
 
+/* ── Onboarding Virksomhed Choice ── */
+.onboarding-choice-virksomhed {
+  border-color: var(--accent) !important;
+  background: rgba(212, 163, 115, 0.08) !important;
+}
+
+/* ── Virksomhed Page ── */
+.virksomhed-content {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Welcome Landing */
+.virksomhed-welcome {
+  background: linear-gradient(160deg, var(--primary) 0%, #4a1e3f 100%);
+  color: #fff;
+  border-radius: 20px;
+  padding: 40px 24px 32px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.virksomhed-welcome-inner {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.virksomhed-welcome-medallion {
+  margin-bottom: 20px;
+}
+
+.virksomhed-welcome-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  border: 2px solid rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.95);
+}
+
+.virksomhed-welcome-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+.virksomhed-welcome-subtitle {
+  font-size: 0.95rem;
+  opacity: 0.8;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.virksomhed-welcome-text {
+  font-size: 0.88rem;
+  line-height: 1.7;
+  opacity: 0.9;
+  margin-bottom: 12px;
+}
+
+.virksomhed-welcome-text:last-of-type {
+  margin-bottom: 24px;
+}
+
+.virksomhed-welcome-scroll {
+  padding-top: 4px;
+}
+
+.virksomhed-welcome-scroll-btn {
+  background: rgba(255,255,255,0.15);
+  border: 1.5px solid rgba(255,255,255,0.3);
+  color: #fff;
+  border-radius: 14px;
+  padding: 12px 24px;
+  font-family: Georgia, serif;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.virksomhed-welcome-scroll-btn:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+.virksomhed-welcome-scroll-btn svg {
+  flex-shrink: 0;
+  animation: virksomhed-bounce 2s ease-in-out infinite;
+}
+
+@keyframes virksomhed-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+/* App Navigation */
+.virksomhed-appnav {
+  background: var(--white);
+  border: 1.5px solid rgba(107, 45, 91, 0.12);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 28px;
+}
+
+.virksomhed-appnav-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.virksomhed-appnav-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.virksomhed-appnav-btn {
+  background: var(--primary-pale);
+  border: 1.5px solid rgba(107, 45, 91, 0.12);
+  border-radius: 12px;
+  padding: 14px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--primary);
+}
+
+.virksomhed-appnav-btn:hover {
+  background: rgba(107, 45, 91, 0.12);
+  transform: translateY(-1px);
+}
+
+.virksomhed-appnav-btn svg {
+  flex-shrink: 0;
+}
+
+.virksomhed-appnav-btn span {
+  font-family: Georgia, serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+/* Faglig Section */
+.virksomhed-faglig {
+  padding-top: 8px;
+}
+
+.virksomhed-section {
+  margin-bottom: 36px;
+}
+
+.virksomhed-section-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.virksomhed-text {
+  font-size: 0.92rem;
+  color: var(--text);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+/* Method Cards */
+.virksomhed-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.virksomhed-card {
+  border-radius: 14px;
+  padding: 18px 14px;
+  border: 1.5px solid transparent;
+}
+
+.virksomhed-card-primary { background: var(--primary-pale); border-color: rgba(107, 45, 91, 0.15); }
+.virksomhed-card-rose { background: #f3e8ec; border-color: #c49aaa; }
+.virksomhed-card-amber { background: #f5ede5; border-color: #d4b898; }
+.virksomhed-card-sage { background: #eef2ef; border-color: #a3b5a5; }
+
+.virksomhed-card-icon {
+  margin-bottom: 8px;
+  color: var(--primary);
+}
+
+.virksomhed-card-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.virksomhed-card h4 {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.virksomhed-card p {
+  font-size: 0.8rem;
+  color: var(--text);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Forløb Items */
+.virksomhed-forloeb {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.virksomhed-forloeb-item {
+  background: var(--white);
+  border: 1.5px solid rgba(107, 45, 91, 0.1);
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.virksomhed-forloeb-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.virksomhed-forloeb-tag {
+  background: var(--primary);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.virksomhed-forloeb-tag-alt {
+  background: var(--accent);
+}
+
+.virksomhed-forloeb-header h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+
+.virksomhed-forloeb-item > p {
+  font-size: 0.88rem;
+  color: var(--text);
+  line-height: 1.65;
+  margin: 0 0 12px;
+}
+
+.virksomhed-forloeb-detaljer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.virksomhed-forloeb-detaljer span {
+  background: var(--primary-pale);
+  color: var(--primary);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 10px;
+}
+
+/* Logo Grid */
+.virksomhed-logoer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.virksomhed-logo-item {
+  background: var(--white);
+  border: 1.5px solid rgba(107, 45, 91, 0.1);
+  border-radius: 14px;
+  padding: 20px 16px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.virksomhed-logo-navn {
+  font-family: Georgia, serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: 0.02em;
+}
+
+/* List */
+.virksomhed-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.virksomhed-list li {
+  font-size: 0.88rem;
+  color: var(--text);
+  line-height: 1.6;
+  padding: 10px 0 10px 20px;
+  position: relative;
+  border-bottom: 1px solid rgba(107, 45, 91, 0.08);
+}
+
+.virksomhed-list li:last-child { border-bottom: none; }
+
+.virksomhed-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 18px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* Bridge Section */
+.virksomhed-bridge {
+  background: var(--primary-pale);
+  border-radius: 18px;
+  padding: 28px 20px;
+  margin: 32px 0;
+}
+
+.virksomhed-bridge-inner {
+  text-align: center;
+}
+
+.virksomhed-bridge-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.virksomhed-bridge-text {
+  font-size: 0.88rem;
+  color: var(--text);
+  line-height: 1.65;
+  max-width: 480px;
+  margin: 0 auto 20px;
+}
+
+.virksomhed-bridge-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.virksomhed-bridge-btn {
+  background: #fff;
+  border: 1.5px solid rgba(107, 45, 91, 0.12);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-family: Georgia, serif;
+  font-size: 0.82rem;
+  color: var(--primary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.virksomhed-bridge-btn:hover {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.virksomhed-bridge-btn svg {
+  flex-shrink: 0;
+}
+
+/* CTA Section */
+.virksomhed-cta {
+  background: var(--primary);
+  color: #fff;
+  border-radius: 18px;
+  padding: 32px 24px;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.virksomhed-cta-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.virksomhed-cta-text {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  opacity: 0.9;
+  margin-bottom: 20px;
+}
+
+.virksomhed-cta-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.virksomhed-cta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-family: Georgia, serif;
+  font-size: 0.9rem;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.virksomhed-cta-btn svg {
+  flex-shrink: 0;
+}
+
+.virksomhed-cta-btn-primary {
+  background: #fff;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.virksomhed-cta-btn-primary:hover {
+  background: var(--primary-pale);
+}
+
+.virksomhed-cta-btn-secondary {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.3);
+}
+
+.virksomhed-cta-btn-secondary:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+.virksomhed-cta-btn-linkedin {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.85);
+  border: 1px solid rgba(255,255,255,0.15);
+  font-size: 0.82rem;
+}
+
+.virksomhed-cta-btn-linkedin:hover {
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+}
+
 /* ── Desktop App-Ramme (768px+) ── */
 @media (min-width: 768px) {
   /* TRIN 1: Centrer alle views */
