@@ -2280,3 +2280,60 @@ footer {
   .hero { padding: 36px 20px; }
   .hero-inner { gap: 20px; }
 }
+
+/* ── Desktop App-Ramme (768px+) ── */
+@media (min-width: 768px) {
+  /* TRIN 1: Centrer alle views */
+  .view {
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* TRIN 2: Centrer topbar og bundnavigation */
+  .top-bar {
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .bottom-nav {
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* TRIN 3: Tynd vertikal ramme langs begge sider */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 700px;
+    margin: 0 auto;
+    border-left: 1.5px solid var(--primary);
+    border-right: 1.5px solid var(--primary);
+    pointer-events: none;
+    z-index: 150;
+  }
+
+  /* TRIN 4: Flyt hamburger-menu ind i rammen */
+  .menu-panel {
+    left: calc(50% - 350px);
+    transform: translateX(calc(-100% - (50vw - 350px)));
+  }
+
+  .menu-panel.open {
+    transform: translateX(0);
+  }
+
+  .menu-overlay {
+    max-width: 700px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
