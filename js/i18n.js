@@ -12,6 +12,7 @@ var I18N = {
       appTitle: 'Clement WellbeingAtWork — Trivsel på arbejdspladsen',
       heroTitle: 'Clement WellbeingAtWork',
       heroSub: 'Trivsel på arbejdspladsen — baseret på nervesystemets intelligens',
+      motto: 'Pas på dit nervesystem — det passer på dig',
 
       // Onboarding
       onboardingTitle: 'Velkommen til<br>Clement WellbeingAtWork',
@@ -168,7 +169,7 @@ var I18N = {
       perspectiveTitle: 'Dit perspektiv',
       switchPerspective: '→ Skift perspektiv',
       aboutTitle: 'Om Anne Marie Clement',
-      aboutBio: 'Anne Marie Clement er nervesystemsspecialist med over 20 års erfaring. Hun tilbyder foredrag, workshops og forløb for virksomheder — og individuel coaching for ledere og medarbejdere. Hendes tilgang bygger på polyvagal teori, tilknytningsforskning og kropslig bevidsthed — oversat til praktiske redskaber der virker i hverdagen.',
+      aboutBio: 'Anne Marie Clement er nervesystemsspecialist med over 20 års erfaring som selvstændig psykoterapeut. Hun arbejder med nærvær, nysgerrighed og kropslig bevidsthed som veje til trivsel — for både individer og organisationer. Hendes tilgang bygger på polyvagal teori og tilknytningsforskning, oversat til et sprog og en praksis der virker i en travl hverdag.',
       menuNavTitle: 'Navigation',
       menuHome: 'Hjem',
       menuLadder: 'Nervesystemets trappe',
@@ -239,6 +240,7 @@ var I18N = {
       appTitle: 'Clement WellbeingAtWork — Workplace Wellbeing',
       heroTitle: 'Clement WellbeingAtWork',
       heroSub: 'Workplace wellbeing — built on the intelligence of the nervous system',
+      motto: 'Take care of your nervous system — it takes care of you',
 
       // Onboarding
       onboardingTitle: 'Welcome to<br>Clement WellbeingAtWork',
@@ -395,7 +397,7 @@ var I18N = {
       perspectiveTitle: 'Your perspective',
       switchPerspective: '→ Switch perspective',
       aboutTitle: 'About Anne Marie Clement',
-      aboutBio: 'Anne Marie Clement is a nervous system specialist with over 20 years of experience. She offers talks, workshops and programs for companies — as well as individual coaching for leaders and employees. Her approach draws on polyvagal theory, attachment research and somatic awareness — translated into practical tools that work in everyday life.',
+      aboutBio: 'Anne Marie Clement is a nervous system specialist with over 20 years of experience as an independent psychotherapist. She works with presence, curiosity and somatic awareness as pathways to wellbeing — for both individuals and organizations. Her approach draws on polyvagal theory and attachment research, translated into language and practices that work in a busy everyday life.',
       menuNavTitle: 'Navigation',
       menuHome: 'Home',
       menuLadder: 'The nervous system ladder',

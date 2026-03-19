@@ -171,6 +171,8 @@
     el = document.getElementById('choiceDescLeder'); if (el) el.textContent = t('choiceLeaderDesc');
     el = document.getElementById('choiceTitleVirksomhed'); if (el) el.textContent = t('choiceCompany');
     el = document.getElementById('choiceDescVirksomhed'); if (el) el.textContent = t('choiceCompanyDesc');
+    // Motto
+    el = document.getElementById('mottoTekst'); if (el) el.textContent = t('motto');
     // Menu header
     el = document.getElementById('menuHeaderSub'); if (el) el.textContent = isEn() ? 'Nervous system specialist' : 'Nervesystemsspecialist';
     // Search
@@ -2444,8 +2446,8 @@
     // --- Anne Maries tilgang ---
     html += '<div class="virksomhed-section">';
     html += '<h3 class="virksomhed-section-title">' + (isEn() ? 'A different entry point' : 'En anden indgang') + '</h3>';
-    html += '<p class="virksomhed-text">' + (isEn() ? 'For over 20 years, Anne Marie Clement has worked with the nervous system as the key to wellbeing and performance. Her approach draws on polyvagal theory and attachment research — translated into language and practices that make sense in a busy workday.' : 'Anne Marie Clement har i over 20 år arbejdet med nervesystemet som nøgle til trivsel og performance. Hendes tilgang bygger på polyvagal teori og tilknytningsforskning — oversat til et sprog og en praksis, der giver mening i en travl arbejdsdag.') + '</p>';
-    html += '<p class="virksomhed-text">' + (isEn() ? 'This is not about discussing feelings in the conference room. It is about giving people a concrete understanding of what happens in their body under pressure — and practical tools to regulate themselves and each other. Discreetly, quickly, in the middle of everyday life.' : 'Det handler ikke om at tale om følelser i mødelokalet. Det handler om at give mennesker en konkret forståelse af, hvad der sker i deres krop under pres — og praktiske redskaber til at regulere sig selv og hinanden. Diskret, hurtigt, midt i hverdagen.') + '</p>';
+    html += '<p class="virksomhed-text">' + (isEn() ? 'For over 20 years, Anne Marie Clement has worked with the nervous system as the key to wellbeing and performance. As a psychotherapist, body therapist and educator, she has helped leaders, teams and individuals understand what actually drives stress, conflict and disconnection — and what creates real, lasting change.' : 'Anne Marie Clement har i over 20 år arbejdet med nervesystemet som nøgle til trivsel og performance. Som psykoterapeut, kropsterapeut og underviser har hun hjulpet ledere, teams og individer med at forstå, hvad der reelt driver stress, konflikter og mistrivsel — og hvad der skaber ægte, varig forandring.') + '</p>';
+    html += '<p class="virksomhed-text">' + (isEn() ? 'Her approach draws on polyvagal theory and attachment research — translated into language and practices that make sense in a busy workday. This is not about discussing feelings in the conference room. It is about giving people a concrete understanding of what happens in their body under pressure — and practical tools to regulate themselves and each other. Discreetly, quickly, in the middle of everyday life.' : 'Hendes tilgang bygger på polyvagal teori og tilknytningsforskning — oversat til et sprog og en praksis, der giver mening i en travl arbejdsdag. Det handler ikke om at tale om følelser i mødelokalet. Det handler om at give mennesker en konkret forståelse af, hvad der sker i deres krop under pres — og praktiske redskaber til at regulere sig selv og hinanden. Diskret, hurtigt, midt i hverdagen.') + '</p>';
 
     html += '<div class="virksomhed-kernepunkter">';
 
@@ -2487,7 +2489,7 @@
     html += '<span class="virksomhed-forloeb-tag">Keynote</span>';
     html += '<h4>' + (isEn() ? 'Talks' : 'Foredrag') + '</h4>';
     html += '</div>';
-    html += '<p>' + (isEn() ? 'Anne Marie delivers talks that give participants a bodily experience — not just information. Well suited for kick-offs, leadership gatherings or as a starting point for a wellbeing initiative.' : 'Anne Marie holder foredrag, der giver deltagerne en kropslig erfaring — ikke bare information. Velegnet til kick-offs, ledersamlinger eller som afsæt for et trivselsinitiativ.') + '</p>';
+    html += '<p>' + (isEn() ? 'Anne Marie delivers talks that give participants a bodily experience — not just information. Participants leave with a new understanding of their own stress responses and concrete tools they can use immediately. Well suited for kick-offs, leadership gatherings or as the starting point for a wellbeing initiative.' : 'Anne Marie holder foredrag, der giver deltagerne en kropslig erfaring — ikke bare information. Deltagerne går derfra med en ny forståelse af deres egne stressreaktioner og konkrete redskaber de kan bruge med det samme. Velegnet til kick-offs, ledersamlinger eller som afsæt for et trivselsinitiativ.') + '</p>';
     html += '<div class="virksomhed-forloeb-detaljer">';
     html += '<span>' + (isEn() ? '60-90 minutes' : '60-90 minutter') + '</span><span>' + (isEn() ? 'Up to 500 participants' : 'Op til 500 deltagere') + '</span>';
     html += '</div>';
@@ -2498,7 +2500,7 @@
     html += '<span class="virksomhed-forloeb-tag">Workshop</span>';
     html += '<h4>' + (isEn() ? 'Team workshops' : 'Teamworkshops') + '</h4>';
     html += '</div>';
-    html += '<p>' + (isEn() ? 'Half or full-day workshops where teams learn to recognize their own and each other\'s states — and gain tools to regulate themselves and support one another.' : 'Halv- eller heldags workshops, hvor teams lærer at genkende egne og hinandens tilstande — og får redskaber til at regulere sig selv og støtte hinanden.') + '</p>';
+    html += '<p>' + (isEn() ? 'Half or full-day workshops where teams learn to recognize their own and each other\'s nervous system states — and gain practical tools to regulate themselves and support one another. Combines theory, reflection and bodily exercises in a format that feels relevant, not clinical.' : 'Halv- eller heldags workshops, hvor teams lærer at genkende egne og hinandens nervesystemtilstande — og får praktiske redskaber til at regulere sig selv og støtte hinanden. Kombinerer teori, refleksion og kropslige øvelser i et format der føles relevant, ikke klinisk.') + '</p>';
     html += '<div class="virksomhed-forloeb-detaljer">';
     html += '<span>' + (isEn() ? '3-7 hours' : '3-7 timer') + '</span><span>' + (isEn() ? '8-30 participants' : '8-30 deltagere') + '</span>';
     html += '</div>';
@@ -2509,9 +2511,9 @@
     html += '<span class="virksomhed-forloeb-tag virksomhed-forloeb-tag-alt">Forløb</span>';
     html += '<h4>' + (isEn() ? 'Leadership development' : 'Lederudvikling') + '</h4>';
     html += '</div>';
-    html += '<p>' + (isEn() ? 'A cohesive program for leaders who want to understand how their nervous system sets the tone for the entire team. Theory, reflection and practice in a format that fits a leader\'s schedule.' : 'Et sammenhængende forløb for ledere, der vil forstå, hvordan deres nervesystem sætter tonen for hele teamet. Teori, refleksion og praksis i en form, der passer ind i en leders hverdag.') + '</p>';
+    html += '<p>' + (isEn() ? 'A leadership program with the nervous system at its core. For leaders who want to understand how their own regulation sets the tone for the entire team — and learn to be the calming presence in the room, even when the pressure is high. Theory, reflection and practice over multiple sessions.' : 'Et lederudviklingsforløb med nervesystemet i centrum. For ledere der vil forstå, hvordan deres egen regulering sætter tonen for hele teamet — og lære at være den beroligende tilstedeværelse i rummet, også når presset er højt. Teori, refleksion og praksis over flere sessioner.') + '</p>';
     html += '<div class="virksomhed-forloeb-detaljer">';
-    html += '<span>' + (isEn() ? '4-8 sessions' : '4-8 sessioner') + '</span><span>' + (isEn() ? 'Individual coaching' : 'Individuel sparring') + '</span>';
+    html += '<span>' + (isEn() ? '4-8 sessions' : '4-8 sessioner') + '</span><span>' + (isEn() ? 'Individual coaching included' : 'Individuel sparring inkluderet') + '</span>';
     html += '</div>';
     html += '</div>';
 

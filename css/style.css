@@ -934,6 +934,25 @@ body.hero-visible .hamburger-line {
   font-style: italic;
 }
 
+/* ── Motto-bar ── */
+.motto-bar {
+  text-align: center;
+  padding: 20px 24px 8px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.motto-tekst {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--primary);
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0.85;
+}
+
 /* ── Rolle-bar (erstatter perspektiv-bar) ── */
 .rolle-bar {
   display: flex;
