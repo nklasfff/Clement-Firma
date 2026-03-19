@@ -22,6 +22,18 @@
   var aktivTema = null;
   var aktivTrin = null;
 
+  // ── Language-aware data access ──
+  function D_CIRKEL_TEKSTER() { return isEn() ? CIRKEL_TEKSTER_EN : CIRKEL_TEKSTER; }
+  function D_CIRKLER() { return isEn() ? CIRKLER_EN : CIRKLER; }
+  function D_TRAPPEN() { return isEn() ? TRAPPEN_EN : TRAPPEN; }
+  function D_TRAPPEN_FORSTAAELSE() { return isEn() ? TRAPPEN_FORSTAAELSE_EN : TRAPPEN_FORSTAAELSE; }
+  function D_TEMA_INDHOLD() { return isEn() ? TEMA_INDHOLD_EN : TEMA_INDHOLD; }
+  function D_OEVELSER() { return isEn() ? OEVELSER_EN : OEVELSER; }
+  function D_REFLEKSIONER() { return isEn() ? REFLEKSIONER_EN : REFLEKSIONER; }
+  function D_SAMMENHAENGE() { return isEn() ? SAMMENHAENGE_EN : SAMMENHAENGE; }
+  function D_CIRKEL_NAVNE() { return isEn() ? CIRKEL_NAVNE_EN : CIRKEL_NAVNE; }
+  function D_hentSammenhaenge(id) { return isEn() ? hentSammenhaengeEN(id) : hentSammenhaenge(id); }
+
   // ── Favoritter ──
   function getFavoritter() {
     try { return JSON.parse(localStorage.getItem('cf_favoritter') || '[]'); } catch (e) { return []; }
@@ -41,10 +53,10 @@
   function buildActionBar(type, id, titel, shareText) {
     var saved = isFavorit(type, id);
     var iconHtml = saved ? IKONER.bookmarkFill(16) : IKONER.bookmark(16);
-    var labelHtml = saved ? 'Gemt' : 'Gem';
+    var labelHtml = saved ? t('savedLabel') : t('save');
     return '<div class="action-bar" data-action-type="' + type + '" data-action-id="' + escapeAttr(id) + '" data-action-titel="' + escapeAttr(titel) + '" data-action-share="' + escapeAttr(shareText) + '">' +
-      '<button class="action-btn action-btn-save" title="Gem som favorit">' + iconHtml + '<span>' + labelHtml + '</span></button>' +
-      '<button class="action-btn action-btn-share" title="Del">' + IKONER.share(16) + '<span>Del</span></button>' +
+      '<button class="action-btn action-btn-save" title="' + t('save') + '">' + iconHtml + '<span>' + labelHtml + '</span></button>' +
+      '<button class="action-btn action-btn-share" title="' + t('share') + '">' + IKONER.share(16) + '<span>' + t('share') + '</span></button>' +
       '</div>';
   }
   function bindActionBars(container) {
@@ -61,10 +73,10 @@
         var span = saveBtn.querySelector('span');
         if (added) {
           saveBtn.querySelector('svg').outerHTML = IKONER.bookmarkFill(16);
-          span.textContent = 'Gemt';
+          span.textContent = t('savedLabel');
         } else {
           saveBtn.querySelector('svg').outerHTML = IKONER.bookmark(16);
-          span.textContent = 'Gem';
+          span.textContent = t('save');
         }
         updateFavoritBadge();
       });
@@ -77,8 +89,8 @@
         } else {
           navigator.clipboard.writeText(text).then(function() {
             var span = shareBtn.querySelector('span');
-            span.textContent = 'Kopieret!';
-            setTimeout(function() { span.textContent = 'Del'; }, 2000);
+            span.textContent = t('copied');
+            setTimeout(function() { span.textContent = t('share'); }, 2000);
           }).catch(function() {});
         }
       });
@@ -142,8 +154,105 @@
   var velkommenTekst = document.getElementById('velkommenTekst');
   var isFirstVisit = false;
 
+  // ── Update all static HTML texts based on current language ──
+  function updateStaticTexts() {
+    // HTML lang attribute
+    document.documentElement.lang = isEn() ? 'en' : 'da';
+    // Page title
+    document.title = t('appTitle');
+    // Onboarding
+    var el;
+    el = document.getElementById('onboardingTitle'); if (el) el.innerHTML = t('onboardingTitle');
+    el = document.getElementById('onboardingSub'); if (el) el.textContent = t('onboardingSub');
+    el = document.getElementById('onboardingPrompt'); if (el) el.textContent = t('onboardingPrompt');
+    el = document.getElementById('choiceTitleMedarbejder'); if (el) el.textContent = t('choiceEmployee');
+    el = document.getElementById('choiceDescMedarbejder'); if (el) el.textContent = t('choiceEmployeeDesc');
+    el = document.getElementById('choiceTitleLeder'); if (el) el.textContent = t('choiceLeader');
+    el = document.getElementById('choiceDescLeder'); if (el) el.textContent = t('choiceLeaderDesc');
+    el = document.getElementById('choiceTitleVirksomhed'); if (el) el.textContent = t('choiceCompany');
+    el = document.getElementById('choiceDescVirksomhed'); if (el) el.textContent = t('choiceCompanyDesc');
+    // Menu header
+    el = document.getElementById('menuHeaderSub'); if (el) el.textContent = isEn() ? 'Nervous system specialist' : 'Nervesystemsspecialist';
+    // Search
+    el = document.getElementById('searchInput'); if (el) el.placeholder = t('searchPlaceholder');
+    // Bottom nav
+    el = document.getElementById('navHome'); if (el) el.textContent = t('navHome');
+    el = document.getElementById('navTrappen'); if (el) el.textContent = t('navLadder');
+    el = document.getElementById('navTemaer'); if (el) el.textContent = t('navThemes');
+    el = document.getElementById('navOevelser'); if (el) el.textContent = t('navExercises');
+    // Hero
+    el = document.getElementById('heroTitle'); if (el) el.textContent = t('heroTitle');
+    el = document.getElementById('heroSub'); if (el) el.textContent = t('heroSub');
+    // Seven dimensions
+    el = document.getElementById('cirkelIntroTitle'); if (el) el.textContent = t('sevenDimensions');
+    el = document.getElementById('cirkelHint'); if (el) el.textContent = t('circleHint');
+    el = document.getElementById('dynamikLinkTitle'); if (el) el.textContent = t('dynamikLinkTitle');
+    el = document.getElementById('dynamikLinkDesc'); if (el) el.textContent = t('dynamikLinkDesc');
+    // Favorites
+    el = document.getElementById('favTitle'); if (el) el.textContent = t('favTitle');
+    el = document.getElementById('favSub'); if (el) el.textContent = t('favSub');
+    // Circle detail tabs
+    el = document.getElementById('tabOverblik'); if (el) el.textContent = t('tabOverview');
+    el = document.getElementById('tabDybde'); if (el) el.textContent = t('tabDeepDive');
+    el = document.getElementById('tabOevelse'); if (el) el.textContent = t('tabExercise');
+    // Dynamik
+    el = document.getElementById('dynamikBack'); if (el) el.textContent = t('backToHome');
+    el = document.getElementById('dynamikTitle'); if (el) el.textContent = t('dynamikTitle');
+    // Trappen
+    el = document.getElementById('trappenTitle'); if (el) el.textContent = t('ladderTitle');
+    el = document.getElementById('trappenSub'); if (el) el.textContent = t('ladderSub');
+    el = document.getElementById('trappenIntro'); if (el) el.textContent = t('ladderIntro');
+    el = document.getElementById('trappenCheckinLabel'); if (el) el.textContent = t('ladderCheckinLabel');
+    el = document.getElementById('trinGroenTitle'); if (el) el.textContent = t('greenState');
+    el = document.getElementById('trinGroenDesc'); if (el) el.textContent = t('greenSub');
+    el = document.getElementById('trinGroenHint'); if (el) el.textContent = t('greenHint');
+    el = document.getElementById('trinGulTitle'); if (el) el.textContent = t('yellowState');
+    el = document.getElementById('trinGulDesc'); if (el) el.textContent = t('yellowSub');
+    el = document.getElementById('trinGulHint'); if (el) el.textContent = t('yellowHint');
+    el = document.getElementById('trinRoedTitle'); if (el) el.textContent = t('redState');
+    el = document.getElementById('trinRoedDesc'); if (el) el.textContent = t('redSub');
+    el = document.getElementById('trinRoedHint'); if (el) el.textContent = t('redHint');
+    // Temaer
+    el = document.getElementById('temaerTitle'); if (el) el.textContent = t('themesTitle');
+    el = document.getElementById('temaerSub'); if (el) el.textContent = t('themesSub');
+    el = document.getElementById('temaerIntro'); if (el) el.textContent = t('themesIntro');
+    // Øvelser
+    el = document.getElementById('oevelserTitle'); if (el) el.innerHTML = t('exercisesTitle');
+    el = document.getElementById('oevelserSub'); if (el) el.textContent = t('exercisesSub');
+    el = document.getElementById('oevelserIntro'); if (el) el.textContent = t('exercisesIntro');
+    el = document.getElementById('oevelserLabel'); if (el) el.textContent = t('exercisesSectionLabel');
+    el = document.getElementById('filterAlle'); if (el) el.textContent = t('filterAll');
+    el = document.getElementById('filterKrop'); if (el) el.textContent = t('filterBody');
+    el = document.getElementById('filterAandedraet'); if (el) el.textContent = t('filterBreathing');
+    el = document.getElementById('filterRegulering'); if (el) el.textContent = t('filterRegulation');
+    el = document.getElementById('filterTeam'); if (el) el.textContent = t('filterTeam');
+    // Refleksioner
+    el = document.getElementById('refleksionerLabel'); if (el) el.textContent = t('reflectionsSectionLabel');
+    el = document.getElementById('refleksionerIntro'); if (el) el.textContent = t('reflectionsIntro');
+    // Din proces
+    el = document.getElementById('dinProcesLabel'); if (el) el.textContent = t('processSectionLabel');
+    el = document.getElementById('dinProcesIntro'); if (el) el.textContent = t('processIntro');
+    // Virksomhed
+    el = document.getElementById('virksomhedTitle'); if (el) el.textContent = t('companyTitle');
+    // Footer
+    el = document.getElementById('footerMain'); if (el) el.textContent = t('footerMain');
+    el = document.getElementById('footerSub'); if (el) el.textContent = t('footerSub');
+    // Role bar
+    el = document.getElementById('rolleSkift'); if (el) el.textContent = t('roleSwitch');
+    // Back buttons
+    var backBtns = document.querySelectorAll('.back-btn');
+    backBtns.forEach(function(btn) {
+      if (btn.classList.contains('back-to-hjem')) {
+        btn.textContent = t('backToHome');
+      } else {
+        btn.textContent = t('back');
+      }
+    });
+  }
+
   // ── Init ──
   function init() {
+    updateStaticTexts();
     // Check om bruger allerede har valgt rolle
     var gemt = localStorage.getItem('clementRolle');
     if (gemt) {
@@ -212,8 +321,9 @@
   // ── Rolle ──
   function opdaterRolleLabel() {
     if (rolleLabel) {
-      var label = aktivPerspektiv === 'virksomhed' ? 'virksomhed' : aktivPerspektiv;
-      rolleLabel.innerHTML = 'Indhold tilpasset dig som <strong>' + label + '</strong>';
+      var roleMap = { medarbejder: t('roleEmployee'), leder: t('roleLeader'), virksomhed: t('roleCompany') };
+      var label = roleMap[aktivPerspektiv] || aktivPerspektiv;
+      rolleLabel.innerHTML = t('roleLabel') + ' <strong>' + label + '</strong>';
     }
   }
 
@@ -426,7 +536,7 @@
   function opdaterCirkelTekster() {
     cirkelNodes.forEach(function(node) {
       var cirkelId = node.dataset.cirkel;
-      var tekster = CIRKEL_TEKSTER[cirkelId];
+      var tekster = D_CIRKEL_TEKSTER()[cirkelId];
       if (!tekster) return;
 
       var perspektivTekst = tekster[getDataPerspektiv()];
@@ -438,7 +548,7 @@
 
   // ── Cirkel Detail ──
   function renderCirkelDetail(cirkelId) {
-    var data = CIRKLER[cirkelId];
+    var data = D_CIRKLER()[cirkelId];
     if (!data) return;
 
     var indhold = data[getDataPerspektiv()];
@@ -469,20 +579,20 @@
     html += buildActionBar('fordybelse', cirkelId, data.titel + ' — Fordybelse', indhold.dybde.join('\n\n'));
 
     // Dynamiske sammenhænge
-    var sammenhaenge = hentSammenhaenge(cirkelId);
+    var sammenhaenge = D_hentSammenhaenge(cirkelId);
     if (sammenhaenge.length > 0) {
       html += '<div class="sammenhaenge-section">';
       html += '<div class="sammenhaenge-header">';
       html += '<div class="sammenhaenge-linje"></div>';
-      html += '<span class="sammenhaenge-label">Dynamiske sammenhænge</span>';
+      html += '<span class="sammenhaenge-label">' + t('dynamicConnections') + '</span>';
       html += '<div class="sammenhaenge-linje"></div>';
       html += '</div>';
-      html += '<p class="sammenhaenge-intro">Se hvordan ' + (CIRKEL_NAVNE[cirkelId] || cirkelId).toLowerCase() + ' dynamisk påvirker og påvirkes af de andre dimensioner i dit arbejdsliv.</p>';
+      html += '<p class="sammenhaenge-intro">' + t('dynamicConnectionsIntro').replace('{name}', (D_CIRKEL_NAVNE()[cirkelId] || cirkelId).toLowerCase()) + '</p>';
 
       sammenhaenge.forEach(function(s) {
         var tekst = s.data[getDataPerspektiv()];
-        var andenNavn = CIRKEL_NAVNE[s.id] || s.titel;
-        var cirkelNavn = CIRKEL_NAVNE[cirkelId] || CIRKLER[cirkelId].titel;
+        var andenNavn = D_CIRKEL_NAVNE()[s.id] || s.titel;
+        var cirkelNavn = D_CIRKEL_NAVNE()[cirkelId] || D_CIRKLER()[cirkelId].titel;
 
         html += '<div class="sammenhaeng-item" data-cirkel="' + s.id + '">';
         html += '<button class="sammenhaeng-toggle">';
@@ -491,7 +601,7 @@
         html += '</button>';
         html += '<div class="sammenhaeng-indhold">';
         html += '<p>' + tekst + '</p>';
-        html += '<button class="sammenhaeng-link" data-goto="' + s.id + '">Udforsk ' + andenNavn + ' →</button>';
+        html += '<button class="sammenhaeng-link" data-goto="' + s.id + '">' + t('explore').replace('{name}', andenNavn) + '</button>';
         html += '</div>';
         html += '</div>';
       });
@@ -535,9 +645,9 @@
 
     // Øvelse — find relateret øvelse
     var relOevelse = null;
-    for (var i = 0; i < OEVELSER.length; i++) {
-      if (OEVELSER[i].cirkel === cirkelId) {
-        relOevelse = OEVELSER[i];
+    for (var i = 0; i < D_OEVELSER().length; i++) {
+      if (D_OEVELSER()[i].cirkel === cirkelId) {
+        relOevelse = D_OEVELSER()[i];
         break;
       }
     }
@@ -557,7 +667,7 @@
       html += '</ol>';
       html += '</div>';
     } else {
-      html = '<p style="color:var(--text-light); padding:20px;">Ingen specifik øvelse til denne cirkel endnu.</p>';
+      html = '<p style="color:var(--text-light); padding:20px;">' + t('noExercise') + '</p>';
     }
     panelOevelse.innerHTML = html;
   }
@@ -581,14 +691,14 @@
   function renderTrappenCheckinBekraeft(trinId) {
     var container = document.getElementById('trappenCheckinBekraeft');
     if (!container) return;
-    var data = TRAPPEN[trinId];
+    var data = D_TRAPPEN()[trinId];
     if (!data) return;
     var tid = new Date().toLocaleTimeString('da-DK', { hour: '2-digit', minute: '2-digit' });
     var farveClass = data.farve;
 
     container.innerHTML = '<div class="checkin-bekraeft checkin-bekraeft-' + farveClass + '">' +
       '<span class="checkin-bekraeft-dot checkin-dot-' + farveClass + '"></span>' +
-      '<span>Registreret &middot; ' + tid + '</span>' +
+      '<span>' + t('registered') + ' &middot; ' + tid + '</span>' +
       '</div>';
     container.style.display = 'block';
   }
@@ -605,7 +715,7 @@
 
     var html = '<div class="moenster-card">';
     html += '<div class="moenster-header">';
-    html += '<h4>Dit mønster</h4>';
+    html += '<h4>' + t('yourPattern') + '</h4>';
     html += '</div>';
 
     // Build 7-day calendar (current week Mon-Sun)
@@ -615,7 +725,7 @@
     var monday = new Date(today);
     monday.setDate(today.getDate() + mondayOffset);
 
-    var dagNavne = ['Ma', 'Ti', 'On', 'To', 'Fr', 'Lø', 'Sø'];
+    var dagNavne = t('dayNames');
 
     html += '<div class="moenster-uge">';
     for (var d = 0; d < 7; d++) {
@@ -630,7 +740,7 @@
 
       var dotClass = 'moenster-dot-empty';
       if (lastCheckin) {
-        dotClass = 'moenster-dot-' + (TRAPPEN[lastCheckin.trin] ? TRAPPEN[lastCheckin.trin].farve : 'empty');
+        dotClass = 'moenster-dot-' + (D_TRAPPEN()[lastCheckin.trin] ? D_TRAPPEN()[lastCheckin.trin].farve : 'empty');
       }
 
       html += '<div class="moenster-dag' + (isToday ? ' moenster-dag-idag' : '') + '">';
@@ -647,14 +757,15 @@
     });
 
     if (thisWeekCheckins.length <= 2) {
-      html += '<p class="moenster-indsigt">Du har mærket ind ' + thisWeekCheckins.length + ' gang' + (thisWeekCheckins.length !== 1 ? 'e' : '') + ' denne uge. Det er helt okay — der er ingen krav her. Jo oftere du mærker ind, jo tydeligere bliver mønsteret.</p>';
+      var plural = thisWeekCheckins.length !== 1 ? (isEn() ? 's' : 'e') : '';
+      html += '<p class="moenster-indsigt">' + t('patternInsightLow').replace('{count}', thisWeekCheckins.length).replace('{plural}', plural) + '</p>';
     } else {
       // Count tilstande this week
       var groenCount = thisWeekCheckins.filter(function(c) { return c.trin === 'groen'; }).length;
       var gulCount = thisWeekCheckins.filter(function(c) { return c.trin === 'gul'; }).length;
       var roedCount = thisWeekCheckins.filter(function(c) { return c.trin === 'roed'; }).length;
-      var dominant = groenCount >= gulCount && groenCount >= roedCount ? 'grøn' : gulCount >= roedCount ? 'gul' : 'rød';
-      html += '<p class="moenster-indsigt">Denne uge har du oftest mærket dig i <strong>' + dominant + '</strong> tilstand. At se sit mønster er første skridt mod at ændre det.</p>';
+      var dominant = groenCount >= gulCount && groenCount >= roedCount ? (isEn() ? 'green' : 'grøn') : gulCount >= roedCount ? (isEn() ? 'yellow' : 'gul') : (isEn() ? 'red' : 'rød');
+      html += '<p class="moenster-indsigt">' + t('patternInsightHigh').replace('{state}', dominant) + '</p>';
     }
 
     html += '</div>';
@@ -666,13 +777,13 @@
     var container = document.getElementById('trappenForstaaelse');
     if (!container) return;
     var perspektiv = getDataPerspektiv();
-    var tekster = TRAPPEN_FORSTAAELSE[perspektiv];
+    var tekster = D_TRAPPEN_FORSTAAELSE()[perspektiv];
     if (!tekster) return;
 
-    var rolleLabel = perspektiv === 'leder' ? 'leder' : 'medarbejder';
+    var rolleText = perspektiv === 'leder' ? t('roleLeader') : t('roleEmployee');
     var html = '<div class="forstaaelse-section">';
     html += '<div class="forstaaelse-divider"></div>';
-    html += '<h3 class="forstaaelse-title">Forstå dit nervesystem som ' + rolleLabel + '</h3>';
+    html += '<h3 class="forstaaelse-title">' + t('understandTitle').replace('{role}', rolleText) + '</h3>';
 
     tekster.forEach(function(t) {
       html += '<div class="forstaaelse-card">';
@@ -689,7 +800,7 @@
   var trappenSessionCheckins = {};
 
   function visTrappenSvar(trinId) {
-    var data = TRAPPEN[trinId];
+    var data = D_TRAPPEN()[trinId];
     if (!data) return;
 
     // Register check-in only once per trin per session
@@ -709,7 +820,7 @@
 
     // Kropslige signaler
     html += '<div class="trappen-signaler-section">';
-    html += '<strong>Kropslige signaler</strong>';
+    html += '<strong>' + t('bodySignals') + '</strong>';
     html += '<ul class="trappen-signaler">';
     svar.kropsSignaler.forEach(function(s) {
       html += '<li>' + s + '</li>';
@@ -719,7 +830,7 @@
 
     // Handlinger (now bullet list)
     html += '<div class="trappen-handling">';
-    html += '<strong>Handlinger</strong>';
+    html += '<strong>' + t('actions') + '</strong>';
     if (svar.handlinger) {
       html += '<ul class="trappen-handlinger-list">';
       svar.handlinger.forEach(function(h) {
@@ -734,15 +845,15 @@
     // Hvad mærker andre?
     if (svar.hvadMaerkerAndre) {
       html += '<div class="trappen-andre">';
-      html += '<strong>Hvad mærker andre?</strong>';
+      html += '<strong>' + t('whatOthersNotice') + '</strong>';
       var andre = svar.hvadMaerkerAndre;
       var keys = Object.keys(andre);
       keys.forEach(function(key) {
         var label = key.charAt(0).toUpperCase() + key.slice(1);
-        if (key === 'kolleger') label = 'Dine kolleger';
-        if (key === 'teamet') label = 'Hele teamet';
-        if (key === 'medarbejderne') label = 'Dine medarbejdere';
-        if (key === 'organisationen') label = 'Organisationen';
+        if (key === 'kolleger') label = t('yourColleagues');
+        if (key === 'teamet') label = t('wholeTeam');
+        if (key === 'medarbejderne') label = t('yourEmployees');
+        if (key === 'organisationen') label = t('organization');
         html += '<div class="trappen-andre-sub">';
         html += '<h5>' + label + '</h5>';
         html += '<p>' + andre[key] + '</p>';
@@ -753,7 +864,7 @@
 
     // Prøv nu
     html += '<div class="trappen-oevelse">';
-    html += '<strong>Prøv nu</strong>';
+    html += '<strong>' + t('tryNow') + '</strong>';
     html += '<p>' + svar.oevelse + '</p>';
     html += '</div>';
 
@@ -769,12 +880,12 @@
   // ── Temaer ──
   function renderTemaer() {
     var html = '';
-    var temaKeys = Object.keys(TEMA_INDHOLD);
+    var temaKeys = Object.keys(D_TEMA_INDHOLD());
     temaKeys.forEach(function(key) {
-      var tema = TEMA_INDHOLD[key];
+      var tema = D_TEMA_INDHOLD()[key];
       // Count related exercises
       var oevelseCount = 0;
-      OEVELSER.forEach(function(o) {
+      D_OEVELSER().forEach(function(o) {
         if (o.temaer && o.temaer.indexOf(key) !== -1) oevelseCount++;
       });
 
@@ -786,7 +897,8 @@
       html += '<div class="tema-card-body">';
       html += '<p class="tema-card-question">' + (tema.spoergsmaal || tema[getDataPerspektiv()].intro.substring(0, 60) + '...') + '</p>';
       if (oevelseCount > 0) {
-        html += '<span class="tema-card-count">' + oevelseCount + ' øvelse' + (oevelseCount > 1 ? 'r' : '') + '</span>';
+        var exPlural = oevelseCount > 1 ? (isEn() ? 's' : 'r') : '';
+        html += '<span class="tema-card-count">' + t('exerciseCount').replace('{count}', oevelseCount).replace('{plural}', exPlural) + '</span>';
       }
       html += '</div>';
       html += '</button>';
@@ -815,7 +927,7 @@
   }
 
   function visTemaDetalje(temaId) {
-    var data = TEMA_INDHOLD[temaId];
+    var data = D_TEMA_INDHOLD()[temaId];
     if (!data) return;
 
     var perspektiv = data[getDataPerspektiv()];
@@ -827,7 +939,7 @@
 
     // Related exercises
     var relOevelser = [];
-    OEVELSER.forEach(function(o, idx) {
+    D_OEVELSER().forEach(function(o, idx) {
       if (o.temaer && o.temaer.indexOf(temaId) !== -1) {
         relOevelser.push({ oevelse: o, index: idx });
       }
@@ -835,7 +947,7 @@
 
     if (relOevelser.length > 0) {
       html += '<div class="tema-detail-oevelser">';
-      html += '<span class="tema-detail-oevelser-label">Øvelser til dette tema</span>';
+      html += '<span class="tema-detail-oevelser-label">' + t('exercisesForTheme') + '</span>';
       relOevelser.forEach(function(item) {
         html += '<button class="tema-detail-oevelse-link" data-oevelse-idx="' + item.index + '">';
         html += '<span class="oevelse-link-tid">' + item.oevelse.tid + '</span>';
@@ -848,8 +960,8 @@
     if (perspektiv.relateredeCirkler && perspektiv.relateredeCirkler.length) {
       html += '<div class="tema-relaterede">';
       perspektiv.relateredeCirkler.forEach(function(cirkelId) {
-        if (CIRKLER[cirkelId]) {
-          html += '<span class="tag" data-cirkel="' + cirkelId + '">' + CIRKLER[cirkelId].titel + '</span>';
+        if (D_CIRKLER()[cirkelId]) {
+          html += '<span class="tag" data-cirkel="' + cirkelId + '">' + D_CIRKLER()[cirkelId].titel + '</span>';
         }
       });
       html += '</div>';
@@ -886,11 +998,11 @@
             cards.forEach(function(c) {
               c.classList.remove('expanded');
               var btn = c.querySelector('.oevelse-toggle');
-              if (btn) btn.textContent = 'Vis øvelse';
+              if (btn) btn.textContent = ''+t('showExercise')+'';
             });
             cards[idx].classList.add('expanded');
             var toggleBtn = cards[idx].querySelector('.oevelse-toggle');
-            if (toggleBtn) toggleBtn.textContent = 'Skjul øvelse';
+            if (toggleBtn) toggleBtn.textContent = ''+t('hideExercise')+'';
             cards[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
         }, 150);
@@ -938,7 +1050,7 @@
 
   function renderOevelser() {
     var html = '';
-    OEVELSER.forEach(function(o, i) {
+    D_OEVELSER().forEach(function(o, i) {
       html += '<div class="oevelse-card" data-index="' + i + '" data-cirkel="' + o.cirkel + '">';
       html += '<div class="oevelse-card-inner">';
       html += '<div class="oevelse-card-top">';
@@ -947,8 +1059,8 @@
       html += '</div>';
       html += '<div class="oevelse-meta">';
       html += '<span>' + o.sted + '</span>';
-      if (CIRKLER[o.cirkel]) {
-        html += '<span>' + CIRKLER[o.cirkel].titel + '</span>';
+      if (D_CIRKLER()[o.cirkel]) {
+        html += '<span>' + D_CIRKLER()[o.cirkel].titel + '</span>';
       }
       html += '</div>';
       html += '<p class="oevelse-intro">' + o.intro + '</p>';
@@ -961,7 +1073,7 @@
       // Embedded refleksion
       if (o.refleksion) {
         html += '<div class="oevelse-refleksion">';
-        html += '<div class="oevelse-refleksion-header">Refleksion efter øvelsen</div>';
+        html += '<div class="oevelse-refleksion-header">' + t('reflectionAfter') + '</div>';
         html += '<p class="oevelse-refleksion-tekst">' + o.refleksion + '</p>';
         html += '</div>';
       }
@@ -972,7 +1084,7 @@
       html += '<button class="oevelse-guide-btn oevelse-guide-next" style="display:none;">Næste trin</button>';
       html += '</div>';
       html += buildActionBar('oevelse', o.titel, o.titel, o.intro + '\n\n' + o.steps.join('\n'));
-      html += '<button class="oevelse-toggle">Vis øvelse</button>';
+      html += '<button class="oevelse-toggle">'+t('showExercise')+'</button>';
       html += '</div>';
       html += '</div>';
     });
@@ -992,14 +1104,14 @@
         oevelserGrid.querySelectorAll('.oevelse-card').forEach(function(c) {
           c.classList.remove('expanded');
           var btn = c.querySelector('.oevelse-toggle');
-          if (btn) btn.textContent = 'Vis øvelse';
+          if (btn) btn.textContent = ''+t('showExercise')+'';
           resetGuide(c);
         });
 
         if (!isExpanded) {
           this.classList.add('expanded');
           var toggleBtn = this.querySelector('.oevelse-toggle');
-          if (toggleBtn) toggleBtn.textContent = 'Skjul øvelse';
+          if (toggleBtn) toggleBtn.textContent = ''+t('hideExercise')+'';
         }
       });
     });
@@ -1030,7 +1142,7 @@
     if (!container) return;
     var html = '';
 
-    REFLEKSIONER.forEach(function(r) {
+    D_REFLEKSIONER().forEach(function(r) {
       html += '<div class="refleksion-card refleksion-card-' + r.farve + '" data-ref-id="' + r.id + '">';
       html += '<div class="refleksion-card-header">';
       html += '<span class="refleksion-card-ikon">' + r.ikon + '</span>';
@@ -1039,9 +1151,9 @@
       html += '<p class="refleksion-card-spoergsmaal">' + r.spoergsmaal + '</p>';
       html += '<div class="refleksion-card-body">';
       html += '<p class="refleksion-card-uddybning">' + r.uddybning + '</p>';
-      html += '<textarea class="refleksion-card-input" placeholder="Skriv dine tanker her..." rows="3"></textarea>';
+      html += '<textarea class="refleksion-card-input" placeholder="' + t('reflectionPlaceholder') + '" rows="3"></textarea>';
       html += '<div class="refleksion-card-actions">';
-      html += '<button class="refleksion-gem-btn" data-ref-id="' + r.id + '" data-ref-titel="' + escapeAttr(r.titel) + '">Gem refleksion</button>';
+      html += '<button class="refleksion-gem-btn" data-ref-id="' + r.id + '" data-ref-titel="' + escapeAttr(r.titel) + '">' + t('saveReflection') + '</button>';
       html += '</div>';
       html += '</div>';
       html += '</div>';
@@ -1076,11 +1188,11 @@
         var id = this.dataset.refId;
         var titel = this.dataset.refTitel;
         gemRefleksionSvar(id, titel, svar);
-        this.textContent = 'Gemt!';
+        this.textContent = t('saved');
         this.style.background = 'var(--sage)';
         var self = this;
         setTimeout(function() {
-          self.textContent = 'Gem refleksion';
+          self.textContent = t('saveReflection');
           self.style.background = '';
           textarea.value = '';
           renderDinProces();
@@ -1106,28 +1218,28 @@
     html += '<div class="proces-stats">';
     html += '<div class="proces-stat">';
     html += '<span class="proces-stat-tal">' + totalOev + '</span>';
-    html += '<span class="proces-stat-label">Øvelser gennemført</span>';
+    html += '<span class="proces-stat-label">' + t('exercisesCompleted') + '</span>';
     html += '</div>';
     html += '<div class="proces-stat">';
     html += '<span class="proces-stat-tal">' + unikkeOev.length + '</span>';
-    html += '<span class="proces-stat-label">Forskellige øvelser</span>';
+    html += '<span class="proces-stat-label">' + t('differentExercises') + '</span>';
     html += '</div>';
     html += '<div class="proces-stat">';
     html += '<span class="proces-stat-tal">' + totalRef + '</span>';
-    html += '<span class="proces-stat-label">Refleksioner skrevet</span>';
+    html += '<span class="proces-stat-label">' + t('reflectionsWritten') + '</span>';
     html += '</div>';
     html += '<div class="proces-stat">';
     html += '<span class="proces-stat-tal">' + totalJournal + '</span>';
-    html += '<span class="proces-stat-label">Journalnotater</span>';
+    html += '<span class="proces-stat-label">' + t('journalNotes') + '</span>';
     html += '</div>';
     html += '</div>';
 
     // Journal input
     html += '<div class="proces-journal">';
-    html += '<h4 class="proces-journal-title">Skriv et notat til dig selv</h4>';
-    html += '<p class="proces-journal-hint">Hvad fylder lige nu? En observation, en intention, en erkendelse. Det behøver ikke være perfekt.</p>';
-    html += '<textarea class="proces-journal-input" id="procesJournalInput" placeholder="Skriv frit..." rows="3"></textarea>';
-    html += '<button class="proces-journal-gem" id="procesJournalGem">Gem notat</button>';
+    html += '<h4 class="proces-journal-title">' + t('journalTitle') + '</h4>';
+    html += '<p class="proces-journal-hint">' + t('journalHint') + '</p>';
+    html += '<textarea class="proces-journal-input" id="procesJournalInput" placeholder="' + t('journalPlaceholder') + '" rows="3"></textarea>';
+    html += '<button class="proces-journal-gem" id="procesJournalGem">' + t('saveNote') + '</button>';
     html += '</div>';
 
     // Timeline
@@ -1141,7 +1253,7 @@
 
     if (allEntries.length > 0) {
       html += '<div class="proces-tidslinje">';
-      html += '<h4 class="proces-tidslinje-title">Din tidslinje</h4>';
+      html += '<h4 class="proces-tidslinje-title">' + t('yourTimeline') + '</h4>';
 
       var shown = Math.min(allEntries.length, 20);
       for (var i = 0; i < shown; i++) {
@@ -1150,30 +1262,30 @@
         html += '<div class="proces-entry-dot"></div>';
         html += '<div class="proces-entry-content">';
         if (entry.type === 'oevelse') {
-          html += '<div class="proces-entry-label">Øvelse gennemført</div>';
+          html += '<div class="proces-entry-label">' + t('exerciseCompleted') + '</div>';
           html += '<div class="proces-entry-titel">' + entry.titel + '</div>';
         } else if (entry.type === 'refleksion') {
-          html += '<div class="proces-entry-label">Refleksion</div>';
+          html += '<div class="proces-entry-label">' + t('reflection') + '</div>';
           html += '<div class="proces-entry-titel">' + entry.titel + '</div>';
           html += '<div class="proces-entry-svar">' + entry.svar + '</div>';
         } else if (entry.type === 'journal') {
-          html += '<div class="proces-entry-label">Journalnotat</div>';
+          html += '<div class="proces-entry-label">' + t('journalNote') + '</div>';
           html += '<div class="proces-entry-svar">' + entry.tekst + '</div>';
         }
-        html += '<div class="proces-entry-dato">' + entry.dato + (entry.tid ? ' kl. ' + entry.tid : '') + '</div>';
+        html += '<div class="proces-entry-dato">' + entry.dato + (entry.tid ? ' ' + t('atTime') + ' ' + entry.tid : '') + '</div>';
         html += '</div>';
         html += '</div>';
       }
 
       if (allEntries.length > 20) {
-        html += '<div class="proces-mere">+ ' + (allEntries.length - 20) + ' tidligere</div>';
+        html += '<div class="proces-mere">+ ' + (allEntries.length - 20) + ' ' + t('earlier') + '</div>';
       }
 
       html += '</div>';
     } else {
       html += '<div class="proces-tom">';
-      html += '<p>Du har ikke gennemført nogen øvelser eller skrevet refleksioner endnu.</p>';
-      html += '<p class="proces-tom-hint">Start med en øvelse herover — din proces begynder med det første skridt.</p>';
+      html += '<p>' + t('processEmpty') + '</p>';
+      html += '<p class="proces-tom-hint">' + t('processEmptyHint') + '</p>';
       html += '</div>';
     }
 
@@ -1193,10 +1305,10 @@
         }
         gemJournalNotat(tekst);
         journalInput.value = '';
-        gemBtn.textContent = 'Gemt!';
+        gemBtn.textContent = t('saved');
         gemBtn.style.background = 'var(--sage)';
         setTimeout(function() {
-          gemBtn.textContent = 'Gem notat';
+          gemBtn.textContent = t('saveNote');
           gemBtn.style.background = '';
           renderDinProces();
         }, 1200);
@@ -1213,7 +1325,7 @@
     var startBtn = card.querySelector('.oevelse-guide-start');
     var nextBtn = card.querySelector('.oevelse-guide-next');
     var progressBar = card.querySelector('.oevelse-guide-progress-bar');
-    if (startBtn) { startBtn.style.display = ''; startBtn.textContent = 'Start guidet'; }
+    if (startBtn) { startBtn.style.display = ''; startBtn.textContent = t('startGuided'); }
     if (nextBtn) nextBtn.style.display = 'none';
     if (progressBar) progressBar.style.width = '0%';
     card.removeAttribute('data-guide-step');
@@ -1232,7 +1344,7 @@
     var nextBtn = card.querySelector('.oevelse-guide-next');
     var progressBar = card.querySelector('.oevelse-guide-progress-bar');
     if (startBtn) startBtn.style.display = 'none';
-    if (nextBtn) { nextBtn.style.display = ''; nextBtn.textContent = 'Næste trin'; }
+    if (nextBtn) { nextBtn.style.display = ''; nextBtn.textContent = t('nextStep'); }
     var total = parseInt(steps.dataset.total) || lis.length;
     if (progressBar) progressBar.style.width = (1 / total * 100) + '%';
   }
@@ -1263,21 +1375,21 @@
     // Last step
     if (next >= total - 1) {
       var nextBtn = card.querySelector('.oevelse-guide-next');
-      if (nextBtn) nextBtn.textContent = 'Afslut';
+      if (nextBtn) nextBtn.textContent = t('finish');
     }
 
     // Done
     if (next >= total) {
       var startBtn = card.querySelector('.oevelse-guide-start');
       var nextBtn2 = card.querySelector('.oevelse-guide-next');
-      if (startBtn) { startBtn.style.display = ''; startBtn.textContent = 'Start igen'; }
+      if (startBtn) { startBtn.style.display = ''; startBtn.textContent = t('startAgain'); }
       if (nextBtn2) nextBtn2.style.display = 'none';
       // Mark all done
       lis.forEach(function(li) { li.classList.remove('step-active'); li.classList.add('step-done'); });
       // Track completion
       var idx = parseInt(card.getAttribute('data-index'));
-      if (OEVELSER[idx]) {
-        markerOevelseGennemfoert(OEVELSER[idx].titel);
+      if (D_OEVELSER()[idx]) {
+        markerOevelseGennemfoert(D_OEVELSER()[idx].titel);
         renderDinProces();
       }
     }
@@ -1322,24 +1434,41 @@
     var erLeder = perspektiv === 'leder';
 
     // Circle labels for SVG
-    var cLabels = [
-      { l1: 'Stressregulering', l2: '' },
-      { l1: 'Tre tilstande', l2: 'i arbejdsdagen' },
-      { l1: erLeder ? 'Dit lederskab' : 'Din leder', l2: erLeder ? '& kulturen' : '& din trivsel' },
-      { l1: 'Samarbejds-', l2: 'mønstre' },
-      { l1: erLeder ? 'Bevægelse' : 'Din krop', l2: erLeder ? 'i teamet' : 'i hverdagen' },
-      { l1: erLeder ? 'Fælles pauser' : 'Dit åndedræt', l2: erLeder ? '& åndedræt' : '& pauser' },
-      { l1: erLeder ? 'Teamets' : 'Dit mentale', l2: erLeder ? 'resiliens' : 'overskud' }
-    ];
+    var cLabels;
+    if (isEn()) {
+      cLabels = [
+        { l1: 'Stress regulation', l2: '' },
+        { l1: 'Three states', l2: erLeder ? 'in your team' : 'in your workday' },
+        { l1: erLeder ? 'Your leadership' : 'Your leader', l2: erLeder ? '& the culture' : '& your wellbeing' },
+        { l1: erLeder ? 'Team' : 'Your', l2: erLeder ? 'collaboration' : 'collaboration patterns' },
+        { l1: erLeder ? 'Movement' : 'Your body', l2: erLeder ? 'in the team' : 'in daily life' },
+        { l1: erLeder ? 'Shared breaks' : 'Your breathing', l2: erLeder ? '& breathing' : '& breaks' },
+        { l1: erLeder ? "Team's" : 'Your mental', l2: erLeder ? 'resilience' : 'resilience' }
+      ];
+    } else {
+      cLabels = [
+        { l1: 'Stressregulering', l2: '' },
+        { l1: 'Tre tilstande', l2: 'i arbejdsdagen' },
+        { l1: erLeder ? 'Dit lederskab' : 'Din leder', l2: erLeder ? '& kulturen' : '& din trivsel' },
+        { l1: 'Samarbejds-', l2: 'mønstre' },
+        { l1: erLeder ? 'Bevægelse' : 'Din krop', l2: erLeder ? 'i teamet' : 'i hverdagen' },
+        { l1: erLeder ? 'Fælles pauser' : 'Dit åndedræt', l2: erLeder ? '& åndedræt' : '& pauser' },
+        { l1: erLeder ? 'Teamets' : 'Dit mentale', l2: erLeder ? 'resiliens' : 'overskud' }
+      ];
+    }
 
     var html = '';
 
     // Intro
-    html += '<p class="dynamik-lead">Cirkelmodellen er ikke bare en illustration. Den er et spejl af den måde ' + (erLeder ? 'dit team' : 'din arbejdsdag') + ' faktisk fungerer — som ét sammenhængende system, hvor intet område står alene. Forstår du denne dynamik, forstår du også hvorfor forandring kræver mere end én isoleret indsats.</p>';
+    if (isEn()) {
+      html += '<p class="dynamik-lead">The circle model is not just an illustration. It is a mirror of how ' + (erLeder ? 'your team' : 'your workday') + ' actually functions — as one interconnected system where no area stands alone. Once you understand this dynamic, you also understand why change requires more than a single isolated effort.</p>';
+    } else {
+      html += '<p class="dynamik-lead">Cirkelmodellen er ikke bare en illustration. Den er et spejl af den måde ' + (erLeder ? 'dit team' : 'din arbejdsdag') + ' faktisk fungerer — som ét sammenhængende system, hvor intet område står alene. Forstår du denne dynamik, forstår du også hvorfor forandring kræver mere end én isoleret indsats.</p>';
+    }
 
     // === SECTION 1: Balance ===
     html += '<div class="dynamik-section">';
-    html += '<h3 class="dynamik-section-title">Når alt er i balance</h3>';
+    html += '<h3 class="dynamik-section-title">' + t('balanceTitle') + '</h3>';
 
     // SVG balanced
     html += '<div class="dynamik-svg-wrap">';
@@ -1372,22 +1501,36 @@
       html += '<text x="'+c.x+'" y="'+(c.y+10)+'" fill="#fff" font-family="Georgia,serif" font-size="12" text-anchor="middle">'+cLabels[c.idx].l2+'</text>';
     });
     html += '</svg>';
-    html += '<p class="dynamik-svg-caption">Systemet i balance — alle områder støtter hinanden</p>';
+    html += '<p class="dynamik-svg-caption">' + t('balanceCaption') + '</p>';
     html += '</div>';
 
     if (erLeder) {
-      html += '<p class="dynamik-text">Når dit team fungerer, arbejder alle syv dimensioner sammen i en gensidig vekselvirkning. Stressregulering bærer kulturen. Åndedræt og pauser giver plads til recovery. Lederskabet skaber tryghed. Samarbejdsmønstre er fleksible nok til at rumme konflikter uden at bryde ned.</p>';
-      html += '<p class="dynamik-text">I denne tilstand er teamets nervesystemer regulerede. Der er plads til kreativitet, ærlighed og innovation. Konflikter håndteres konstruktivt. Folk har overskud til hinanden — og til sig selv. Det er denne tilstand, der skaber psykologisk tryghed.</p>';
+      if (isEn()) {
+        html += '<p class="dynamik-text">When your team is functioning well, all seven dimensions work together in a mutual interplay. Stress regulation supports the culture. Breathing and breaks create space for recovery. Leadership creates safety. Collaboration patterns are flexible enough to hold conflict without breaking down.</p>';
+        html += '<p class="dynamik-text">In this state, the team\'s nervous systems are regulated. There is room for creativity, honesty and innovation. Conflicts are handled constructively. People have the energy for each other — and for themselves. This is the state that creates psychological safety.</p>';
+      } else {
+        html += '<p class="dynamik-text">Når dit team fungerer, arbejder alle syv dimensioner sammen i en gensidig vekselvirkning. Stressregulering bærer kulturen. Åndedræt og pauser giver plads til recovery. Lederskabet skaber tryghed. Samarbejdsmønstre er fleksible nok til at rumme konflikter uden at bryde ned.</p>';
+        html += '<p class="dynamik-text">I denne tilstand er teamets nervesystemer regulerede. Der er plads til kreativitet, ærlighed og innovation. Konflikter håndteres konstruktivt. Folk har overskud til hinanden — og til sig selv. Det er denne tilstand, der skaber psykologisk tryghed.</p>';
+      }
     } else {
-      html += '<p class="dynamik-text">Når din arbejdsdag fungerer, arbejder alle syv dimensioner sammen i en gensidig vekselvirkning. Stressregulering bærer hverdagen. Åndedræt og pauser giver plads til genopladning. Din relation til ledelse og kolleger er tryg. Og dine samarbejdsmønstre er fleksible nok til at rumme konflikter uden at bryde sammen.</p>';
-      html += '<p class="dynamik-text">I denne tilstand er dit nervesystem reguleret. Du har adgang til kreativitet, empati og overblik. Kroppen er afslappet men energisk, åndedrættet er dybt og roligt, og du føler dig tilstede. Det er denne tilstand, der gør godt arbejde muligt.</p>';
+      if (isEn()) {
+        html += '<p class="dynamik-text">When your workday is functioning well, all seven dimensions work together in a mutual interplay. Stress regulation sustains your daily life. Breathing and breaks create space for recovery. Your relationship with leadership and colleagues feels safe. And your collaboration patterns are flexible enough to hold conflict without collapsing.</p>';
+        html += '<p class="dynamik-text">In this state, your nervous system is regulated. You have access to creativity, empathy and perspective. Your body is relaxed yet energized, your breathing is deep and calm, and you feel present. This is the state that makes good work possible.</p>';
+      } else {
+        html += '<p class="dynamik-text">Når din arbejdsdag fungerer, arbejder alle syv dimensioner sammen i en gensidig vekselvirkning. Stressregulering bærer hverdagen. Åndedræt og pauser giver plads til genopladning. Din relation til ledelse og kolleger er tryg. Og dine samarbejdsmønstre er fleksible nok til at rumme konflikter uden at bryde sammen.</p>';
+        html += '<p class="dynamik-text">I denne tilstand er dit nervesystem reguleret. Du har adgang til kreativitet, empati og overblik. Kroppen er afslappet men energisk, åndedrættet er dybt og roligt, og du føler dig tilstede. Det er denne tilstand, der gør godt arbejde muligt.</p>';
+      }
     }
-    html += '<p class="dynamik-text">Læg mærke til figuren. Symmetrien. De lige afstande. Forbindelseslinjerne der fordeler sig jævnt. Du kan se det med det samme — her er noget der fungerer.</p>';
+    if (isEn()) {
+      html += '<p class="dynamik-text">Notice the figure. The symmetry. The even distances. The connection lines distributed evenly. You can see it immediately — something here is working.</p>';
+    } else {
+      html += '<p class="dynamik-text">Læg mærke til figuren. Symmetrien. De lige afstande. Forbindelseslinjerne der fordeler sig jævnt. Du kan se det med det samme — her er noget der fungerer.</p>';
+    }
     html += '</div>';
 
     // === SECTION 2: Under pressure ===
     html += '<div class="dynamik-section">';
-    html += '<h3 class="dynamik-section-title">Når systemet er under pres</h3>';
+    html += '<h3 class="dynamik-section-title">' + t('pressureTitle') + '</h3>';
 
     html += '<div class="dynamik-svg-wrap">';
     html += '<svg viewBox="0 0 520 520" class="dynamik-svg">';
@@ -1419,22 +1562,36 @@
       html += '<text x="'+c.x+'" y="'+(c.y+9)+'" fill="#fff" font-family="Georgia,serif" font-size="11" text-anchor="middle">'+cLabels[c.idx].l2+'</text>';
     });
     html += '</svg>';
-    html += '<p class="dynamik-svg-caption">Systemet under pres — symmetrien er brudt</p>';
+    html += '<p class="dynamik-svg-caption">' + t('pressureCaption') + '</p>';
     html += '</div>';
 
     if (erLeder) {
-      html += '<p class="dynamik-text">Men arbejdsdagen ser ikke altid sådan ud. Omstruktureringer, deadlines, konflikter, personalemangel, dårlig ledelse ovenfra — alt dette trækker teamet ud af balance. Og det sker ikke isoleret. Når ét område belastes, mærker alle de andre det.</p>';
-      html += '<p class="dynamik-text">Se på figuren. Sammenlign den med den forrige. Symmetrien er brudt. Nogle cirkler er trukket tættere sammen, andre skubbet fra hinanden. Det er præcis sådan det føles i et team under pres — noget er skævt, men det er svært at sætte fingeren på hvad.</p>';
+      if (isEn()) {
+        html += '<p class="dynamik-text">But the workday doesn\'t always look like that. Restructuring, deadlines, conflicts, staff shortages, poor leadership from above — all of this pulls the team out of balance. And it doesn\'t happen in isolation. When one area is strained, all the others feel it.</p>';
+        html += '<p class="dynamik-text">Look at the figure. Compare it with the previous one. The symmetry is broken. Some circles are drawn closer together, others pushed apart. This is exactly how it feels in a team under pressure — something is off, but it\'s hard to pinpoint what.</p>';
+      } else {
+        html += '<p class="dynamik-text">Men arbejdsdagen ser ikke altid sådan ud. Omstruktureringer, deadlines, konflikter, personalemangel, dårlig ledelse ovenfra — alt dette trækker teamet ud af balance. Og det sker ikke isoleret. Når ét område belastes, mærker alle de andre det.</p>';
+        html += '<p class="dynamik-text">Se på figuren. Sammenlign den med den forrige. Symmetrien er brudt. Nogle cirkler er trukket tættere sammen, andre skubbet fra hinanden. Det er præcis sådan det føles i et team under pres — noget er skævt, men det er svært at sætte fingeren på hvad.</p>';
+      }
     } else {
-      html += '<p class="dynamik-text">Men arbejdsdagen ser ikke altid sådan ud. Deadlines, konflikter, konstante afbrydelser, dårlig ledelse, for mange opgaver — alt dette trækker dig ud af balance. Og det sker ikke isoleret. Når ét område belastes, mærker alle de andre det.</p>';
-      html += '<p class="dynamik-text">Se på figuren. Sammenlign den med den forrige. Symmetrien er brudt. Nogle cirkler er trukket tættere sammen, andre skubbet fra hinanden. Cirklerne har ændret størrelse — det er præcis sådan det føles når du er presset. Noget er skævt, men det er svært at sætte fingeren på hvad det egentlig er.</p>';
+      if (isEn()) {
+        html += '<p class="dynamik-text">But the workday doesn\'t always look like that. Deadlines, conflicts, constant interruptions, poor leadership, too many tasks — all of this pulls you out of balance. And it doesn\'t happen in isolation. When one area is strained, all the others feel it.</p>';
+        html += '<p class="dynamik-text">Look at the figure. Compare it with the previous one. The symmetry is broken. Some circles are drawn closer together, others pushed apart. The circles have changed size — this is exactly how it feels when you\'re under pressure. Something is off, but it\'s hard to pinpoint what it really is.</p>';
+      } else {
+        html += '<p class="dynamik-text">Men arbejdsdagen ser ikke altid sådan ud. Deadlines, konflikter, konstante afbrydelser, dårlig ledelse, for mange opgaver — alt dette trækker dig ud af balance. Og det sker ikke isoleret. Når ét område belastes, mærker alle de andre det.</p>';
+        html += '<p class="dynamik-text">Se på figuren. Sammenlign den med den forrige. Symmetrien er brudt. Nogle cirkler er trukket tættere sammen, andre skubbet fra hinanden. Cirklerne har ændret størrelse — det er præcis sådan det føles når du er presset. Noget er skævt, men det er svært at sætte fingeren på hvad det egentlig er.</p>';
+      }
     }
-    html += '<p class="dynamik-text">Og det er fordi det ikke er ét enkelt problem. Det er hele systemet der er trukket ud af sin naturlige balance.</p>';
+    if (isEn()) {
+      html += '<p class="dynamik-text">And that\'s because it isn\'t one single problem. It\'s the entire system pulled out of its natural balance.</p>';
+    } else {
+      html += '<p class="dynamik-text">Og det er fordi det ikke er ét enkelt problem. Det er hele systemet der er trukket ud af sin naturlige balance.</p>';
+    }
     html += '</div>';
 
     // === SECTION 3: One area dominates ===
     html += '<div class="dynamik-section">';
-    html += '<h3 class="dynamik-section-title">Når ét område dominerer</h3>';
+    html += '<h3 class="dynamik-section-title">' + t('dominanceTitle') + '</h3>';
 
     html += '<div class="dynamik-svg-wrap">';
     html += '<svg viewBox="0 0 520 520" class="dynamik-svg">';
@@ -1455,7 +1612,7 @@
     html += '<text x="280" y="255" fill="#fff" font-family="Georgia,serif" font-size="13" text-anchor="middle" font-weight="600">' + cLabels[0].l1 + '</text>';
     html += '<text x="280" y="271" fill="#fff" font-family="Georgia,serif" font-size="11" text-anchor="middle">' + cLabels[0].l2 + '</text>';
     // Big dominant circle — "Uadresseret stress" / "Kulturelt pres"
-    var domLabel = erLeder ? {l1:'Kulturelt',l2:'pres'} : {l1:'Uadresseret',l2:'stress'};
+    var domLabel = erLeder ? {l1:t('culturalPressure')[0],l2:t('culturalPressure')[1]} : {l1:t('unaddressedStress')[0],l2:t('unaddressedStress')[1]};
     html += '<circle cx="100" cy="165" r="78" fill="#fff"/>';
     html += '<circle cx="100" cy="165" r="78" fill="var(--rose)" stroke="var(--rose)" stroke-width="2" opacity="0.85"/>';
     html += '<text x="100" y="158" fill="#fff" font-family="Georgia,serif" font-size="14" text-anchor="middle" font-weight="600">'+domLabel.l1+'</text>';
@@ -1472,36 +1629,64 @@
       html += '<text x="'+c.x+'" y="'+(c.y+8)+'" fill="#fff" font-family="Georgia,serif" font-size="10" text-anchor="middle">'+cLabels[c.idx].l2+'</text>';
     });
     html += '</svg>';
-    html += '<p class="dynamik-svg-caption">' + (erLeder ? 'Kulturelt pres trækker hele teamets system mod sig' : 'Uadresseret stress trækker hele dit system ud af balance') + '</p>';
+    html += '<p class="dynamik-svg-caption">' + (erLeder ? (isEn() ? 'Cultural pressure pulls the entire team system toward itself' : 'Kulturelt pres trækker hele teamets system mod sig') : (isEn() ? 'Unaddressed stress pulls your entire system out of balance' : 'Uadresseret stress trækker hele dit system ud af balance')) + '</p>';
     html += '</div>';
 
     if (erLeder) {
-      html += '<p class="dynamik-text">Lad os se nærmere på hvad der sker, når ét specifikt område er under pres — for eksempel kulturelt pres fra organisationen: urealistiske forventninger, manglende ressourcer, eller en ledelse der presser uden at lytte.</p>';
-      html += '<p class="dynamik-text">Presset bliver ikke i sin egen cirkel. Det udvider sig. Det fylder mere. Og i takt med at det vokser, trækker det alle andre områder ud af deres naturlige position:</p>';
-      html += '<ul class="dynamik-list">';
-      html += '<li><strong>Tre tilstande:</strong> Teamet skifter fra grøn til vedvarende gul alarm. Folk kører på adrenalin. Fejlene stiger. Irritation erstatter samarbejde.</li>';
-      html += '<li><strong>Lederskab & kultur:</strong> Din ledelse bliver reaktiv i stedet for strategisk. Du slukker brande i stedet for at bygge. Din regulering falder, og teamet mærker det øjeblikkeligt.</li>';
-      html += '<li><strong>Samarbejdsmønstre:</strong> Samarbejdet stivner. Folk trækker sig ind i siloer. Konflikter håndteres ikke — de parkeres og ulmer.</li>';
-      html += '<li><strong>Krop & bevægelse:</strong> Pauser forsvinder. Folk spiser ved skærmen. Skuldrene sidder oppe ved ørerne hele dagen. Sygefraværet stiger stille og roligt.</li>';
-      html += '<li><strong>Åndedræt & pauser:</strong> Ingen tager pauser. Åndedrættet er overfladisk. Nervesystemet sidder fast i aktivering — og det smitter fra leder til medarbejder.</li>';
-      html += '</ul>';
+      if (isEn()) {
+        html += '<p class="dynamik-text">Let\'s look more closely at what happens when one specific area is under pressure — for example, cultural pressure from the organization: unrealistic expectations, insufficient resources, or leadership that pushes without listening.</p>';
+        html += '<p class="dynamik-text">The pressure doesn\'t stay in its own circle. It expands. It takes up more space. And as it grows, it pulls all other areas out of their natural position:</p>';
+        html += '<ul class="dynamik-list">';
+        html += '<li><strong>Three states:</strong> The team shifts from green to sustained yellow alert. People run on adrenaline. Mistakes increase. Irritation replaces collaboration.</li>';
+        html += '<li><strong>Leadership & culture:</strong> Your leadership becomes reactive instead of strategic. You fight fires instead of building. Your own regulation drops, and the team feels it immediately.</li>';
+        html += '<li><strong>Collaboration patterns:</strong> Collaboration stiffens. People retreat into silos. Conflicts aren\'t addressed — they\'re parked and left to simmer.</li>';
+        html += '<li><strong>Body & movement:</strong> Breaks disappear. People eat at their screens. Shoulders sit up by the ears all day. Sick leave quietly rises.</li>';
+        html += '<li><strong>Breathing & breaks:</strong> Nobody takes breaks. Breathing is shallow. The nervous system is stuck in activation — and it spreads from leader to employee.</li>';
+        html += '</ul>';
+      } else {
+        html += '<p class="dynamik-text">Lad os se nærmere på hvad der sker, når ét specifikt område er under pres — for eksempel kulturelt pres fra organisationen: urealistiske forventninger, manglende ressourcer, eller en ledelse der presser uden at lytte.</p>';
+        html += '<p class="dynamik-text">Presset bliver ikke i sin egen cirkel. Det udvider sig. Det fylder mere. Og i takt med at det vokser, trækker det alle andre områder ud af deres naturlige position:</p>';
+        html += '<ul class="dynamik-list">';
+        html += '<li><strong>Tre tilstande:</strong> Teamet skifter fra grøn til vedvarende gul alarm. Folk kører på adrenalin. Fejlene stiger. Irritation erstatter samarbejde.</li>';
+        html += '<li><strong>Lederskab & kultur:</strong> Din ledelse bliver reaktiv i stedet for strategisk. Du slukker brande i stedet for at bygge. Din regulering falder, og teamet mærker det øjeblikkeligt.</li>';
+        html += '<li><strong>Samarbejdsmønstre:</strong> Samarbejdet stivner. Folk trækker sig ind i siloer. Konflikter håndteres ikke — de parkeres og ulmer.</li>';
+        html += '<li><strong>Krop & bevægelse:</strong> Pauser forsvinder. Folk spiser ved skærmen. Skuldrene sidder oppe ved ørerne hele dagen. Sygefraværet stiger stille og roligt.</li>';
+        html += '<li><strong>Åndedræt & pauser:</strong> Ingen tager pauser. Åndedrættet er overfladisk. Nervesystemet sidder fast i aktivering — og det smitter fra leder til medarbejder.</li>';
+        html += '</ul>';
+      }
     } else {
-      html += '<p class="dynamik-text">Lad os se nærmere på hvad der sker, når ét specifikt område er under pres — for eksempel uadresseret stress der aldrig får plads til at blive reguleret.</p>';
-      html += '<p class="dynamik-text">Stressen bliver ikke i sin egen cirkel. Den udvider sig. Den fylder mere. Og i takt med at den vokser, trækker den alle andre områder ud af deres naturlige position:</p>';
-      html += '<ul class="dynamik-list">';
-      html += '<li><strong>Tre tilstande:</strong> Du sidder fast i gul alarm eller rød nedlukning. Skiftet til grøn tilstand sker sjældnere og varer kortere. Dit nervesystem glemmer gradvist, hvordan ro føles.</li>';
-      html += '<li><strong>Din leder & din trivsel:</strong> Din oplevelse af ledelse farves af din stresstilstand. En leder der normalt føles støttende, begynder at føles krævende. Kommunikationen forværres.</li>';
-      html += '<li><strong>Samarbejdsmønstre:</strong> Dine samarbejdsmønstre stivner. Du trækker dig, overtilpasser eller eskalerer — afhængigt af dit tilknytningsmønster. Relationer der normalt bærer, begynder at knirke.</li>';
-      html += '<li><strong>Din krop:</strong> Kroppen bærer det hele. Spændingshovedpine, dårlig søvn, stivhed i nakke og skuldre, indre uro der ikke vil slippe.</li>';
-      html += '<li><strong>Dit åndedræt:</strong> Åndedrættet bliver overfladisk og hurtigt. Pauserne forsvinder. Nervesystemet mister sin naturlige evne til at skifte mellem aktivering og hvile.</li>';
-      html += '</ul>';
+      if (isEn()) {
+        html += '<p class="dynamik-text">Let\'s look more closely at what happens when one specific area is under pressure — for example, unaddressed stress that never gets the space to be regulated.</p>';
+        html += '<p class="dynamik-text">The stress doesn\'t stay in its own circle. It expands. It takes up more space. And as it grows, it pulls all other areas out of their natural position:</p>';
+        html += '<ul class="dynamik-list">';
+        html += '<li><strong>Three states:</strong> You\'re stuck in yellow alert or red shutdown. Shifting to green happens less often and lasts shorter. Your nervous system gradually forgets what calm feels like.</li>';
+        html += '<li><strong>Your leader & your wellbeing:</strong> Your experience of leadership is colored by your stress state. A leader who normally feels supportive starts to feel demanding. Communication deteriorates.</li>';
+        html += '<li><strong>Collaboration patterns:</strong> Your collaboration patterns stiffen. You withdraw, over-adapt or escalate — depending on your attachment pattern. Relationships that normally hold start to creak.</li>';
+        html += '<li><strong>Your body:</strong> The body carries it all. Tension headaches, poor sleep, stiffness in neck and shoulders, an inner restlessness that won\'t let go.</li>';
+        html += '<li><strong>Your breathing:</strong> Breathing becomes shallow and rapid. Breaks disappear. The nervous system loses its natural ability to shift between activation and rest.</li>';
+        html += '</ul>';
+      } else {
+        html += '<p class="dynamik-text">Lad os se nærmere på hvad der sker, når ét specifikt område er under pres — for eksempel uadresseret stress der aldrig får plads til at blive reguleret.</p>';
+        html += '<p class="dynamik-text">Stressen bliver ikke i sin egen cirkel. Den udvider sig. Den fylder mere. Og i takt med at den vokser, trækker den alle andre områder ud af deres naturlige position:</p>';
+        html += '<ul class="dynamik-list">';
+        html += '<li><strong>Tre tilstande:</strong> Du sidder fast i gul alarm eller rød nedlukning. Skiftet til grøn tilstand sker sjældnere og varer kortere. Dit nervesystem glemmer gradvist, hvordan ro føles.</li>';
+        html += '<li><strong>Din leder & din trivsel:</strong> Din oplevelse af ledelse farves af din stresstilstand. En leder der normalt føles støttende, begynder at føles krævende. Kommunikationen forværres.</li>';
+        html += '<li><strong>Samarbejdsmønstre:</strong> Dine samarbejdsmønstre stivner. Du trækker dig, overtilpasser eller eskalerer — afhængigt af dit tilknytningsmønster. Relationer der normalt bærer, begynder at knirke.</li>';
+        html += '<li><strong>Din krop:</strong> Kroppen bærer det hele. Spændingshovedpine, dårlig søvn, stivhed i nakke og skuldre, indre uro der ikke vil slippe.</li>';
+        html += '<li><strong>Dit åndedræt:</strong> Åndedrættet bliver overfladisk og hurtigt. Pauserne forsvinder. Nervesystemet mister sin naturlige evne til at skifte mellem aktivering og hvile.</li>';
+        html += '</ul>';
+      }
     }
-    html += '<p class="dynamik-text">Det er ikke svaghed. Det er nervesystemets forsøg på at klare sig. Men prisen er, at hele systemets balance går tabt.</p>';
+    if (isEn()) {
+      html += '<p class="dynamik-text">This is not weakness. It is the nervous system\'s attempt to cope. But the cost is that the entire system\'s balance is lost.</p>';
+    } else {
+      html += '<p class="dynamik-text">Det er ikke svaghed. Det er nervesystemets forsøg på at klare sig. Men prisen er, at hele systemets balance går tabt.</p>';
+    }
     html += '</div>';
 
     // === SECTION 4: Multiple areas ===
     html += '<div class="dynamik-section">';
-    html += '<h3 class="dynamik-section-title">Når flere områder belastes samtidig</h3>';
+    html += '<h3 class="dynamik-section-title">' + t('multipleTitle') + '</h3>';
 
     html += '<div class="dynamik-svg-wrap">';
     html += '<svg viewBox="0 0 520 520" class="dynamik-svg">';
@@ -1536,47 +1721,79 @@
       html += '<text x="'+c.x+'" y="'+(c.y+8)+'" fill="#fff" font-family="Georgia,serif" font-size="10" text-anchor="middle">'+cLabels[c.idx].l2+'</text>';
     });
     html += '</svg>';
-    html += '<p class="dynamik-svg-caption">Flere områder under pres — systemet trækkes i flere retninger</p>';
+    html += '<p class="dynamik-svg-caption">' + t('multipleCaption') + '</p>';
     html += '</div>';
 
     if (erLeder) {
-      html += '<p class="dynamik-text">I virkeligheden er det sjældent kun ét område, der er belastet. Et team med kulturelt pres har ofte også dårlige samarbejdsmønstre OG udbrændte medarbejdere OG fravær af pauser OG en leder der selv er dysreguleret. Hvert presset område forstærker de andre.</p>';
-      html += '<p class="dynamik-text">Det er derfor isolerede tiltag ofte rammer et loft. At indføre mindfulness-app uden at adressere arbejdsbyrden. At sende medarbejdere på stresshåndteringskursus uden at ændre kulturen. At tale om psykologisk tryghed uden at modellere den. Hvert tiltag kan noget — men ingen af dem alene kan genskabe balancen i et system, der trækkes i flere retninger samtidig.</p>';
+      if (isEn()) {
+        html += '<p class="dynamik-text">In reality, it\'s rarely just one area that\'s strained. A team with cultural pressure often also has poor collaboration patterns AND burned-out employees AND absence of breaks AND a leader who is dysregulated themselves. Each strained area amplifies the others.</p>';
+        html += '<p class="dynamik-text">That\'s why isolated initiatives often hit a ceiling. Introducing a mindfulness app without addressing the workload. Sending employees on stress management courses without changing the culture. Talking about psychological safety without modeling it. Each initiative has value — but none of them alone can restore balance in a system being pulled in multiple directions at once.</p>';
+      } else {
+        html += '<p class="dynamik-text">I virkeligheden er det sjældent kun ét område, der er belastet. Et team med kulturelt pres har ofte også dårlige samarbejdsmønstre OG udbrændte medarbejdere OG fravær af pauser OG en leder der selv er dysreguleret. Hvert presset område forstærker de andre.</p>';
+        html += '<p class="dynamik-text">Det er derfor isolerede tiltag ofte rammer et loft. At indføre mindfulness-app uden at adressere arbejdsbyrden. At sende medarbejdere på stresshåndteringskursus uden at ændre kulturen. At tale om psykologisk tryghed uden at modellere den. Hvert tiltag kan noget — men ingen af dem alene kan genskabe balancen i et system, der trækkes i flere retninger samtidig.</p>';
+      }
     } else {
-      html += '<p class="dynamik-text">I virkeligheden er det sjældent kun ét område, der er belastet. En medarbejder med kronisk stress har ofte også forstyrret søvn OG spændt krop OG samarbejdsproblemer OG en leder der ikke ser det. Hvert presset område forstærker de andre.</p>';
-      html += '<p class="dynamik-text">Det er derfor isolerede løsninger ofte rammer et loft. At tage en yogaklasse uden at adressere arbejdspresset. At lære åndedrætøvelser uden at tage pauserne. At tale om stress uden at ændre det der skaber det. Hver tilgang kan noget — men ingen af dem alene kan genskabe balancen i et system, der trækkes i flere retninger.</p>';
+      if (isEn()) {
+        html += '<p class="dynamik-text">In reality, it\'s rarely just one area that\'s strained. An employee with chronic stress often also has disrupted sleep AND a tense body AND collaboration problems AND a leader who doesn\'t see it. Each strained area amplifies the others.</p>';
+        html += '<p class="dynamik-text">That\'s why isolated solutions often hit a ceiling. Taking a yoga class without addressing the work pressure. Learning breathing exercises without actually taking breaks. Talking about stress without changing what creates it. Each approach has value — but none of them alone can restore balance in a system being pulled in multiple directions.</p>';
+      } else {
+        html += '<p class="dynamik-text">I virkeligheden er det sjældent kun ét område, der er belastet. En medarbejder med kronisk stress har ofte også forstyrret søvn OG spændt krop OG samarbejdsproblemer OG en leder der ikke ser det. Hvert presset område forstærker de andre.</p>';
+        html += '<p class="dynamik-text">Det er derfor isolerede løsninger ofte rammer et loft. At tage en yogaklasse uden at adressere arbejdspresset. At lære åndedrætøvelser uden at tage pauserne. At tale om stress uden at ændre det der skaber det. Hver tilgang kan noget — men ingen af dem alene kan genskabe balancen i et system, der trækkes i flere retninger.</p>';
+      }
     }
     html += '</div>';
 
     // === SECTION 5: Why wholeness matters ===
     html += '<div class="dynamik-section">';
-    html += '<h3 class="dynamik-section-title">Hvorfor helheden er afgørende</h3>';
+    html += '<h3 class="dynamik-section-title">' + t('wholenessTitle') + '</h3>';
     if (erLeder) {
-      html += '<p class="dynamik-text">Cirkelmodellen er ikke bare et kort — den er en ledelsesfilosofi. Når vi forstår, at alt påvirker alt i et team, ændrer det måden vi arbejder med trivsel på. Vi adresserer ikke symptomer. Vi adresserer systemet.</p>';
-      html += '<p class="dynamik-text">Det er derfor Clements tilgang integrerer nervesystemsforståelse med ledelsesudvikling, teamdynamik og kropslig bevidsthed. Ikke fordi kompleksitet er målet, men fordi arbejdspladsen selv er en integreret helhed. Balance vender tilbage, når vi møder teamet med omsorg, med struktur, og med forståelse for at forandring i ét menneske skaber bevægelse i hele systemet.</p>';
+      if (isEn()) {
+        html += '<p class="dynamik-text">The circle model is not just a map — it is a leadership philosophy. When we understand that everything affects everything in a team, it changes the way we approach wellbeing. We don\'t address symptoms. We address the system.</p>';
+        html += '<p class="dynamik-text">That\'s why Clement\'s approach integrates nervous system understanding with leadership development, team dynamics and somatic awareness. Not because complexity is the goal, but because the workplace itself is an integrated whole. Balance returns when we meet the team with care, with structure, and with the understanding that change in one person creates movement throughout the entire system.</p>';
+      } else {
+        html += '<p class="dynamik-text">Cirkelmodellen er ikke bare et kort — den er en ledelsesfilosofi. Når vi forstår, at alt påvirker alt i et team, ændrer det måden vi arbejder med trivsel på. Vi adresserer ikke symptomer. Vi adresserer systemet.</p>';
+        html += '<p class="dynamik-text">Det er derfor Clements tilgang integrerer nervesystemsforståelse med ledelsesudvikling, teamdynamik og kropslig bevidsthed. Ikke fordi kompleksitet er målet, men fordi arbejdspladsen selv er en integreret helhed. Balance vender tilbage, når vi møder teamet med omsorg, med struktur, og med forståelse for at forandring i ét menneske skaber bevægelse i hele systemet.</p>';
+      }
     } else {
-      html += '<p class="dynamik-text">Cirkelmodellen er ikke bare et kort — den er en livsfilosofi for dit arbejdsliv. Når du forstår, at alt påvirker alt i din arbejdsdag, ændrer det måden du arbejder med din egen trivsel. Du adresserer ikke bare symptomer. Du adresserer systemet.</p>';
-      html += '<p class="dynamik-text">Det er derfor Clements tilgang integrerer nervesystemsforståelse med kropslig bevidsthed, åndedrætsarbejde og relationel intelligens. Ikke fordi kompleksitet er målet, men fordi din arbejdsdag selv er en integreret helhed. Balance vender tilbage, når du giver dig selv lov til at arbejde med hele systemet — en øvelse, en pause, en grænse ad gangen.</p>';
+      if (isEn()) {
+        html += '<p class="dynamik-text">The circle model is not just a map — it is a philosophy for your working life. When you understand that everything affects everything in your workday, it changes how you approach your own wellbeing. You don\'t just address symptoms. You address the system.</p>';
+        html += '<p class="dynamik-text">That\'s why Clement\'s approach integrates nervous system understanding with somatic awareness, breathwork and relational intelligence. Not because complexity is the goal, but because your workday itself is an integrated whole. Balance returns when you give yourself permission to work with the entire system — one exercise, one break, one boundary at a time.</p>';
+      } else {
+        html += '<p class="dynamik-text">Cirkelmodellen er ikke bare et kort — den er en livsfilosofi for dit arbejdsliv. Når du forstår, at alt påvirker alt i din arbejdsdag, ændrer det måden du arbejder med din egen trivsel. Du adresserer ikke bare symptomer. Du adresserer systemet.</p>';
+        html += '<p class="dynamik-text">Det er derfor Clements tilgang integrerer nervesystemsforståelse med kropslig bevidsthed, åndedrætsarbejde og relationel intelligens. Ikke fordi kompleksitet er målet, men fordi din arbejdsdag selv er en integreret helhed. Balance vender tilbage, når du giver dig selv lov til at arbejde med hele systemet — en øvelse, en pause, en grænse ad gangen.</p>';
+      }
     }
     html += '</div>';
 
     // === Callout: For dig ===
     html += '<div class="dynamik-callout">';
     if (erLeder) {
-      html += '<h3 class="dynamik-callout-title">For dig som leder</h3>';
-      html += '<p class="dynamik-text">Når du ser den skæve figur, genkender du måske dit eget team. Den fornemmelse af at alt er lidt forskudt — at I arbejder hårdt, men ikke kan nå hinanden. At energien lækker et sted, du ikke kan se.</p>';
-      html += '<p class="dynamik-text">Vid at det ikke er permanent. Dit team har kapaciteten til balance — det har bare brug for de rette betingelser for at finde tilbage. Og de betingelser starter med dig: din egen regulering, din evne til at sætte grænser, din vilje til at prioritere trivsel over tempo.</p>';
-      html += '<p class="dynamik-text">Udforsk cirklerne ovenfor. Start der, hvor du mærker mest pres. Og vid, at uanset hvor du begynder, arbejder du med hele systemet.</p>';
+      html += '<h3 class="dynamik-callout-title">' + t('forYouLeader') + '</h3>';
+      if (isEn()) {
+        html += '<p class="dynamik-text">When you see the skewed figure, you may recognize your own team. That feeling of everything being slightly off — of working hard but not being able to reach each other. Of energy leaking somewhere you can\'t see.</p>';
+        html += '<p class="dynamik-text">Know that it\'s not permanent. Your team has the capacity for balance — it just needs the right conditions to find its way back. And those conditions start with you: your own regulation, your ability to set boundaries, your willingness to prioritize wellbeing over speed.</p>';
+        html += '<p class="dynamik-text">Explore the circles above. Start where you feel the most pressure. And know that wherever you begin, you\'re working with the entire system.</p>';
+      } else {
+        html += '<p class="dynamik-text">Når du ser den skæve figur, genkender du måske dit eget team. Den fornemmelse af at alt er lidt forskudt — at I arbejder hårdt, men ikke kan nå hinanden. At energien lækker et sted, du ikke kan se.</p>';
+        html += '<p class="dynamik-text">Vid at det ikke er permanent. Dit team har kapaciteten til balance — det har bare brug for de rette betingelser for at finde tilbage. Og de betingelser starter med dig: din egen regulering, din evne til at sætte grænser, din vilje til at prioritere trivsel over tempo.</p>';
+        html += '<p class="dynamik-text">Udforsk cirklerne ovenfor. Start der, hvor du mærker mest pres. Og vid, at uanset hvor du begynder, arbejder du med hele systemet.</p>';
+      }
     } else {
-      html += '<h3 class="dynamik-callout-title">For dig</h3>';
-      html += '<p class="dynamik-text">Når du ser den skæve figur, genkender du måske din egen hverdag. Den fornemmelse af at alt er lidt forskudt — at du gør dit bedste, men alligevel føler dig udmattet, afkoblet eller ude af balance.</p>';
-      html += '<p class="dynamik-text">Vid at det ikke er din skyld. Dit nervesystem reagerer rationelt på de betingelser, det møder. Og vid at forandring er mulig — ikke alt på én gang, men ét område ad gangen. Én øvelse. Én pause. Én grænse. Hver lille bevægelse sender bølger gennem hele systemet.</p>';
-      html += '<p class="dynamik-text">Udforsk cirklerne ovenfor. Start der, hvor du mærker mest. Og vid, at uanset hvor du begynder, arbejder du med hele dit system.</p>';
+      html += '<h3 class="dynamik-callout-title">' + t('forYou') + '</h3>';
+      if (isEn()) {
+        html += '<p class="dynamik-text">When you see the skewed figure, you may recognize your own daily life. That feeling of everything being slightly off — of doing your best but still feeling exhausted, disconnected or out of balance.</p>';
+        html += '<p class="dynamik-text">Know that it\'s not your fault. Your nervous system is responding rationally to the conditions it meets. And know that change is possible — not all at once, but one area at a time. One exercise. One break. One boundary. Each small movement sends ripples through the entire system.</p>';
+        html += '<p class="dynamik-text">Explore the circles above. Start where you feel the most. And know that wherever you begin, you\'re working with your entire system.</p>';
+      } else {
+        html += '<p class="dynamik-text">Når du ser den skæve figur, genkender du måske din egen hverdag. Den fornemmelse af at alt er lidt forskudt — at du gør dit bedste, men alligevel føler dig udmattet, afkoblet eller ude af balance.</p>';
+        html += '<p class="dynamik-text">Vid at det ikke er din skyld. Dit nervesystem reagerer rationelt på de betingelser, det møder. Og vid at forandring er mulig — ikke alt på én gang, men ét område ad gangen. Én øvelse. Én pause. Én grænse. Hver lille bevægelse sender bølger gennem hele systemet.</p>';
+        html += '<p class="dynamik-text">Udforsk cirklerne ovenfor. Start der, hvor du mærker mest. Og vid, at uanset hvor du begynder, arbejder du med hele dit system.</p>';
+      }
     }
     html += '</div>';
 
     // Back to top
-    html += '<button class="dynamik-to-top" onclick="window.scrollTo({top:0,behavior:\'smooth\'})">↑ Tilbage til toppen</button>';
+    html += '<button class="dynamik-to-top" onclick="window.scrollTo({top:0,behavior:\'smooth\'})">' + t('backToTop') + '</button>';
 
     container.innerHTML = html;
   }
@@ -1595,13 +1812,13 @@
     if (fav.length === 0) {
       container.innerHTML = '<div class="favoritter-empty">' +
         '<div class="favoritter-empty-icon">' + IKONER.bookmark(32) + '</div>' +
-        '<p>Du har ikke gemt noget endnu.</p>' +
-        '<p class="favoritter-empty-hint">Tryk på ' + IKONER.bookmark(14) + ' Gem når du finder indhold, du vil vende tilbage til.</p>' +
+        '<p>' + t('favEmpty') + '</p>' +
+        '<p class="favoritter-empty-hint">' + t('favEmptyHint').replace('{icon}', IKONER.bookmark(14)) + '</p>' +
         '</div>';
       return;
     }
 
-    var typeLabels = { oevelse: 'Øvelse', fordybelse: 'Fordybelse', trappen: 'Nervesystemet', tema: 'Tema' };
+    var typeLabels = { oevelse: t('favTypeExercise'), fordybelse: t('favTypeDeepDive'), trappen: t('favTypeLadder'), tema: t('favTypeTheme') };
     var typeIcons = { oevelse: '◎', fordybelse: '◉', trappen: '☰', tema: '◈' };
 
     var groups = {};
@@ -1618,7 +1835,7 @@
         html += '<div class="favoritter-item" data-fav-type="' + f.type + '" data-fav-id="' + escapeAttr(f.id) + '">' +
           '<div class="favoritter-item-info">' +
           '<div class="favoritter-item-titel">' + f.titel + '</div>' +
-          '<div class="favoritter-item-dato">Gemt ' + f.dato + '</div>' +
+          '<div class="favoritter-item-dato">' + t('favSaved') + ' ' + f.dato + '</div>' +
           '</div>' +
           '<button class="favoritter-item-remove" data-fav-type="' + f.type + '" data-fav-id="' + escapeAttr(f.id) + '" title="Fjern">&times;</button>' +
           '</div>';
@@ -1683,84 +1900,82 @@
 
   // ── Menu ──
   function renderMenuContent() {
-    var rolleText = aktivPerspektiv === 'leder' ? 'leder' : (aktivPerspektiv === 'virksomhed' ? 'virksomhed' : 'medarbejder');
+    var rolleText = aktivPerspektiv === 'leder' ? t('roleLeader') : (aktivPerspektiv === 'virksomhed' ? t('roleCompany') : t('roleEmployee'));
     var rolleIcon = aktivPerspektiv === 'leder' ? '◈' : (aktivPerspektiv === 'virksomhed' ? '◆' : '◉');
     var html = '';
 
     // ── Dit perspektiv ──
     html += '<div class="menu-section">';
-    html += '<div class="menu-section-title">Dit perspektiv</div>';
+    html += '<div class="menu-section-title">' + t('perspectiveTitle') + '</div>';
     html += '<div class="menu-perspektiv">';
     html += '<span class="menu-perspektiv-icon">' + rolleIcon + '</span>';
     html += '<span class="menu-perspektiv-label">' + rolleText.charAt(0).toUpperCase() + rolleText.slice(1) + '</span>';
     html += '</div>';
-    html += '<button class="menu-rolle-btn" id="menuRolleSkift">→ Skift perspektiv</button>';
+    html += '<button class="menu-rolle-btn" id="menuRolleSkift">' + t('switchPerspective') + '</button>';
     html += '</div>';
 
     html += '<div class="menu-divider"></div>';
 
     // ── Om Anne Marie Clement ──
     html += '<div class="menu-section menu-about-section">';
-    html += '<div class="menu-section-title">Om Anne Marie Clement</div>';
+    html += '<div class="menu-section-title">' + t('aboutTitle') + '</div>';
     html += '<div class="menu-about-photo-wrap"><img src="assets/images/hero.png" alt="Anne Marie Clement" class="menu-about-photo"></div>';
-    html += '<p class="menu-about-bio">Anne Marie Clement er nervesystemsspecialist med over 20 års erfaring. ';
-    html += 'Hun tilbyder foredrag, workshops og forløb for virksomheder — og individuel coaching for ledere og medarbejdere. ';
-    html += 'Hendes tilgang bygger på polyvagal teori, tilknytningsforskning og kropslig bevidsthed — oversat til praktiske redskaber der virker i hverdagen.</p>';
+    html += '<p class="menu-about-bio">' + t('aboutBio') + '</p>';
     html += '</div>';
 
     html += '<div class="menu-divider"></div>';
 
     // ── Navigation ──
     html += '<div class="menu-section">';
-    html += '<div class="menu-section-title">Navigation</div>';
-    html += '<button class="menu-item" data-nav="hjem"><span class="menu-item-icon">◉</span>Hjem</button>';
-    html += '<button class="menu-item" data-nav="trappen"><span class="menu-item-icon">☰</span>Nervesystemets trappe</button>';
-    html += '<button class="menu-item" data-nav="temaer"><span class="menu-item-icon">◈</span>Temaer</button>';
-    html += '<button class="menu-item" data-nav="oevelser"><span class="menu-item-icon">◎</span>Øvelser</button>';
-    html += '<button class="menu-item" data-nav="dynamik"><span class="menu-item-icon">⬡</span>Dynamikken bag cirkelmodellen</button>';
-    html += '<button class="menu-item menu-item-virksomhed" data-nav="virksomhed"><span class="menu-item-icon">◆</span>Samarbejde med virksomheder</button>';
+    html += '<div class="menu-section-title">' + t('menuNavTitle') + '</div>';
+    html += '<button class="menu-item" data-nav="hjem"><span class="menu-item-icon">◉</span>' + t('menuHome') + '</button>';
+    html += '<button class="menu-item" data-nav="trappen"><span class="menu-item-icon">☰</span>' + t('menuLadder') + '</button>';
+    html += '<button class="menu-item" data-nav="temaer"><span class="menu-item-icon">◈</span>' + t('menuThemes') + '</button>';
+    html += '<button class="menu-item" data-nav="oevelser"><span class="menu-item-icon">◎</span>' + t('menuExercises') + '</button>';
+    html += '<button class="menu-item" data-nav="dynamik"><span class="menu-item-icon">⬡</span>' + t('menuDynamik') + '</button>';
+    html += '<button class="menu-item menu-item-virksomhed" data-nav="virksomhed"><span class="menu-item-icon">◆</span>' + t('menuCompany') + '</button>';
     var favCount = getFavoritter().length;
-    html += '<button class="menu-item menu-item-favoritter" id="menuFavoritter"><span class="menu-item-icon">' + IKONER.bookmark(15) + '</span>Mine favoritter <span class="menu-favorit-badge" id="favoritBadge" style="' + (favCount > 0 ? '' : 'display:none') + '">' + favCount + '</span></button>';
+    html += '<button class="menu-item menu-item-favoritter" id="menuFavoritter"><span class="menu-item-icon">' + IKONER.bookmark(15) + '</span>' + t('menuFavorites') + ' <span class="menu-favorit-badge" id="favoritBadge" style="' + (favCount > 0 ? '' : 'display:none') + '">' + favCount + '</span></button>';
     html += '</div>';
 
     html += '<div class="menu-divider"></div>';
 
     // ── Kontakt ──
     html += '<div class="menu-section">';
-    html += '<div class="menu-section-title">Kontakt</div>';
+    html += '<div class="menu-section-title">' + t('contactTitle') + '</div>';
     html += '<a class="menu-contact-item" href="tel:+4540301085"><span class="menu-contact-icon">✆</span>+45 40 30 10 85</a>';
     html += '<a class="menu-contact-item" href="mailto:annemarie@clement.dk"><span class="menu-contact-icon">✉</span>annemarie@clement.dk</a>';
     html += '<a class="menu-contact-item" href="https://www.linkedin.com/in/annemarie-clement/" target="_blank" rel="noopener"><span class="menu-contact-icon">in</span>LinkedIn</a>';
     html += '<a class="menu-contact-item" href="https://www.instagram.com/annemarieclementt/" target="_blank" rel="noopener"><span class="menu-contact-icon">✦</span>Instagram</a>';
-    html += '<a class="menu-contact-item" href="https://www.clement.dk" target="_blank" rel="noopener"><span class="menu-contact-icon">⊕</span>Hjemmeside</a>';
+    html += '<a class="menu-contact-item" href="https://www.clement.dk" target="_blank" rel="noopener"><span class="menu-contact-icon">⊕</span>' + t('website') + '</a>';
     html += '</div>';
 
     html += '<div class="menu-divider"></div>';
 
     // ── Indstillinger ──
     html += '<div class="menu-section">';
-    html += '<div class="menu-section-title">Indstillinger</div>';
+    html += '<div class="menu-section-title">' + t('settingsTitle') + '</div>';
 
     html += '<div class="menu-setting">';
     html += '<div class="menu-setting-row">';
-    html += '<div class="menu-setting-info"><span class="menu-setting-name">Daglig påmindelse</span>';
-    html += '<span class="menu-setting-desc">En blid påmindelse om at tage en pause</span></div>';
+    html += '<div class="menu-setting-info"><span class="menu-setting-name">' + t('settingReminder') + '</span>';
+    html += '<span class="menu-setting-desc">' + t('settingReminderDesc') + '</span></div>';
     html += '<label class="menu-toggle"><input type="checkbox" checked data-setting="daglig"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
     html += '</div>';
     html += '</div>';
 
     html += '<div class="menu-setting">';
     html += '<div class="menu-setting-row">';
-    html += '<div class="menu-setting-info"><span class="menu-setting-name">Morgen check-in</span>';
-    html += '<span class="menu-setting-desc">Start dagen med en kort reguleringsøvelse</span></div>';
+    html += '<div class="menu-setting-info"><span class="menu-setting-name">' + t('settingMorning') + '</span>';
+    html += '<span class="menu-setting-desc">' + t('settingMorningDesc') + '</span></div>';
     html += '<label class="menu-toggle"><input type="checkbox" checked data-setting="morgen"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
     html += '</div>';
     html += '</div>';
 
     html += '<div class="menu-setting">';
     html += '<div class="menu-setting-row">';
-    html += '<div class="menu-setting-info"><span class="menu-setting-name">Ugentlig opsummering</span>';
-    html += '<span class="menu-setting-desc">Overblik over din uges trivsel og øvelser</span></div>';
+    html += '<div class="menu-setting-info"><span class="menu-setting-name">' + t('settingWeekly') + '</span>';
+    html += '<span class="menu-setting-desc">' + t('settingWeeklyDesc') + '</span></div>';
     html += '<label class="menu-toggle"><input type="checkbox" checked data-setting="ugentlig"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
     html += '</div>';
     html += '</div>';
@@ -1769,20 +1984,30 @@
 
     html += '<div class="menu-divider"></div>';
 
+    // ── Language ──
+    html += '<div class="menu-section">';
+    html += '<div class="menu-section-title">' + t('language') + '</div>';
+    html += '<div class="menu-lang-toggle">';
+    html += '<button class="menu-lang-btn' + (getLang() === 'da' ? ' active' : '') + '" data-lang="da">' + t('langDanish') + '</button>';
+    html += '<button class="menu-lang-btn' + (getLang() === 'en' ? ' active' : '') + '" data-lang="en">' + t('langEnglish') + '</button>';
+    html += '</div>';
+    html += '</div>';
+    html += '<div class="menu-divider"></div>';
+
     // ── Privatliv & data ──
     html += '<div class="menu-section">';
-    html += '<div class="menu-section-title">Privatliv & data</div>';
-    html += '<p class="menu-privacy-text">Denne app gemmer kun data lokalt på din enhed. Ingen sporing, ingen cookies, ingen tredjeparter.</p>';
+    html += '<div class="menu-section-title">' + t('privacyTitle') + '</div>';
+    html += '<p class="menu-privacy-text">' + t('privacyText') + '</p>';
 
-    html += '<button class="menu-text-btn menu-text-btn-share" data-action="share">✦ Del Clement Firma</button>';
-    html += '<button class="menu-text-btn menu-text-btn-delete" data-action="sletdata">✕ Nulstil alle data</button>';
+    html += '<button class="menu-text-btn menu-text-btn-share" data-action="share">' + t('shareApp') + '</button>';
+    html += '<button class="menu-text-btn menu-text-btn-delete" data-action="sletdata">' + t('resetData') + '</button>';
     html += '</div>';
 
     html += '<div class="menu-divider"></div>';
 
     // ── Om appen ──
     html += '<div class="menu-section menu-section-footer">';
-    html += '<p class="menu-footer-version">Clement Firma v1.0</p>';
+    html += '<p class="menu-footer-version">' + t('appVersion') + '</p>';
     html += '</div>';
 
     menuContent.innerHTML = html;
@@ -1822,15 +2047,15 @@
       shareBtn.addEventListener('click', function() {
         var shareData = {
           title: 'Clement Firma',
-          text: 'Trivsel på arbejdspladsen — baseret på nervesystemets intelligens',
+          text: t('heroSub'),
           url: window.location.href
         };
         if (navigator.share) {
           navigator.share(shareData).catch(function() {});
         } else {
           navigator.clipboard.writeText(shareData.url).then(function() {
-            shareBtn.textContent = '✓ Link kopieret!';
-            setTimeout(function() { shareBtn.textContent = '✦ Del Clement Firma'; }, 2000);
+            shareBtn.textContent = t('linkCopied');
+            setTimeout(function() { shareBtn.textContent = t('shareApp'); }, 2000);
           }).catch(function() {});
         }
       });
@@ -1840,7 +2065,7 @@
     var deleteBtn = menuContent.querySelector('[data-action="sletdata"]');
     if (deleteBtn) {
       deleteBtn.addEventListener('click', function() {
-        if (confirm('Er du sikker? Dette sletter alle dine gemte data, favoritter og procesnotater.')) {
+        if (confirm(t('resetConfirm'))) {
           localStorage.removeItem('cf_favoritter');
           localStorage.removeItem('cf_proces');
           localStorage.removeItem('cf_trappen_checkins');
@@ -1855,6 +2080,17 @@
     menuContent.querySelectorAll('.menu-toggle input').forEach(function(input) {
       input.addEventListener('change', function(e) {
         e.stopPropagation();
+      });
+    });
+
+    // Bind language toggle
+    menuContent.querySelectorAll('.menu-lang-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var newLang = this.dataset.lang;
+        if (newLang !== getLang()) {
+          setLang(newLang);
+          location.reload();
+        }
       });
     });
   }
@@ -1876,15 +2112,11 @@
   }
 
   // ── Search ──
-  var SEARCH_TAGS = [
-    'Stress', 'Åndedræt', 'Nervesystem', 'Pauser',
-    'Samarbejde', 'Ledelse', 'Resiliens', 'Krop',
-    'Regulering', 'Tilknytning'
-  ];
+  function getSearchTags() { return t('searchTags'); }
 
   function renderSearchTags() {
     var html = '';
-    SEARCH_TAGS.forEach(function(tag) {
+    getSearchTags().forEach(function(tag) {
       html += '<button class="search-tag" data-tag="' + tag + '">' + tag + '</button>';
     });
     searchTags.innerHTML = html;
@@ -1906,7 +2138,7 @@
     searchOverlay.classList.add('visible');
     searchInput.value = '';
     searchClear.classList.remove('visible');
-    searchResults.innerHTML = '<div class="search-empty">Søg efter et emne eller tryk på et tag</div>';
+    searchResults.innerHTML = '<div class="search-empty">' + t('searchEmpty') + '</div>';
     searchTags.querySelectorAll('.search-tag').forEach(function(t) { t.classList.remove('active'); });
     setTimeout(function() { searchInput.focus(); }, 100);
   }
@@ -1918,7 +2150,7 @@
 
   function performSearch(query) {
     if (!query || query.trim().length === 0) {
-      searchResults.innerHTML = '<div class="search-empty">Søg efter et emne eller tryk på et tag</div>';
+      searchResults.innerHTML = '<div class="search-empty">' + t('searchEmpty') + '</div>';
       return;
     }
 
@@ -1926,9 +2158,9 @@
     var results = [];
 
     // Search CIRKLER
-    var cirkelKeys = Object.keys(CIRKLER);
+    var cirkelKeys = Object.keys(D_CIRKLER());
     cirkelKeys.forEach(function(key) {
-      var c = CIRKLER[key];
+      var c = D_CIRKLER()[key];
       var indhold = c[getDataPerspektiv()];
       var match = false;
       var snippet = '';
@@ -1948,7 +2180,7 @@
 
       if (match) {
         results.push({
-          type: 'Cirkel',
+          type: t('searchTypeCircle'),
           title: c.titel,
           snippet: snippet.substring(0, 120) + (snippet.length > 120 ? '...' : ''),
           action: function() { navigateTo('cirkel/' + key); aktivCirkel = key; renderCirkelDetail(key); }
@@ -1957,21 +2189,21 @@
     });
 
     // Search TEMA_INDHOLD
-    var temaKeys = Object.keys(TEMA_INDHOLD);
+    var temaKeys = Object.keys(D_TEMA_INDHOLD());
     temaKeys.forEach(function(key) {
-      var t = TEMA_INDHOLD[key];
-      var indhold = t[getDataPerspektiv()];
+      var ti = D_TEMA_INDHOLD()[key];
+      var indhold = ti[getDataPerspektiv()];
       var match = false;
       var snippet = '';
 
-      if (t.titel.toLowerCase().indexOf(q) !== -1) { match = true; snippet = indhold.intro; }
+      if (ti.titel.toLowerCase().indexOf(q) !== -1) { match = true; snippet = indhold.intro; }
       if (!match && indhold.intro.toLowerCase().indexOf(q) !== -1) { match = true; snippet = indhold.intro; }
       if (!match && indhold.tekst.toLowerCase().indexOf(q) !== -1) { match = true; snippet = indhold.tekst; }
 
       if (match) {
         results.push({
-          type: 'Tema',
-          title: t.titel,
+          type: t('searchTypeTheme'),
+          title: ti.titel,
           snippet: snippet.substring(0, 120) + (snippet.length > 120 ? '...' : ''),
           action: function() { navigateTo('temaer'); setTimeout(function() { aktivTema = key; visTemaDetalje(key); }, 100); }
         });
@@ -1979,14 +2211,14 @@
     });
 
     // Search TRAPPEN
-    var trinKeys = Object.keys(TRAPPEN);
+    var trinKeys = Object.keys(D_TRAPPEN());
     trinKeys.forEach(function(key) {
-      var t = TRAPPEN[key];
-      var indhold = t[getDataPerspektiv()];
+      var tr = D_TRAPPEN()[key];
+      var indhold = tr[getDataPerspektiv()];
       var match = false;
       var snippet = '';
 
-      if (t.navn.toLowerCase().indexOf(q) !== -1) { match = true; snippet = indhold.beskrivelse; }
+      if (tr.navn.toLowerCase().indexOf(q) !== -1) { match = true; snippet = indhold.beskrivelse; }
       if (!match && indhold.beskrivelse.toLowerCase().indexOf(q) !== -1) { match = true; snippet = indhold.beskrivelse; }
       if (!match && indhold.handlinger) {
         var handlStr = indhold.handlinger.join(' ');
@@ -1995,8 +2227,8 @@
 
       if (match) {
         results.push({
-          type: 'Nervesystemstrappen',
-          title: t.navn,
+          type: t('searchTypeLadder'),
+          title: tr.navn,
           snippet: snippet.substring(0, 120) + (snippet.length > 120 ? '...' : ''),
           action: function() { navigateTo('trappen'); setTimeout(function() { aktivTrin = key; visTrappenSvar(key); }, 100); }
         });
@@ -2004,16 +2236,16 @@
     });
 
     // Search SAMMENHAENGE
-    var sammKeys = Object.keys(SAMMENHAENGE);
+    var sammKeys = Object.keys(D_SAMMENHAENGE());
     sammKeys.forEach(function(key) {
-      var s = SAMMENHAENGE[key];
+      var s = D_SAMMENHAENGE()[key];
       var tekst = s[getDataPerspektiv()];
       if (tekst && tekst.toLowerCase().indexOf(q) !== -1) {
         var parts = key.split('-');
-        var c1 = CIRKEL_NAVNE[parts[0]] || parts[0];
-        var c2 = CIRKEL_NAVNE[parts[1]] || parts[1];
+        var c1 = D_CIRKEL_NAVNE()[parts[0]] || parts[0];
+        var c2 = D_CIRKEL_NAVNE()[parts[1]] || parts[1];
         results.push({
-          type: 'Sammenhæng',
+          type: t('searchTypeConnection'),
           title: c1 + ' ↔ ' + c2,
           snippet: tekst.substring(0, 120) + '...',
           action: (function(cId) {
@@ -2033,7 +2265,7 @@
     });
 
     // Search OEVELSER
-    OEVELSER.forEach(function(o, idx) {
+    D_OEVELSER().forEach(function(o, idx) {
       var match = false;
       var snippet = '';
 
@@ -2047,7 +2279,7 @@
 
       if (match) {
         results.push({
-          type: 'Øvelse',
+          type: t('searchTypeExercise'),
           title: o.titel,
           snippet: snippet.substring(0, 120) + (snippet.length > 120 ? '...' : ''),
           action: function() { navigateTo('oevelser'); }
@@ -2057,7 +2289,7 @@
 
     // Render results
     if (results.length === 0) {
-      searchResults.innerHTML = '<div class="search-empty">Ingen resultater for "' + query + '"</div>';
+      searchResults.innerHTML = '<div class="search-empty">' + t('noResults').replace('{query}', query) + '</div>';
       return;
     }
 
@@ -2089,7 +2321,7 @@
       searchInput.value = '';
       searchClear.classList.remove('visible');
       searchTags.querySelectorAll('.search-tag').forEach(function(t) { t.classList.remove('active'); });
-      searchResults.innerHTML = '<div class="search-empty">Søg efter et emne eller tryk på et tag</div>';
+      searchResults.innerHTML = '<div class="search-empty">' + t('searchEmpty') + '</div>';
       searchInput.focus();
     });
 
@@ -2106,11 +2338,11 @@
     if (!velkommenSection || !velkommenTitel || !velkommenTekst) return;
 
     if (aktivPerspektiv === 'leder') {
-      velkommenTitel.textContent = 'Velkommen. Dit nervesystem sætter tonen for hele dit team.';
-      velkommenTekst.textContent = 'Denne app giver dig redskaber til at forstå og regulere dit eget nervesystem — og skabe de betingelser, der lader dine medarbejdere trives. Bygget på Anne Marie Clements 20 års erfaring med nervesystemet som nøgle til trivsel. Udforsk de syv dimensioner nedenfor.';
+      velkommenTitel.textContent = t('welcomeTitleLeader');
+      velkommenTekst.textContent = t('welcomeTextLeader');
     } else {
-      velkommenTitel.textContent = 'Velkommen. Din trivsel begynder i dit nervesystem.';
-      velkommenTekst.textContent = 'Denne app er dit personlige rum for balance på arbejdspladsen — med øvelser, viden og redskaber baseret på Anne Marie Clements 20 års arbejde med nervesystemet. Syv dimensioner, der tilsammen skaber trivsel i din hverdag. Start hvor det føles rigtigt.';
+      velkommenTitel.textContent = t('welcomeTitleEmployee');
+      velkommenTekst.textContent = t('welcomeTextEmployee');
     }
 
     // Show with a slight delay for the transition
@@ -2181,12 +2413,12 @@
     html += '<div class="virksomhed-welcome-medallion">';
     html += '<div class="virksomhed-welcome-circle">' + svgBuilding + '</div>';
     html += '</div>';
-    html += '<h2 class="virksomhed-welcome-title">Trivsel der mærkes — hele vejen ind i organisationen</h2>';
-    html += '<p class="virksomhed-welcome-subtitle">Til dig, der overvejer et samarbejde med Anne Marie Clement</p>';
-    html += '<p class="virksomhed-welcome-text">Denne side er skrevet til dig, der har ansvar for mennesker i en organisation — og som mærker, at trivsel kræver mere end frugtordninger og stresskurser.</p>';
-    html += '<p class="virksomhed-welcome-text">Anne Marie Clement arbejder med nervesystemet som indgang til trivsel, ledelse og samarbejde. Det er en tilgang, der rammer dybere end de fleste — fordi den handler om biologi, ikke bare holdninger.</p>';
+    html += '<h2 class="virksomhed-welcome-title">' + (isEn() ? 'Wellbeing that reaches deep — throughout the entire organization' : 'Trivsel der mærkes — hele vejen ind i organisationen') + '</h2>';
+    html += '<p class="virksomhed-welcome-subtitle">' + (isEn() ? 'For you, considering a collaboration with Anne Marie Clement' : 'Til dig, der overvejer et samarbejde med Anne Marie Clement') + '</p>';
+    html += '<p class="virksomhed-welcome-text">' + (isEn() ? 'This page is written for you — the person responsible for people in an organization — who senses that wellbeing requires more than fruit baskets and stress courses.' : 'Denne side er skrevet til dig, der har ansvar for mennesker i en organisation — og som mærker, at trivsel kræver mere end frugtordninger og stresskurser.') + '</p>';
+    html += '<p class="virksomhed-welcome-text">' + (isEn() ? 'Anne Marie Clement works with the nervous system as the gateway to wellbeing, leadership and collaboration. It is an approach that reaches deeper than most — because it is about biology, not just attitudes.' : 'Anne Marie Clement arbejder med nervesystemet som indgang til trivsel, ledelse og samarbejde. Det er en tilgang, der rammer dybere end de fleste — fordi den handler om biologi, ikke bare holdninger.') + '</p>';
     html += '<div class="virksomhed-welcome-scroll">';
-    html += '<button class="virksomhed-welcome-scroll-btn" id="virksomhedScrollDown">' + svgChevDown + ' Læs mere</button>';
+    html += '<button class="virksomhed-welcome-scroll-btn" id="virksomhedScrollDown">' + svgChevDown + ' ' + (isEn() ? 'Read more' : 'Læs mere') + '</button>';
     html += '</div>';
     html += '</div>';
     html += '</div>';
@@ -2196,40 +2428,40 @@
 
     // --- Problemet I kender ---
     html += '<div class="virksomhed-section">';
-    html += '<h3 class="virksomhed-section-title">Problemet I kender</h3>';
-    html += '<p class="virksomhed-text">De fleste organisationer oplever det samme mønster: medarbejdere der kører for hurtigt, ledere der bærer for meget, og en kultur hvor stress er normaliseret. I måler trivslen, men tallene flytter sig ikke. I tilbyder kurser, men effekten forsvinder efter tre uger.</p>';
-    html += '<p class="virksomhed-text">Det skyldes, at de fleste tilgange arbejder med symptomerne — ikke med det, der driver dem. Nervesystemet er den usynlige motor bag det meste af det, I oplever: konflikter der eskalerer, møder der ikke virker, ledere der mister overblikket under pres, og medarbejdere der langsomt trækker sig.</p>';
+    html += '<h3 class="virksomhed-section-title">' + (isEn() ? 'The problem you know' : 'Problemet I kender') + '</h3>';
+    html += '<p class="virksomhed-text">' + (isEn() ? 'Most organizations experience the same pattern: employees running too fast, leaders carrying too much, and a culture where stress is normalized. You measure wellbeing, but the numbers don\'t shift. You offer courses, but the effect fades after three weeks.' : 'De fleste organisationer oplever det samme mønster: medarbejdere der kører for hurtigt, ledere der bærer for meget, og en kultur hvor stress er normaliseret. I måler trivslen, men tallene flytter sig ikke. I tilbyder kurser, men effekten forsvinder efter tre uger.') + '</p>';
+    html += '<p class="virksomhed-text">' + (isEn() ? 'The reason is that most approaches address the symptoms — not what drives them. The nervous system is the invisible engine behind most of what you experience: conflicts that escalate, meetings that don\'t work, leaders who lose perspective under pressure, and employees who slowly withdraw.' : 'Det skyldes, at de fleste tilgange arbejder med symptomerne — ikke med det, der driver dem. Nervesystemet er den usynlige motor bag det meste af det, I oplever: konflikter der eskalerer, møder der ikke virker, ledere der mister overblikket under pres, og medarbejdere der langsomt trækker sig.') + '</p>';
     html += '</div>';
 
     // --- Anne Maries tilgang ---
     html += '<div class="virksomhed-section">';
-    html += '<h3 class="virksomhed-section-title">En anden indgang</h3>';
-    html += '<p class="virksomhed-text">Anne Marie Clement har i over 20 år arbejdet med nervesystemet som nøgle til trivsel og performance. Hendes tilgang bygger på polyvagal teori og tilknytningsforskning — oversat til et sprog og en praksis, der giver mening i en travl arbejdsdag.</p>';
-    html += '<p class="virksomhed-text">Det handler ikke om at tale om følelser i mødelokalet. Det handler om at give mennesker en konkret forståelse af, hvad der sker i deres krop under pres — og praktiske redskaber til at regulere sig selv og hinanden. Diskret, hurtigt, midt i hverdagen.</p>';
+    html += '<h3 class="virksomhed-section-title">' + (isEn() ? 'A different entry point' : 'En anden indgang') + '</h3>';
+    html += '<p class="virksomhed-text">' + (isEn() ? 'For over 20 years, Anne Marie Clement has worked with the nervous system as the key to wellbeing and performance. Her approach draws on polyvagal theory and attachment research — translated into language and practices that make sense in a busy workday.' : 'Anne Marie Clement har i over 20 år arbejdet med nervesystemet som nøgle til trivsel og performance. Hendes tilgang bygger på polyvagal teori og tilknytningsforskning — oversat til et sprog og en praksis, der giver mening i en travl arbejdsdag.') + '</p>';
+    html += '<p class="virksomhed-text">' + (isEn() ? 'This is not about discussing feelings in the conference room. It is about giving people a concrete understanding of what happens in their body under pressure — and practical tools to regulate themselves and each other. Discreetly, quickly, in the middle of everyday life.' : 'Det handler ikke om at tale om følelser i mødelokalet. Det handler om at give mennesker en konkret forståelse af, hvad der sker i deres krop under pres — og praktiske redskaber til at regulere sig selv og hinanden. Diskret, hurtigt, midt i hverdagen.') + '</p>';
 
     html += '<div class="virksomhed-kernepunkter">';
 
     html += '<div class="virksomhed-kernepunkt">';
     html += '<div class="virksomhed-kernepunkt-dot virksomhed-dot-sage"></div>';
     html += '<div class="virksomhed-kernepunkt-tekst">';
-    html += '<strong>For medarbejderen</strong>';
-    html += '<p>Konkrete 2-minutters øvelser der kan bruges ved skrivebordet. Grounding, åndedræt og sensorisk regulering — uden at nogen behøver vide det.</p>';
+    html += '<strong>' + (isEn() ? 'For the employee' : 'For medarbejderen') + '</strong>';
+    html += '<p>' + (isEn() ? 'Practical 2-minute exercises you can use at your desk. Grounding, breathing and sensory regulation — without anyone needing to know.' : 'Konkrete 2-minutters øvelser der kan bruges ved skrivebordet. Grounding, åndedræt og sensorisk regulering — uden at nogen behøver vide det.') + '</p>';
     html += '</div>';
     html += '</div>';
 
     html += '<div class="virksomhed-kernepunkt">';
     html += '<div class="virksomhed-kernepunkt-dot virksomhed-dot-amber"></div>';
     html += '<div class="virksomhed-kernepunkt-tekst">';
-    html += '<strong>For lederen</strong>';
-    html += '<p>Forståelse af, hvordan dit eget nervesystem smitter teamet — og redskaber til at være den regulerende kraft i rummet, også når presset er højt.</p>';
+    html += '<strong>' + (isEn() ? 'For the leader' : 'For lederen') + '</strong>';
+    html += '<p>' + (isEn() ? 'Understanding how your own nervous system influences the team — and tools to be the regulating force in the room, even when the pressure is high.' : 'Forståelse af, hvordan dit eget nervesystem smitter teamet — og redskaber til at være den regulerende kraft i rummet, også når presset er højt.') + '</p>';
     html += '</div>';
     html += '</div>';
 
     html += '<div class="virksomhed-kernepunkt">';
     html += '<div class="virksomhed-kernepunkt-dot virksomhed-dot-primary"></div>';
     html += '<div class="virksomhed-kernepunkt-tekst">';
-    html += '<strong>For organisationen</strong>';
-    html += '<p>Et fælles sprog for trivsel, der ikke kræver terapi-baggrund. Når alle forstår nervesystemets tre tilstande, ændrer samtalerne sig — og dermed kulturen.</p>';
+    html += '<strong>' + (isEn() ? 'For the organization' : 'For organisationen') + '</strong>';
+    html += '<p>' + (isEn() ? 'A shared language for wellbeing that doesn\'t require a therapy background. When everyone understands the nervous system\'s three states, conversations change — and with them, the culture.' : 'Et fælles sprog for trivsel, der ikke kræver terapi-baggrund. Når alle forstår nervesystemets tre tilstande, ændrer samtalerne sig — og dermed kulturen.') + '</p>';
     html += '</div>';
     html += '</div>';
 
@@ -2238,51 +2470,51 @@
 
     // --- Samarbejdsformer ---
     html += '<div class="virksomhed-section">';
-    html += '<h3 class="virksomhed-section-title">Hvad et samarbejde kan se ud</h3>';
+    html += '<h3 class="virksomhed-section-title">' + (isEn() ? 'What a collaboration can look like' : 'Hvad et samarbejde kan se ud') + '</h3>';
 
     html += '<div class="virksomhed-forloeb">';
 
     html += '<div class="virksomhed-forloeb-item">';
     html += '<div class="virksomhed-forloeb-header">';
     html += '<span class="virksomhed-forloeb-tag">Keynote</span>';
-    html += '<h4>Foredrag</h4>';
+    html += '<h4>' + (isEn() ? 'Talks' : 'Foredrag') + '</h4>';
     html += '</div>';
-    html += '<p>Anne Marie holder foredrag, der giver deltagerne en kropslig erfaring — ikke bare information. Velegnet til kick-offs, ledersamlinger eller som afsæt for et trivselsinitiativ.</p>';
+    html += '<p>' + (isEn() ? 'Anne Marie delivers talks that give participants a bodily experience — not just information. Well suited for kick-offs, leadership gatherings or as a starting point for a wellbeing initiative.' : 'Anne Marie holder foredrag, der giver deltagerne en kropslig erfaring — ikke bare information. Velegnet til kick-offs, ledersamlinger eller som afsæt for et trivselsinitiativ.') + '</p>';
     html += '<div class="virksomhed-forloeb-detaljer">';
-    html += '<span>60-90 minutter</span><span>Op til 500 deltagere</span>';
+    html += '<span>' + (isEn() ? '60-90 minutes' : '60-90 minutter') + '</span><span>' + (isEn() ? 'Up to 500 participants' : 'Op til 500 deltagere') + '</span>';
     html += '</div>';
     html += '</div>';
 
     html += '<div class="virksomhed-forloeb-item">';
     html += '<div class="virksomhed-forloeb-header">';
     html += '<span class="virksomhed-forloeb-tag">Workshop</span>';
-    html += '<h4>Teamworkshops</h4>';
+    html += '<h4>' + (isEn() ? 'Team workshops' : 'Teamworkshops') + '</h4>';
     html += '</div>';
-    html += '<p>Halv- eller heldags workshops, hvor teams lærer at genkende egne og hinandens tilstande — og får redskaber til at regulere sig selv og støtte hinanden.</p>';
+    html += '<p>' + (isEn() ? 'Half or full-day workshops where teams learn to recognize their own and each other\'s states — and gain tools to regulate themselves and support one another.' : 'Halv- eller heldags workshops, hvor teams lærer at genkende egne og hinandens tilstande — og får redskaber til at regulere sig selv og støtte hinanden.') + '</p>';
     html += '<div class="virksomhed-forloeb-detaljer">';
-    html += '<span>3-7 timer</span><span>8-30 deltagere</span>';
+    html += '<span>' + (isEn() ? '3-7 hours' : '3-7 timer') + '</span><span>' + (isEn() ? '8-30 participants' : '8-30 deltagere') + '</span>';
     html += '</div>';
     html += '</div>';
 
     html += '<div class="virksomhed-forloeb-item">';
     html += '<div class="virksomhed-forloeb-header">';
     html += '<span class="virksomhed-forloeb-tag virksomhed-forloeb-tag-alt">Forløb</span>';
-    html += '<h4>Lederudvikling</h4>';
+    html += '<h4>' + (isEn() ? 'Leadership development' : 'Lederudvikling') + '</h4>';
     html += '</div>';
-    html += '<p>Et sammenhængende forløb for ledere, der vil forstå, hvordan deres nervesystem sætter tonen for hele teamet. Teori, refleksion og praksis i en form, der passer ind i en leders hverdag.</p>';
+    html += '<p>' + (isEn() ? 'A cohesive program for leaders who want to understand how their nervous system sets the tone for the entire team. Theory, reflection and practice in a format that fits a leader\'s schedule.' : 'Et sammenhængende forløb for ledere, der vil forstå, hvordan deres nervesystem sætter tonen for hele teamet. Teori, refleksion og praksis i en form, der passer ind i en leders hverdag.') + '</p>';
     html += '<div class="virksomhed-forloeb-detaljer">';
-    html += '<span>4-8 sessioner</span><span>Individuel sparring</span>';
+    html += '<span>' + (isEn() ? '4-8 sessions' : '4-8 sessioner') + '</span><span>' + (isEn() ? 'Individual coaching' : 'Individuel sparring') + '</span>';
     html += '</div>';
     html += '</div>';
 
     html += '<div class="virksomhed-forloeb-item">';
     html += '<div class="virksomhed-forloeb-header">';
     html += '<span class="virksomhed-forloeb-tag virksomhed-forloeb-tag-alt">App</span>';
-    html += '<h4>Denne app som dagligt redskab</h4>';
+    html += '<h4>' + (isEn() ? 'This app as a daily tool' : 'Denne app som dagligt redskab') + '</h4>';
     html += '</div>';
-    html += '<p>Clement Firma kan stilles til rådighed for jeres medarbejdere som et stille, dagligt supplement. Øvelser, check-ins og viden — direkte i lommen, uden at det kræver en workshop først.</p>';
+    html += '<p>' + (isEn() ? 'Clement Firma can be made available to your employees as a quiet, daily companion. Exercises, check-ins and knowledge — right in their pocket, without needing a workshop first.' : 'Clement Firma kan stilles til rådighed for jeres medarbejdere som et stille, dagligt supplement. Øvelser, check-ins og viden — direkte i lommen, uden at det kræver en workshop først.') + '</p>';
     html += '<div class="virksomhed-forloeb-detaljer">';
-    html += '<span>Kan bruges selvstændigt eller som del af et forløb</span>';
+    html += '<span>' + (isEn() ? 'Can be used independently or as part of a program' : 'Kan bruges selvstændigt eller som del af et forløb') + '</span>';
     html += '</div>';
     html += '</div>';
 
@@ -2291,27 +2523,27 @@
 
     // --- Hvad gør det relevant for jer? ---
     html += '<div class="virksomhed-section">';
-    html += '<h3 class="virksomhed-section-title">Hvornår giver det mening?</h3>';
-    html += '<p class="virksomhed-text">Et samarbejde med Anne Marie er relevant, hvis I genkender noget af dette:</p>';
+    html += '<h3 class="virksomhed-section-title">' + (isEn() ? 'When does it make sense?' : 'Hvornår giver det mening?') + '</h3>';
+    html += '<p class="virksomhed-text">' + (isEn() ? 'A collaboration with Anne Marie is relevant if you recognize any of this:' : 'Et samarbejde med Anne Marie er relevant, hvis I genkender noget af dette:') + '</p>';
     html += '<ul class="virksomhed-list">';
-    html += '<li>Stressniveauet er højt, men ingen taler om det direkte</li>';
-    html += '<li>Konflikter i teams, der ikke løser sig trods gode intentioner</li>';
-    html += '<li>Ledere der selv er under pres og ubevidst viderefører det</li>';
-    html += '<li>Medarbejdere der trækker sig, mister motivation eller siger op</li>';
-    html += '<li>Trivselsundersøgelser, der ikke fører til reel forandring</li>';
-    html += '<li>Et ønske om at gøre noget anderledes — med dybde og respekt</li>';
+    html += '<li>' + (isEn() ? 'Stress levels are high, but nobody talks about it directly' : 'Stressniveauet er højt, men ingen taler om det direkte') + '</li>';
+    html += '<li>' + (isEn() ? 'Team conflicts that don\'t resolve despite good intentions' : 'Konflikter i teams, der ikke løser sig trods gode intentioner') + '</li>';
+    html += '<li>' + (isEn() ? 'Leaders who are under pressure themselves and unconsciously pass it on' : 'Ledere der selv er under pres og ubevidst viderefører det') + '</li>';
+    html += '<li>' + (isEn() ? 'Employees who withdraw, lose motivation or resign' : 'Medarbejdere der trækker sig, mister motivation eller siger op') + '</li>';
+    html += '<li>' + (isEn() ? 'Wellbeing surveys that don\'t lead to real change' : 'Trivselsundersøgelser, der ikke fører til reel forandring') + '</li>';
+    html += '<li>' + (isEn() ? 'A desire to do something different — with depth and respect' : 'Et ønske om at gøre noget anderledes — med dybde og respekt') + '</li>';
     html += '</ul>';
     html += '</div>';
 
     // --- Udforsk appen ---
     html += '<div class="virksomhed-section">';
-    html += '<h3 class="virksomhed-section-title">Se hvad jeres medarbejdere kan få</h3>';
-    html += '<p class="virksomhed-text">Denne app er et eksempel på, hvad Anne Marie bygger til organisationer. Brug den selv — prøv øvelserne, tjek ind på trappen, læs temaerne. Det giver et bedre indblik end enhver præsentation.</p>';
+    html += '<h3 class="virksomhed-section-title">' + (isEn() ? 'See what your employees can get' : 'Se hvad jeres medarbejdere kan få') + '</h3>';
+    html += '<p class="virksomhed-text">' + (isEn() ? 'This app is an example of what Anne Marie builds for organizations. Use it yourself — try the exercises, check in on the ladder, read the themes. It gives better insight than any presentation.' : 'Denne app er et eksempel på, hvad Anne Marie bygger til organisationer. Brug den selv — prøv øvelserne, tjek ind på trappen, læs temaerne. Det giver et bedre indblik end enhver præsentation.') + '</p>';
     html += '<div class="virksomhed-appnav-grid">';
-    html += '<button class="virksomhed-appnav-btn" data-goto="trappen"><span>Nervesystemets trappe</span></button>';
-    html += '<button class="virksomhed-appnav-btn" data-goto="temaer"><span>Temaer</span></button>';
-    html += '<button class="virksomhed-appnav-btn" data-goto="oevelser"><span>Øvelser</span></button>';
-    html += '<button class="virksomhed-appnav-btn" data-goto="dynamik"><span>Dynamikken bag modellen</span></button>';
+    html += '<button class="virksomhed-appnav-btn" data-goto="trappen"><span>' + (isEn() ? 'The nervous system ladder' : 'Nervesystemets trappe') + '</span></button>';
+    html += '<button class="virksomhed-appnav-btn" data-goto="temaer"><span>' + (isEn() ? 'Themes' : 'Temaer') + '</span></button>';
+    html += '<button class="virksomhed-appnav-btn" data-goto="oevelser"><span>' + (isEn() ? 'Exercises' : 'Øvelser') + '</span></button>';
+    html += '<button class="virksomhed-appnav-btn" data-goto="dynamik"><span>' + (isEn() ? 'The dynamics behind the model' : 'Dynamikken bag modellen') + '</span></button>';
     html += '</div>';
     html += '</div>';
 
@@ -2319,8 +2551,8 @@
 
     // ===== Kontakt =====
     html += '<div class="virksomhed-cta">';
-    html += '<h3 class="virksomhed-cta-title">Lad os tale sammen</h3>';
-    html += '<p class="virksomhed-cta-text">Anne Marie tager gerne en uforpligtende samtale om, hvad der giver mening for jeres organisation. Ingen salgstale — bare en ærlig snak om, hvor I er, og hvad der kunne hjælpe.</p>';
+    html += '<h3 class="virksomhed-cta-title">' + (isEn() ? 'Let\'s talk' : 'Lad os tale sammen') + '</h3>';
+    html += '<p class="virksomhed-cta-text">' + (isEn() ? 'Anne Marie is happy to have an informal conversation about what makes sense for your organization. No sales pitch — just an honest talk about where you are and what might help.' : 'Anne Marie tager gerne en uforpligtende samtale om, hvad der giver mening for jeres organisation. Ingen salgstale — bare en ærlig snak om, hvor I er, og hvad der kunne hjælpe.') + '</p>';
     html += '<div class="virksomhed-cta-info">';
     html += '<a href="mailto:annemarie@clement.dk" class="virksomhed-cta-btn virksomhed-cta-btn-primary">' + svgMail + ' annemarie@clement.dk</a>';
     html += '<a href="tel:+4540301085" class="virksomhed-cta-btn virksomhed-cta-btn-secondary">' + svgPhone + ' +45 40 30 10 85</a>';

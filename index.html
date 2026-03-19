@@ -16,25 +16,25 @@
       <div class="onboarding-medallion">
         <img src="assets/images/kolibri-logo.png" alt="Clement" class="onboarding-kolibri">
       </div>
-      <h1>Velkommen til<br>Clement Firma</h1>
-      <p class="onboarding-sub">Trivsel på arbejdspladsen — baseret på nervesystemets intelligens</p>
+      <h1 id="onboardingTitle">Velkommen til<br>Clement Firma</h1>
+      <p class="onboarding-sub" id="onboardingSub">Trivsel på arbejdspladsen — baseret på nervesystemets intelligens</p>
       <div class="onboarding-divider"></div>
-      <p class="onboarding-prompt">Hvordan vil du bruge denne app?</p>
+      <p class="onboarding-prompt" id="onboardingPrompt">Hvordan vil du bruge denne app?</p>
       <div class="onboarding-choices">
         <button class="onboarding-choice" data-rolle="medarbejder">
           <span class="choice-icon">◉</span>
-          <span class="choice-titel">Jeg er medarbejder</span>
-          <span class="choice-beskrivelse">Redskaber til din egen trivsel, regulering og hverdagsbalance</span>
+          <span class="choice-titel" id="choiceTitleMedarbejder">Jeg er medarbejder</span>
+          <span class="choice-beskrivelse" id="choiceDescMedarbejder">Redskaber til din egen trivsel, regulering og hverdagsbalance</span>
         </button>
         <button class="onboarding-choice" data-rolle="leder">
           <span class="choice-icon">◈</span>
-          <span class="choice-titel">Jeg er leder</span>
-          <span class="choice-beskrivelse">Forstå og understøt dit teams nervesystem og trivsel</span>
+          <span class="choice-titel" id="choiceTitleLeder">Jeg er leder</span>
+          <span class="choice-beskrivelse" id="choiceDescLeder">Forstå og understøt dit teams nervesystem og trivsel</span>
         </button>
         <button class="onboarding-choice onboarding-choice-virksomhed" data-rolle="virksomhed">
           <span class="choice-icon">◆</span>
-          <span class="choice-titel">Vi er en virksomhed</span>
-          <span class="choice-beskrivelse">Se hvad et samarbejde med Anne Marie Clement kan give jeres organisation</span>
+          <span class="choice-titel" id="choiceTitleVirksomhed">Vi er en virksomhed</span>
+          <span class="choice-beskrivelse" id="choiceDescVirksomhed">Se hvad et samarbejde med Anne Marie Clement kan give jeres organisation</span>
         </button>
       </div>
     </div>
@@ -63,7 +63,7 @@
         <div class="menu-header-initials">AC</div>
         <div class="menu-header-text">
           <h2>Anne Marie Clement</h2>
-          <span class="menu-header-sub">Nervesystemsspecialist</span>
+          <span class="menu-header-sub" id="menuHeaderSub">Nervesystemsspecialist</span>
         </div>
       </div>
       <button class="menu-close" id="menuClose" aria-label="Luk">×</button>
@@ -75,7 +75,7 @@
   <div class="search-overlay" id="searchOverlay">
     <div class="search-header">
       <div class="search-input-wrap">
-        <input type="text" class="search-input" id="searchInput" placeholder="Søg i indhold...">
+        <input type="text" class="search-input" id="searchInput" placeholder="Søg i indhold..." data-placeholder-da="Søg i indhold..." data-placeholder-en="Search content...">
         <button class="search-clear" id="searchClear" aria-label="Ryd">×</button>
       </div>
       <button class="search-close" id="searchClose" aria-label="Luk">×</button>
@@ -88,19 +88,19 @@
   <nav class="bottom-nav" id="bottomNav">
     <button class="nav-item active" data-view="hjem">
       <span class="nav-icon"><img src="assets/images/kolibri-logo.png" alt="" class="nav-kolibri"></span>
-      <span class="nav-label">Hjem</span>
+      <span class="nav-label" id="navHome">Hjem</span>
     </button>
     <button class="nav-item" data-view="trappen">
       <span class="nav-icon">☰</span>
-      <span class="nav-label">Trappen</span>
+      <span class="nav-label" id="navTrappen">Trappen</span>
     </button>
     <button class="nav-item" data-view="temaer">
       <span class="nav-icon">◈</span>
-      <span class="nav-label">Temaer</span>
+      <span class="nav-label" id="navTemaer">Temaer</span>
     </button>
     <button class="nav-item" data-view="oevelser">
       <span class="nav-icon">◎</span>
-      <span class="nav-label">Øvelser</span>
+      <span class="nav-label" id="navOevelser">Øvelser</span>
     </button>
   </nav>
 
@@ -110,8 +110,8 @@
       <div class="hero-inner">
         <img src="assets/images/hero.png" alt="Clement" class="hero-image">
         <div class="hero-text">
-          <h1>Clement Firma</h1>
-          <p>Trivsel på arbejdspladsen — baseret på nervesystemets intelligens</p>
+          <h1 id="heroTitle">Clement Firma</h1>
+          <p id="heroSub">Trivsel på arbejdspladsen — baseret på nervesystemets intelligens</p>
         </div>
       </div>
     </header>
@@ -135,7 +135,7 @@
     <!-- Cirkel Navigation -->
     <section class="cirkel-nav-section">
       <div class="cirkel-intro">
-        <h2>De syv dimensioner</h2>
+        <h2 id="cirkelIntroTitle">De syv dimensioner</h2>
       </div>
 
       <div class="cirkel-svg-container">
@@ -219,14 +219,14 @@
         </svg>
       </div>
 
-      <p class="cirkel-hint">Tryk på en cirkel for at udforske</p>
+      <p class="cirkel-hint" id="cirkelHint">Tryk på en cirkel for at udforske</p>
     </section>
 
     <!-- Dynamik link -->
     <section class="dynamik-link-section">
       <button class="dynamik-link-btn" id="dynamikLink">
-        <span class="dynamik-link-title">Forstå dynamikken ↗</span>
-        <span class="dynamik-link-desc">Hvordan alle syv dimensioner påvirker hinanden — og hvorfor helheden er afgørende</span>
+        <span class="dynamik-link-title" id="dynamikLinkTitle">Forstå dynamikken ↗</span>
+        <span class="dynamik-link-desc" id="dynamikLinkDesc">Hvordan alle syv dimensioner påvirker hinanden — og hvorfor helheden er afgørende</span>
       </button>
     </section>
   </div>
@@ -235,8 +235,8 @@
   <div class="view" data-view="favoritter">
     <div class="view-header">
       <button class="back-btn" id="favBack">← Tilbage</button>
-      <h1 class="view-title">Mine favoritter</h1>
-      <p class="view-sub">Indhold du har gemt til senere. Tryk på et element for at gå til det.</p>
+      <h1 class="view-title" id="favTitle">Mine favoritter</h1>
+      <p class="view-sub" id="favSub">Indhold du har gemt til senere. Tryk på et element for at gå til det.</p>
     </div>
     <div id="favoritterContent"></div>
   </div>
@@ -254,9 +254,9 @@
 
     <!-- Tabs -->
     <div class="tabs">
-      <button class="tab active" data-tab="overblik">Overblik</button>
-      <button class="tab" data-tab="dybde">Fordybelse</button>
-      <button class="tab" data-tab="oevelse">Øvelse</button>
+      <button class="tab active" data-tab="overblik" id="tabOverblik">Overblik</button>
+      <button class="tab" data-tab="dybde" id="tabDybde">Fordybelse</button>
+      <button class="tab" data-tab="oevelse" id="tabOevelse">Øvelse</button>
     </div>
 
     <!-- Tab paneler -->
@@ -268,8 +268,8 @@
   <!-- ════ VIEW: DYNAMIK ════ -->
   <div class="view" data-view="dynamik">
     <div class="view-header">
-      <button class="back-btn back-to-hjem">← Tilbage til forsiden</button>
-      <h1 class="view-title">Dynamikken bag cirkelmodellen</h1>
+      <button class="back-btn back-to-hjem" id="dynamikBack">← Tilbage til forsiden</button>
+      <h1 class="view-title" id="dynamikTitle">Dynamikken bag cirkelmodellen</h1>
     </div>
     <div class="dynamik-content" id="dynamikContent"></div>
   </div>
@@ -278,13 +278,13 @@
   <div class="view" data-view="trappen">
     <div class="view-header">
       <button class="back-btn back-to-hjem">← Tilbage</button>
-      <h1 class="view-title">Nervesystemets trappe</h1>
-      <p class="view-sub">Genkend hvor du er — og vælg hvad du har brug for</p>
-      <p class="view-intro">Dit nervesystem skifter mellem tre tilstande i løbet af arbejdsdagen. Ingen af dem er forkerte — men det hjælper at genkende, hvor du er lige nu. Når du ved det, kan du vælge den rette handling i stedet for at reagere på autopilot.</p>
+      <h1 class="view-title" id="trappenTitle">Nervesystemets trappe</h1>
+      <p class="view-sub" id="trappenSub">Genkend hvor du er — og vælg hvad du har brug for</p>
+      <p class="view-intro" id="trappenIntro">Dit nervesystem skifter mellem tre tilstande i løbet af arbejdsdagen. Ingen af dem er forkerte — men det hjælper at genkende, hvor du er lige nu. Når du ved det, kan du vælge den rette handling i stedet for at reagere på autopilot.</p>
     </div>
 
     <!-- Hvor er du lige nu? -->
-    <div class="trappen-checkin-label">Hvor er du lige nu?</div>
+    <div class="trappen-checkin-label" id="trappenCheckinLabel">Hvor er du lige nu?</div>
 
     <div class="trappen-container">
       <div class="trappe-trin trappe-trin-groen" data-trin="groen">
@@ -294,9 +294,9 @@
           </div>
         </div>
         <div class="trin-tekst">
-          <strong>Grøn tilstand</strong>
-          <span>Sikkerhed og forbindelse</span>
-          <span class="trin-hint">Afslappede skuldre, dybt åndedræt, tilstede</span>
+          <strong id="trinGroenTitle">Grøn tilstand</strong>
+          <span id="trinGroenDesc">Sikkerhed og forbindelse</span>
+          <span class="trin-hint" id="trinGroenHint">Afslappede skuldre, dybt åndedræt, tilstede</span>
         </div>
         <div class="trin-chevron">&#8250;</div>
       </div>
@@ -310,9 +310,9 @@
           </div>
         </div>
         <div class="trin-tekst">
-          <strong>Gul tilstand</strong>
-          <span>Aktivering og alarm</span>
-          <span class="trin-hint">Hurtig puls, spændte skuldre, rastløshed</span>
+          <strong id="trinGulTitle">Gul tilstand</strong>
+          <span id="trinGulDesc">Aktivering og alarm</span>
+          <span class="trin-hint" id="trinGulHint">Hurtig puls, spændte skuldre, rastløshed</span>
         </div>
         <div class="trin-chevron">&#8250;</div>
       </div>
@@ -326,9 +326,9 @@
           </div>
         </div>
         <div class="trin-tekst">
-          <strong>Rød tilstand</strong>
-          <span>Nedlukning og udmattelse</span>
-          <span class="trin-hint">Tung krop, tomhed, svært at koncentrere sig</span>
+          <strong id="trinRoedTitle">Rød tilstand</strong>
+          <span id="trinRoedDesc">Nedlukning og udmattelse</span>
+          <span class="trin-hint" id="trinRoedHint">Tung krop, tomhed, svært at koncentrere sig</span>
         </div>
         <div class="trin-chevron">&#8250;</div>
       </div>
@@ -351,9 +351,9 @@
   <div class="view" data-view="temaer">
     <div class="view-header">
       <button class="back-btn back-to-hjem">← Tilbage</button>
-      <h1 class="view-title">Hvad møder du lige nu?</h1>
-      <p class="view-sub">Genkend din situation — og find redskaber der passer</p>
-      <p class="view-intro">Arbejdslivet byder på situationer, der udfordrer nervesystemet på forskellige måder. Her finder du temaer, der matcher det du oplever lige nu — med baggrund, forståelse og konkrete øvelser, så du kan handle fra et roligere sted.</p>
+      <h1 class="view-title" id="temaerTitle">Hvad møder du lige nu?</h1>
+      <p class="view-sub" id="temaerSub">Genkend din situation — og find redskaber der passer</p>
+      <p class="view-intro" id="temaerIntro">Arbejdslivet byder på situationer, der udfordrer nervesystemet på forskellige måder. Her finder du temaer, der matcher det du oplever lige nu — med baggrund, forståelse og konkrete øvelser, så du kan handle fra et roligere sted.</p>
     </div>
 
     <div class="tema-grid" id="temaGrid"></div>
@@ -364,23 +364,23 @@
   <div class="view" data-view="oevelser">
     <div class="view-header">
       <button class="back-btn back-to-hjem">← Tilbage</button>
-      <h1 class="view-title">Øvelser &amp; refleksioner</h1>
-      <p class="view-sub">Konkrete redskaber og stille rum til eftertanke</p>
-      <p class="view-intro">Her finder du både øvelser, der regulerer dit nervesystem i hverdagen, og refleksionsspørgsmål, der hjælper dig med at se dybere ind i dine mønstre. Øvelserne har hver en lille refleksion, du kan bruge bagefter. Længere nede finder du selvstændige refleksioner — og til sidst kan du følge din egen proces.</p>
+      <h1 class="view-title" id="oevelserTitle">Øvelser &amp; refleksioner</h1>
+      <p class="view-sub" id="oevelserSub">Konkrete redskaber og stille rum til eftertanke</p>
+      <p class="view-intro" id="oevelserIntro">Her finder du både øvelser, der regulerer dit nervesystem i hverdagen, og refleksionsspørgsmål, der hjælper dig med at se dybere ind i dine mønstre. Øvelserne har hver en lille refleksion, du kan bruge bagefter. Længere nede finder du selvstændige refleksioner — og til sidst kan du følge din egen proces.</p>
     </div>
 
     <!-- Del 1: Øvelser med indlejrede refleksioner -->
     <div class="oevelser-section-label" id="oevelserSectionLabel">
       <span class="oevelser-section-icon">◎</span>
-      <span>Øvelser</span>
+      <span id="oevelserLabel">Øvelser</span>
     </div>
 
     <div class="oevelser-filter" id="oevelserFilter">
-      <button class="oevelser-filter-btn active" data-filter="alle">Alle</button>
-      <button class="oevelser-filter-btn" data-filter="krop">Krop</button>
-      <button class="oevelser-filter-btn" data-filter="aandedraet">Åndedræt</button>
-      <button class="oevelser-filter-btn" data-filter="regulering">Regulering</button>
-      <button class="oevelser-filter-btn" data-filter="team">Team</button>
+      <button class="oevelser-filter-btn active" data-filter="alle" id="filterAlle">Alle</button>
+      <button class="oevelser-filter-btn" data-filter="krop" id="filterKrop">Krop</button>
+      <button class="oevelser-filter-btn" data-filter="aandedraet" id="filterAandedraet">Åndedræt</button>
+      <button class="oevelser-filter-btn" data-filter="regulering" id="filterRegulering">Regulering</button>
+      <button class="oevelser-filter-btn" data-filter="team" id="filterTeam">Team</button>
     </div>
 
     <div class="oevelser-grid" id="oevelserGrid"></div>
@@ -389,18 +389,18 @@
     <div class="oevelser-divider"></div>
     <div class="oevelser-section-label">
       <span class="oevelser-section-icon">◈</span>
-      <span>Refleksioner</span>
+      <span id="refleksionerLabel">Refleksioner</span>
     </div>
-    <p class="oevelser-section-intro">Refleksioner kræver ikke handling — kun ærlighed. Sæt dig et stille sted, læs spørgsmålet, og lad svaret komme. Der er ingen rigtige svar. Der er kun dine.</p>
+    <p class="oevelser-section-intro" id="refleksionerIntro">Refleksioner kræver ikke handling — kun ærlighed. Sæt dig et stille sted, læs spørgsmålet, og lad svaret komme. Der er ingen rigtige svar. Der er kun dine.</p>
     <div class="refleksioner-grid" id="refleksionerGrid"></div>
 
     <!-- Del 3: Din proces -->
     <div class="oevelser-divider"></div>
     <div class="oevelser-section-label">
       <span class="oevelser-section-icon">◉</span>
-      <span>Din proces</span>
+      <span id="dinProcesLabel">Din proces</span>
     </div>
-    <p class="oevelser-section-intro">Hold øje med din udvikling. Hver gang du gennemfører en øvelse eller skriver en refleksion, gemmes det her — så du kan se, hvad der virker for dig.</p>
+    <p class="oevelser-section-intro" id="dinProcesIntro">Hold øje med din udvikling. Hver gang du gennemfører en øvelse eller skriver en refleksion, gemmes det her — så du kan se, hvad der virker for dig.</p>
     <div class="din-proces-container" id="dinProcesContainer"></div>
   </div>
 
@@ -408,18 +408,20 @@
   <div class="view" data-view="virksomhed">
     <div class="view-header">
       <button class="back-btn back-to-hjem">← Tilbage</button>
-      <h1 class="view-title">Samarbejde med virksomheder</h1>
+      <h1 class="view-title" id="virksomhedTitle">Samarbejde med virksomheder</h1>
     </div>
     <div class="virksomhed-content" id="virksomhedContent"></div>
   </div>
 
   <footer>
     <img src="assets/images/kolibri-logo.png" alt="Clement" class="footer-kolibri">
-    <p>Clement Firma — Trivsel på arbejdspladsen</p>
-    <p class="footer-sub">Baseret på Annemarie Clements nervesystemsarbejde</p>
+    <p id="footerMain">Clement Firma — Trivsel på arbejdspladsen</p>
+    <p class="footer-sub" id="footerSub">Baseret på Annemarie Clements nervesystemsarbejde</p>
   </footer>
 
+  <script src="js/i18n.js"></script>
   <script src="js/data.js"></script>
+  <script src="js/data-en.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

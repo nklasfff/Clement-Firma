@@ -3773,3 +3773,36 @@ footer {
   color: var(--text-light);
   line-height: 1.5;
 }
+
+/* ── Language Toggle ── */
+.menu-lang-toggle {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.menu-lang-btn {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text-light);
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+}
+
+.menu-lang-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  font-weight: 600;
+}
+
+.menu-lang-btn:not(.active):hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
