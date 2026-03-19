@@ -1354,15 +1354,30 @@ body.hero-visible .hamburger-line {
 }
 
 .trappe-trin {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 22px 20px;
   border-radius: var(--radius);
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+}
+
+.trin-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 20px;
+}
+
+.trin-expand {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+  padding: 0 20px;
+}
+
+.trappe-trin.selected .trin-expand {
+  max-height: 2000px;
+  padding: 0 20px 20px;
 }
 
 .trappe-trin-groen {
@@ -1520,11 +1535,10 @@ body.hero-visible .hamburger-line {
 }
 
 .trappen-card {
-  background: var(--white);
+  background: transparent;
   border-radius: var(--radius);
-  padding: 28px;
-  box-shadow: var(--shadow);
-  border-left: 4px solid var(--primary);
+  padding: 12px 0 0;
+  border-left: none;
 }
 
 .trappen-card.sage-border { border-left-color: var(--sage); }

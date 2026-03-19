@@ -357,11 +357,11 @@
     if (baseView !== 'trappen') {
       if (aktivTrin) {
         aktivTrin = null;
-        trappeTrin.forEach(function(t) { t.classList.remove('selected'); });
-        if (trappenResponse) {
-          trappenResponse.innerHTML = '';
-          trappenResponse.classList.remove('visible');
-        }
+        trappeTrin.forEach(function(t) {
+          t.classList.remove('selected');
+          var exp = t.querySelector('.trin-expand');
+          if (exp) exp.innerHTML = '';
+        });
         var checkinBekraeft = document.getElementById('trappenCheckinBekraeft');
         if (checkinBekraeft) { checkinBekraeft.innerHTML = ''; checkinBekraeft.style.display = 'none'; }
       }
@@ -505,22 +505,26 @@
     trappeTrin.forEach(function(trin) {
       trin.addEventListener('click', function() {
         var trinId = this.dataset.trin;
+        var trinEl = this;
 
         // Toggle: klik på samme trin lukker det
         if (aktivTrin === trinId) {
-          this.classList.remove('selected');
+          trinEl.classList.remove('selected');
+          var expandEl = trinEl.querySelector('.trin-expand');
+          if (expandEl) expandEl.innerHTML = '';
           aktivTrin = null;
-          if (trappenResponse) {
-            trappenResponse.innerHTML = '';
-            trappenResponse.classList.remove('visible');
-          }
           var checkinBekraeft = document.getElementById('trappenCheckinBekraeft');
           if (checkinBekraeft) { checkinBekraeft.innerHTML = ''; checkinBekraeft.style.display = 'none'; }
           return;
         }
 
-        trappeTrin.forEach(function(t) { t.classList.remove('selected'); });
-        this.classList.add('selected');
+        // Luk alle andre
+        trappeTrin.forEach(function(t) {
+          t.classList.remove('selected');
+          var exp = t.querySelector('.trin-expand');
+          if (exp) exp.innerHTML = '';
+        });
+        trinEl.classList.add('selected');
         aktivTrin = trinId;
         visTrappenSvar(trinId);
       });
@@ -872,14 +876,13 @@
 
     html += '</div>';
 
-    trappenResponse.innerHTML = html;
-    trappenResponse.classList.add('visible');
-    bindActionBars(trappenResponse);
-
-    // Scroll to the response so user sees the content immediately
-    setTimeout(function() {
-      trappenResponse.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 50);
+    // Insert into inline expand area
+    var expandMap = { groen: 'trinExpandGroen', gul: 'trinExpandGul', roed: 'trinExpandRoed' };
+    var expandEl = document.getElementById(expandMap[trinId]);
+    if (expandEl) {
+      expandEl.innerHTML = html;
+      bindActionBars(expandEl);
+    }
   }
 
   // ── Temaer ──
