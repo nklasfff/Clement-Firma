@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   Clement Firma — Internationalization (i18n)
+   Clement WellbeingAtWork — Internationalization (i18n)
    Language management and UI string translations
    ═══════════════════════════════════════════ */
 
@@ -9,12 +9,12 @@ var I18N = {
   ui: {
     da: {
       // App title & hero
-      appTitle: 'Clement Firma — Trivsel på arbejdspladsen',
-      heroTitle: 'Clement Firma',
+      appTitle: 'Clement WellbeingAtWork — Trivsel på arbejdspladsen',
+      heroTitle: 'Clement WellbeingAtWork',
       heroSub: 'Trivsel på arbejdspladsen — baseret på nervesystemets intelligens',
 
       // Onboarding
-      onboardingTitle: 'Velkommen til<br>Clement Firma',
+      onboardingTitle: 'Velkommen til<br>Clement WellbeingAtWork',
       onboardingSub: 'Trivsel på arbejdspladsen — baseret på nervesystemets intelligens',
       onboardingPrompt: 'Hvordan vil du bruge denne app?',
       choiceEmployee: 'Jeg er medarbejder',
@@ -188,11 +188,11 @@ var I18N = {
       settingWeeklyDesc: 'Overblik over din uges trivsel og øvelser',
       privacyTitle: 'Privatliv & data',
       privacyText: 'Denne app gemmer kun data lokalt på din enhed. Ingen sporing, ingen cookies, ingen tredjeparter.',
-      shareApp: '✦ Del Clement Firma',
+      shareApp: '✦ Del Clement WellbeingAtWork',
       resetData: '✕ Nulstil alle data',
       resetConfirm: 'Er du sikker? Dette sletter alle dine gemte data, favoritter og procesnotater.',
       linkCopied: '✓ Link kopieret!',
-      appVersion: 'Clement Firma v1.0',
+      appVersion: 'Clement WellbeingAtWork v1.0',
       language: 'Sprog',
       langDanish: 'Dansk',
       langEnglish: 'English',
@@ -213,7 +213,7 @@ var I18N = {
       companyHeader: 'Nervesystemsspecialist',
 
       // Footer
-      footerMain: 'Clement Firma — Trivsel på arbejdspladsen',
+      footerMain: 'Clement WellbeingAtWork — Trivsel på arbejdspladsen',
       footerSub: 'Baseret på Annemarie Clements nervesystemsarbejde',
 
       // Dynamik page labels
@@ -236,12 +236,12 @@ var I18N = {
 
     en: {
       // App title & hero
-      appTitle: 'Clement Firma — Workplace Wellbeing',
-      heroTitle: 'Clement Firma',
+      appTitle: 'Clement WellbeingAtWork — Workplace Wellbeing',
+      heroTitle: 'Clement WellbeingAtWork',
       heroSub: 'Workplace wellbeing — built on the intelligence of the nervous system',
 
       // Onboarding
-      onboardingTitle: 'Welcome to<br>Clement Firma',
+      onboardingTitle: 'Welcome to<br>Clement WellbeingAtWork',
       onboardingSub: 'Workplace wellbeing — built on the intelligence of the nervous system',
       onboardingPrompt: 'How will you use this app?',
       choiceEmployee: 'I am an employee',
@@ -415,11 +415,11 @@ var I18N = {
       settingWeeklyDesc: 'Overview of your week\'s wellbeing and exercises',
       privacyTitle: 'Privacy & data',
       privacyText: 'This app only stores data locally on your device. No tracking, no cookies, no third parties.',
-      shareApp: '✦ Share Clement Firma',
+      shareApp: '✦ Share Clement WellbeingAtWork',
       resetData: '✕ Reset all data',
       resetConfirm: 'Are you sure? This will delete all your saved data, favorites and journal notes.',
       linkCopied: '✓ Link copied!',
-      appVersion: 'Clement Firma v1.0',
+      appVersion: 'Clement WellbeingAtWork v1.0',
       language: 'Language',
       langDanish: 'Dansk',
       langEnglish: 'English',
@@ -440,7 +440,7 @@ var I18N = {
       companyHeader: 'Nervous system specialist',
 
       // Footer
-      footerMain: 'Clement Firma — Workplace Wellbeing',
+      footerMain: 'Clement WellbeingAtWork — Workplace Wellbeing',
       footerSub: 'Based on Annemarie Clement\'s nervous system work',
 
       // Dynamik page labels

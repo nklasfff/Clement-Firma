@@ -1,4 +1,4 @@
-# Clement Firma — Designskitse: Wellness-framework til arbejdspladsen
+# Clement WellbeingAtWork — Designskitse: Wellness-framework til arbejdspladsen
 
 > Baseret på Clements eksisterende terapeutiske cirkelmodel, tilpasset kontormiljøer og arbejdsliv.
 

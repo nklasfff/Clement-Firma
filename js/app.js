@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   Clement Firma — App Logic
+   Clement WellbeingAtWork — App Logic
    Multi-view SPA med routing, tabs og interaktioner
    ═══════════════════════════════════════════ */
 
@@ -2054,7 +2054,7 @@
     if (shareBtn) {
       shareBtn.addEventListener('click', function() {
         var shareData = {
-          title: 'Clement Firma',
+          title: 'Clement WellbeingAtWork',
           text: t('heroSub'),
           url: window.location.href
         };
@@ -2520,7 +2520,7 @@
     html += '<span class="virksomhed-forloeb-tag virksomhed-forloeb-tag-alt">App</span>';
     html += '<h4>' + (isEn() ? 'This app as a daily tool' : 'Denne app som dagligt redskab') + '</h4>';
     html += '</div>';
-    html += '<p>' + (isEn() ? 'Clement Firma can be made available to your employees as a quiet, daily companion. Exercises, check-ins and knowledge — right in their pocket, without needing a workshop first.' : 'Clement Firma kan stilles til rådighed for jeres medarbejdere som et stille, dagligt supplement. Øvelser, check-ins og viden — direkte i lommen, uden at det kræver en workshop først.') + '</p>';
+    html += '<p>' + (isEn() ? 'Clement WellbeingAtWork can be made available to your employees as a quiet, daily companion. Exercises, check-ins and knowledge — right in their pocket, without needing a workshop first.' : 'Clement WellbeingAtWork kan stilles til rådighed for jeres medarbejdere som et stille, dagligt supplement. Øvelser, check-ins og viden — direkte i lommen, uden at det kræver en workshop først.') + '</p>';
     html += '<div class="virksomhed-forloeb-detaljer">';
     html += '<span>' + (isEn() ? 'Can be used independently or as part of a program' : 'Kan bruges selvstændigt eller som del af et forløb') + '</span>';
     html += '</div>';

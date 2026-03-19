@@ -1,4 +1,4 @@
-# Clement Firma
+# Clement WellbeingAtWork
 
 Wellness-framework til arbejdspladsen — baseret på Clements terapeutiske cirkelmodel, tilpasset kontormiljøer.
 

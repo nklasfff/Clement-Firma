@@ -1,4 +1,4 @@
-/* Clement Firma — English Data (auto-generated) */
+/* Clement WellbeingAtWork — English Data (auto-generated) */
 
 var CIRKEL_TEKSTER_EN = {
   "centrum": {
