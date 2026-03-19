@@ -3855,3 +3855,62 @@ footer {
   border-color: var(--primary);
   color: var(--primary);
 }
+
+/* ── Notification / Nyt indhold ── */
+.menu-notif-desc {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  line-height: 1.6;
+  margin: 0 0 12px;
+  font-style: italic;
+}
+
+.menu-notif-email-wrap {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.menu-notif-email {
+  flex: 1;
+  min-width: 140px;
+  padding: 9px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--white);
+  font-size: 0.85rem;
+  font-family: inherit;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.menu-notif-email:focus {
+  border-color: var(--primary);
+}
+
+.menu-notif-save {
+  padding: 9px 18px;
+  background: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.menu-notif-save:hover {
+  opacity: 0.9;
+}
+
+.menu-notif-saved {
+  width: 100%;
+  font-size: 0.8rem;
+  color: var(--sage);
+  margin: 4px 0 0;
+  font-style: italic;
+}

@@ -2010,6 +2010,26 @@
     html += '</div>';
     html += '<div class="menu-divider"></div>';
 
+    // ── Nyt indhold / notifikationer ──
+    var notifEnabled = localStorage.getItem('cf_notif_enabled') === 'true';
+    var notifEmail = localStorage.getItem('cf_notif_email') || '';
+    html += '<div class="menu-section">';
+    html += '<div class="menu-section-title">' + t('notifTitle') + '</div>';
+    html += '<p class="menu-notif-desc">' + t('notifDesc') + '</p>';
+    html += '<div class="menu-setting">';
+    html += '<div class="menu-setting-row">';
+    html += '<div class="menu-setting-info"><span class="menu-setting-name">' + t('notifToggle') + '</span></div>';
+    html += '<label class="menu-toggle"><input type="checkbox" ' + (notifEnabled ? 'checked' : '') + ' id="notifToggle"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>';
+    html += '</div>';
+    html += '</div>';
+    html += '<div class="menu-notif-email-wrap" id="notifEmailWrap" style="' + (notifEnabled ? '' : 'display:none;') + '">';
+    html += '<input type="email" class="menu-notif-email" id="notifEmail" placeholder="' + t('notifEmailPlaceholder') + '" value="' + notifEmail + '">';
+    html += '<button class="menu-notif-save" id="notifSave">' + t('notifSave') + '</button>';
+    html += '<p class="menu-notif-saved" id="notifSavedMsg" style="display:none;">' + t('notifSaved') + '</p>';
+    html += '</div>';
+    html += '</div>';
+    html += '<div class="menu-divider"></div>';
+
     // ── Privatliv & data ──
     html += '<div class="menu-section">';
     html += '<div class="menu-section-title">' + t('privacyTitle') + '</div>';
@@ -2098,6 +2118,35 @@
         e.stopPropagation();
       });
     });
+
+    // Bind notification toggle and save
+    var notifToggleEl = document.getElementById('notifToggle');
+    var notifEmailWrap = document.getElementById('notifEmailWrap');
+    var notifSaveBtn = document.getElementById('notifSave');
+    var notifSavedMsg = document.getElementById('notifSavedMsg');
+    if (notifToggleEl) {
+      notifToggleEl.addEventListener('change', function() {
+        localStorage.setItem('cf_notif_enabled', this.checked);
+        if (notifEmailWrap) notifEmailWrap.style.display = this.checked ? '' : 'none';
+        if (!this.checked) {
+          localStorage.removeItem('cf_notif_email');
+          var emailInput = document.getElementById('notifEmail');
+          if (emailInput) emailInput.value = '';
+        }
+      });
+    }
+    if (notifSaveBtn) {
+      notifSaveBtn.addEventListener('click', function() {
+        var emailInput = document.getElementById('notifEmail');
+        if (emailInput && emailInput.value.trim()) {
+          localStorage.setItem('cf_notif_email', emailInput.value.trim());
+          if (notifSavedMsg) {
+            notifSavedMsg.style.display = '';
+            setTimeout(function() { notifSavedMsg.style.display = 'none'; }, 3000);
+          }
+        }
+      });
+    }
 
     // Bind language toggle
     menuContent.querySelectorAll('.menu-lang-btn').forEach(function(btn) {
