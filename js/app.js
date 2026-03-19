@@ -425,6 +425,9 @@
     } else if (hash === 'dynamik') {
       renderDynamik();
       navigateTo('dynamik', false);
+    } else if (hash === 'gave') {
+      renderGave();
+      navigateTo('gave', false);
     } else {
       navigateTo(hash, false);
     }
@@ -1819,6 +1822,169 @@
     navigateTo('dynamik');
   }
 
+  // ── Gave (Gift) view ──
+  var GAVE_SVG = [
+    // 1: Rodfæstet træ — grounding, fundament
+    '<svg viewBox="0 0 200 140" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100 120 C100 120 100 60 100 45" stroke="#6B2D5B" stroke-width="2.5" stroke-linecap="round"/><path d="M100 75 C85 60 65 55 55 60" stroke="#6B2D5B" stroke-width="2" stroke-linecap="round"/><path d="M100 60 C115 48 130 50 135 58" stroke="#6B2D5B" stroke-width="2" stroke-linecap="round"/><path d="M100 45 C90 30 80 20 85 12" stroke="#6B2D5B" stroke-width="1.5" stroke-linecap="round"/><path d="M100 45 C110 32 120 25 118 15" stroke="#6B2D5B" stroke-width="1.5" stroke-linecap="round"/><circle cx="85" cy="12" r="8" fill="#f3e8ef" stroke="#6B2D5B" stroke-width="1.2"/><circle cx="118" cy="15" r="6" fill="#f3e8ef" stroke="#6B2D5B" stroke-width="1.2"/><circle cx="55" cy="58" r="10" fill="#f3e8ef" stroke="#6B2D5B" stroke-width="1.2"/><circle cx="135" cy="56" r="7" fill="#f3e8ef" stroke="#6B2D5B" stroke-width="1.2"/><path d="M100 120 C95 130 80 135 70 132" stroke="#D4A373" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/><path d="M100 120 C105 128 115 133 125 130" stroke="#D4A373" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/><path d="M100 120 C98 132 100 138 100 140" stroke="#D4A373" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/></svg>',
+    // 2: Bølger — nervesystemets rytme
+    '<svg viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 50 C30 30 50 30 70 50 C90 70 110 70 130 50 C150 30 170 30 190 50" stroke="#6B2D5B" stroke-width="2.5" stroke-linecap="round" fill="none"/><path d="M10 50 C30 38 50 38 70 50 C90 62 110 62 130 50 C150 38 170 38 190 50" stroke="#D4A373" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.5"/><circle cx="70" cy="50" r="3" fill="#6B2D5B" opacity="0.4"/><circle cx="130" cy="50" r="3" fill="#6B2D5B" opacity="0.4"/></svg>',
+    // 3: Hænder / forbindelse — relation
+    '<svg viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 80 C50 60 65 45 85 45 C95 45 100 50 100 50" stroke="#6B2D5B" stroke-width="2" stroke-linecap="round"/><path d="M150 80 C150 60 135 45 115 45 C105 45 100 50 100 50" stroke="#6B2D5B" stroke-width="2" stroke-linecap="round"/><circle cx="100" cy="50" r="4" fill="#f3e8ef" stroke="#6B2D5B" stroke-width="1.5"/><path d="M70 80 C70 65 80 55 90 58" stroke="#D4A373" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/><path d="M130 80 C130 65 120 55 110 58" stroke="#D4A373" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/><circle cx="85" cy="45" r="2" fill="#6B2D5B" opacity="0.3"/><circle cx="115" cy="45" r="2" fill="#6B2D5B" opacity="0.3"/></svg>',
+    // 4: Kompas — retning, formål
+    '<svg viewBox="0 0 200 140" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="70" r="40" stroke="#6B2D5B" stroke-width="2"/><circle cx="100" cy="70" r="3" fill="#6B2D5B"/><path d="M100 70 L100 38" stroke="#6B2D5B" stroke-width="2.5" stroke-linecap="round"/><path d="M100 70 L120 85" stroke="#D4A373" stroke-width="2" stroke-linecap="round" opacity="0.7"/><circle cx="100" cy="30" r="2" fill="#6B2D5B" opacity="0.4"/><circle cx="100" cy="110" r="2" fill="#6B2D5B" opacity="0.4"/><circle cx="60" cy="70" r="2" fill="#6B2D5B" opacity="0.4"/><circle cx="140" cy="70" r="2" fill="#6B2D5B" opacity="0.4"/></svg>',
+    // 5: Spirende frø — vækst, potentiale
+    '<svg viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100 100 C100 100 100 65 100 55" stroke="#6B2D5B" stroke-width="2" stroke-linecap="round"/><path d="M100 55 C90 40 80 30 85 20" stroke="#6B2D5B" stroke-width="1.8" stroke-linecap="round"/><path d="M100 55 C110 42 115 30 110 22" stroke="#6B2D5B" stroke-width="1.8" stroke-linecap="round"/><ellipse cx="85" cy="18" rx="8" ry="5" transform="rotate(-20 85 18)" fill="#f3e8ef" stroke="#6B2D5B" stroke-width="1.2"/><ellipse cx="110" cy="20" rx="7" ry="4.5" transform="rotate(15 110 20)" fill="#f3e8ef" stroke="#6B2D5B" stroke-width="1.2"/><ellipse cx="100" cy="102" rx="12" ry="5" fill="none" stroke="#D4A373" stroke-width="1.2" opacity="0.5"/></svg>'
+  ];
+
+  function getGaveData() {
+    var persp = aktivPerspektiv;
+    if (isEn()) {
+      if (persp === 'leder') {
+        return {
+          tag: 'Your gift',
+          title: 'The Quiet Foundation',
+          author: 'A letter from Anne Marie Clement',
+          sections: [
+            {
+              heading: 'What No One Told You About Leadership',
+              text: '<p>There is something no leadership course prepared you for. Not the strategy meetings, not the difficult conversations, not even the loneliness that sometimes comes with responsibility. It is something much more fundamental: the way your own nervous system sets the tone for everyone around you.</p><p>I have worked with leaders for over twenty years. Not as a management consultant with frameworks and models, but as a psychotherapist who sees what happens beneath the surface. And what I see, again and again, is this: you carry more than you realize. Not just tasks and deadlines, but an invisible emotional weight — your team\'s uncertainty, the organization\'s expectations, the gap between what is said and what is felt.</p><p>This letter is not advice. It is an invitation to pause and look at something you may have been too busy to notice. Something that could change not just how you lead — but how you feel while doing it.</p>'
+            },
+            {
+              heading: 'Your Body Already Knows',
+              text: '<p>Before any conflict becomes visible, your body registers it. The slight tension in your shoulders before a tough meeting. The shallow breathing when you open yet another email that demands something. The tiredness that no weekend quite resolves.</p><p>These are not signs of weakness. They are your nervous system doing exactly what it was designed to do: reading your environment and responding. The question is not whether you react — every human does. The question is whether you notice the reaction early enough to choose your response.</p><p>Most leaders I work with have spent years overriding these signals. Pushing through. Being strong. And the cost is subtle but real: decisions made from tension rather than clarity. Conversations had from depletion rather than presence. A slow erosion of the very energy that makes you effective.</p>'
+            },
+            {
+              heading: 'The Ripple You Cannot See',
+              text: '<p>Here is what fascinates me about nervous systems in organizations: they are contagious. When you walk into a room regulated — grounded, present, breathing — something shifts in the people around you. Not because you said the right thing, but because their nervous systems co-regulate with yours.</p><p>The reverse is also true. When you lead from activation — rushed, tense, survival mode — your team absorbs that frequency. Not consciously. Not willingly. But inevitably. Children do it with parents. Employees do it with leaders. It is one of the most powerful and least discussed aspects of leadership.</p><p>This is not about being calm all the time. That would be neither possible nor honest. It is about knowing where you are on your own inner ladder — and having ways to shift when you need to. Not for performance. For genuine presence.</p>'
+            },
+            {
+              heading: 'The Permission You Might Need',
+              text: '<p>In my experience, what leaders need most is not another tool. It is permission. Permission to acknowledge that this work is hard in ways that are rarely named. Permission to take care of the instrument — yourself — that everything else depends on.</p><p>I have watched leaders transform their teams not by changing strategy but by changing their own relationship with stress. By learning to recognize when they have left their window of tolerance. By practicing, quietly and without fanfare, the art of returning to themselves.</p><p>It is not dramatic work. It does not make headlines. But it is the kind of work that changes the temperature of a room. That makes people feel safe enough to be honest. That creates the conditions where real collaboration — not just polite agreement — becomes possible.</p>'
+            },
+            {
+              heading: 'An Invitation, Not an Instruction',
+              text: '<p>I did not write this as a program or a method. I wrote it because I believe you deserve to hear something that the leadership world rarely says: your wellbeing is not separate from your leadership. It is the foundation of it.</p><p>The exercises and reflections in this app are built from that belief. They are not about fixing something broken. They are about remembering something that was always there: your body\'s intelligence, your nervous system\'s wisdom, your capacity to lead from a place that is steady rather than simply strong.</p><p>Start where you are. Start with one breath before a meeting. One moment of noticing your feet on the floor. One honest check-in with yourself before you check in with your team. These small moments are not small at all. They are the quiet foundation of everything you build.</p><p>With warmth,<br><em>Anne Marie Clement</em></p>'
+            }
+          ]
+        };
+      } else {
+        return {
+          tag: 'Your gift',
+          title: 'The Quiet Foundation',
+          author: 'A letter from Anne Marie Clement',
+          sections: [
+            {
+              heading: 'Something You Were Never Taught',
+              text: '<p>Somewhere along the way, you learned how to work. How to meet deadlines, answer emails, navigate office politics, and show up even on the days when everything in you wanted to stay home. You learned how to function.</p><p>But no one ever taught you how to be well while doing it. Not just "not sick" — genuinely well. Present in your body. Connected to your own signals. Able to notice when something is off before it becomes a crisis.</p><p>I have spent over twenty years working with people\'s nervous systems. Not in a clinical, distant way — but sitting with real people in real situations. People who carry more than they show. People who have forgotten what rest actually feels like. People whose bodies keep score of every pushed-through afternoon, every swallowed frustration, every too-short lunch break.</p><p>This letter is for you. Not as advice, but as a different kind of conversation — one that starts from the inside.</p>'
+            },
+            {
+              heading: 'Your Body Is Always Listening',
+              text: '<p>Right now, as you read this, your nervous system is doing thousands of things you will never notice. Regulating your heartbeat. Scanning for safety. Processing the emotional temperature of your last interaction. It does not take breaks. It does not wait for weekends.</p><p>And it remembers everything. Not in the way your mind remembers — with stories and explanations — but in patterns. Tension patterns. Breathing patterns. The way your shoulders creep upward during certain kinds of meetings. The way your jaw tightens when a particular name appears in your inbox.</p><p>These patterns are not problems. They are information. Your body telling you something that your busy mind might be too occupied to hear. And the beautiful thing is: you do not need to fix them. You just need to start noticing them.</p>'
+            },
+            {
+              heading: 'The Space Between Stimulus and Response',
+              text: '<p>Viktor Frankl wrote that between stimulus and response, there is a space — and in that space lies our freedom. I think about this often in my work, because what I see, over and over, is how small that space becomes when we are dysregulated.</p><p>When your nervous system is activated — when you are in what I call the amber or red zone — that space nearly disappears. You react instead of respond. You say the thing you regret. You agree to something you do not have capacity for. You snap at the person who least deserves it.</p><p>This is not a character flaw. It is physiology. And the remarkable thing about physiology is that it can be worked with. Not through willpower, but through gentle, repeated practice. Through learning to recognize where you are before you act from where you are.</p>'
+            },
+            {
+              heading: 'Why This Matters More Than You Think',
+              text: '<p>We live in a culture that celebrates pushing through. That admires people who can "handle it." That treats exhaustion as a badge of honor and boundaries as a sign of not being committed enough.</p><p>But here is what I know after two decades of working with human nervous systems: the cost is real. It shows up in your sleep. In your relationships. In that vague feeling that something is missing even when everything looks fine from the outside. In the Sunday evening dread that has become so familiar you have stopped questioning it.</p><p>Your nervous system is not asking for a revolution. It is asking for attention. For small moments of care woven into your ordinary day. For the dignity of being listened to by the person it belongs to — you.</p>'
+            },
+            {
+              heading: 'Where You Begin Is Where You Are',
+              text: '<p>I built this app from the same place I write this letter: from a belief that your body holds wisdom that deserves to be heard. The exercises here are not about performance or optimization. They are about reconnection. About building a relationship with the part of you that has been carrying everything without being asked how it is doing.</p><p>You do not need to start big. One breath taken consciously. One moment where you notice your feet on the floor. One pause between finishing one task and starting the next. These are not small things. In the language of the nervous system, they are profound.</p><p>You have already taken a step by being here. That matters more than you might think. Not because this app will change your life overnight, but because it means something in you is ready to listen.</p><p>With warmth,<br><em>Anne Marie Clement</em></p>'
+            }
+          ]
+        };
+      }
+    } else {
+      if (persp === 'leder') {
+        return {
+          tag: 'Din gave',
+          title: 'Det stille fundament',
+          author: 'Et brev fra Anne Marie Clement',
+          sections: [
+            {
+              heading: 'Det ingen fortalte dig om ledelse',
+              text: '<p>Der er noget, intet ledelseskursus forberedte dig på. Ikke strategimøderne, ikke de svære samtaler, ikke engang den ensomhed, der nogle gange følger med ansvaret. Det er noget langt mere grundlæggende: den måde dit eget nervesystem sætter tonen for alle omkring dig.</p><p>Jeg har arbejdet med ledere i over tyve år. Ikke som managementkonsulent med rammer og modeller, men som psykoterapeut, der ser hvad der sker under overfladen. Og det jeg ser, igen og igen, er dette: du bærer mere, end du er klar over. Ikke bare opgaver og deadlines, men en usynlig følelsesmæssig vægt — dit teams usikkerhed, organisationens forventninger, afstanden mellem det der siges og det der mærkes.</p><p>Dette brev er ikke rådgivning. Det er en invitation til at stoppe op og se på noget, du måske har været for travl til at lægge mærke til. Noget der kan forandre ikke bare hvordan du leder — men hvordan du har det, mens du gør det.</p>'
+            },
+            {
+              heading: 'Din krop ved det allerede',
+              text: '<p>Før nogen konflikt bliver synlig, registrerer din krop den. Den lille spænding i skuldrene inden et svært møde. Den overfladiske vejrtrækning, når du åbner endnu en mail, der kræver noget. Den træthed, som ingen weekend helt løser.</p><p>Det er ikke tegn på svaghed. Det er dit nervesystem, der gør præcis det, det er designet til: aflæser dit miljø og reagerer. Spørgsmålet er ikke om du reagerer — det gør ethvert menneske. Spørgsmålet er, om du opdager reaktionen tidligt nok til at vælge dit svar.</p><p>De fleste ledere, jeg arbejder med, har brugt år på at tilsidesætte disse signaler. Presse igennem. Være stærke. Og prisen er subtil men reel: beslutninger truffet fra spænding i stedet for klarhed. Samtaler ført fra udmattelse i stedet for nærvær. En langsom erosion af netop den energi, der gør dig effektiv.</p>'
+            },
+            {
+              heading: 'Den krusning du ikke kan se',
+              text: '<p>Her er det, der fascinerer mig ved nervesystemer i organisationer: de smitter. Når du træder ind i et lokale reguleret — rodfæstet, nærværende, åndende — sker der noget med menneskene omkring dig. Ikke fordi du sagde det rigtige, men fordi deres nervesystemer co-regulerer med dit.</p><p>Det modsatte er også sandt. Når du leder fra aktivering — forhastet, anspændt, i overlevelsestilstand — absorberer dit team den frekvens. Ikke bevidst. Ikke frivilligt. Men uundgåeligt. Børn gør det med forældre. Medarbejdere gør det med ledere. Det er et af de mest kraftfulde og mindst omtalte aspekter af ledelse.</p><p>Det handler ikke om at være rolig hele tiden. Det ville hverken være muligt eller ærligt. Det handler om at vide, hvor du er på din egen indre trappe — og have måder at skifte, når du har brug for det. Ikke for præstation. For ægte nærvær.</p>'
+            },
+            {
+              heading: 'Den tilladelse du måske har brug for',
+              text: '<p>I min erfaring er det, ledere har mest brug for, ikke endnu et redskab. Det er tilladelse. Tilladelse til at anerkende, at dette arbejde er svært på måder, der sjældent bliver benævnt. Tilladelse til at passe på instrumentet — dig selv — som alt andet afhænger af.</p><p>Jeg har set ledere transformere deres teams, ikke ved at ændre strategi, men ved at ændre deres eget forhold til stress. Ved at lære at genkende, hvornår de har forladt deres tolerancevindue. Ved at praktisere, stille og uden fanfare, kunsten at vende tilbage til sig selv.</p><p>Det er ikke dramatisk arbejde. Det skaber ikke overskrifter. Men det er den slags arbejde, der ændrer temperaturen i et rum. Der får mennesker til at føle sig trygge nok til at være ærlige. Der skaber betingelserne, hvor ægte samarbejde — ikke bare høflig enighed — bliver muligt.</p>'
+            },
+            {
+              heading: 'En invitation, ikke en instruktion',
+              text: '<p>Jeg har ikke skrevet dette som et program eller en metode. Jeg skrev det, fordi jeg tror, du fortjener at høre noget, som ledelsesverdenen sjældent siger: din trivsel er ikke adskilt fra dit lederskab. Den er fundamentet for det.</p><p>Øvelserne og refleksionerne i denne app er bygget på den overbevisning. De handler ikke om at fikse noget, der er i stykker. De handler om at huske noget, der altid har været der: din krops intelligens, dit nervesystems visdom, din evne til at lede fra et sted, der er støt snarere end blot stærkt.</p><p>Begynd hvor du er. Begynd med ét åndedrag før et møde. Ét øjeblik, hvor du mærker dine fødder mod gulvet. Ét ærligt tjek ind med dig selv, før du tjekker ind med dit team. De små øjeblikke er slet ikke små. De er det stille fundament under alt det, du bygger.</p><p>Med varme,<br><em>Anne Marie Clement</em></p>'
+            }
+          ]
+        };
+      } else {
+        return {
+          tag: 'Din gave',
+          title: 'Det stille fundament',
+          author: 'Et brev fra Anne Marie Clement',
+          sections: [
+            {
+              heading: 'Noget du aldrig blev undervist i',
+              text: '<p>Et sted undervejs lærte du at arbejde. At overholde deadlines, besvare mails, navigere kontorpolitik og møde op selv på de dage, hvor alt i dig havde lyst til at blive hjemme. Du lærte at fungere.</p><p>Men ingen lærte dig nogensinde, hvordan du kan have det godt, mens du gør det. Ikke bare "ikke syg" — oprigtigt vel. Til stede i din krop. Forbundet med dine egne signaler. I stand til at mærke, når noget er galt, før det bliver en krise.</p><p>Jeg har brugt over tyve år på at arbejde med menneskers nervesystemer. Ikke på en klinisk, distanceret måde — men siddende med rigtige mennesker i rigtige situationer. Mennesker, der bærer mere, end de viser. Mennesker, der har glemt, hvordan hvile egentlig føles. Mennesker, hvis kroppe holder regnskab med hver gennemtvunget eftermiddag, hver slugt frustration, hver for-kort frokostpause.</p><p>Dette brev er til dig. Ikke som råd, men som en anden slags samtale — en der begynder indefra.</p>'
+            },
+            {
+              heading: 'Din krop lytter altid',
+              text: '<p>Lige nu, mens du læser dette, udfører dit nervesystem tusindvis af ting, du aldrig vil bemærke. Regulerer din hjerterytme. Scanner for sikkerhed. Bearbejder den følelsesmæssige temperatur fra din seneste interaktion. Det holder ikke pauser. Det venter ikke på weekender.</p><p>Og det husker alt. Ikke på den måde din bevidste hjerne husker — med historier og forklaringer — men i mønstre. Spændingsmønstre. Vejrtrækningsmønstre. Den måde dine skuldre kryber opad under bestemte slags møder. Den måde din kæbe strammer, når et bestemt navn dukker op i din indbakke.</p><p>Disse mønstre er ikke problemer. De er information. Din krop, der fortæller dig noget, som din travle bevidsthed måske er for optaget til at høre. Og det smukke er: du behøver ikke at fixe dem. Du skal bare begynde at lægge mærke til dem.</p>'
+            },
+            {
+              heading: 'Rummet mellem stimulus og respons',
+              text: '<p>Viktor Frankl skrev, at mellem stimulus og respons er der et rum — og i det rum ligger vores frihed. Jeg tænker ofte på dette i mit arbejde, for det jeg ser, igen og igen, er hvor lille det rum bliver, når vi er dysregulerede.</p><p>Når dit nervesystem er aktiveret — når du er i det, jeg kalder den gule eller røde zone — forsvinder det rum næsten. Du reagerer i stedet for at svare. Du siger det, du fortryder. Du siger ja til noget, du ikke har kapacitet til. Du snapper af den person, der mindst fortjener det.</p><p>Det er ikke en karakterbrist. Det er fysiologi. Og det bemærkelsesværdige ved fysiologi er, at der kan arbejdes med den. Ikke gennem viljestyrke, men gennem blid, gentaget praksis. Gennem at lære at genkende, hvor du er, før du handler fra hvor du er.</p>'
+            },
+            {
+              heading: 'Hvorfor det betyder mere end du tror',
+              text: '<p>Vi lever i en kultur, der hylder det at presse igennem. Der beundrer mennesker, der kan "klare det." Der behandler udmattelse som et æresbevis og grænser som tegn på manglende engagement.</p><p>Men her er hvad jeg ved efter to årtiers arbejde med menneskers nervesystemer: prisen er reel. Den viser sig i din søvn. I dine relationer. I den vage fornemmelse af, at noget mangler, selv når alt ser fint ud udefra. I den søndagsaftens-uro, der er blevet så velkendt, at du er holdt op med at stille spørgsmål ved den.</p><p>Dit nervesystem beder ikke om en revolution. Det beder om opmærksomhed. Om små øjeblikke af omsorg vævet ind i din almindelige dag. Om værdigheden i at blive lyttet til af det menneske, det tilhører — dig.</p>'
+            },
+            {
+              heading: 'Hvor du begynder er hvor du er',
+              text: '<p>Jeg har bygget denne app fra samme sted, som jeg skriver dette brev: fra en overbevisning om, at din krop rummer en visdom, der fortjener at blive hørt. Øvelserne her handler ikke om præstation eller optimering. De handler om genforbindelse. Om at opbygge et forhold til den del af dig, der har båret alting uden at blive spurgt, hvordan den har det.</p><p>Du behøver ikke starte stort. Ét åndedrag taget bevidst. Ét øjeblik, hvor du mærker dine fødder mod gulvet. Én pause mellem at afslutte én opgave og begynde den næste. Det er ikke små ting. I nervesystemets sprog er de dybsindige.</p><p>Du har allerede taget et skridt ved at være her. Det betyder mere, end du måske tror. Ikke fordi denne app vil forandre dit liv fra den ene dag til den anden, men fordi det betyder, at noget i dig er klar til at lytte.</p><p>Med varme,<br><em>Anne Marie Clement</em></p>'
+            }
+          ]
+        };
+      }
+    }
+  }
+
+  function renderGave() {
+    var container = document.getElementById('gaveContent');
+    if (!container) return;
+    var data = getGaveData();
+    var html = '';
+
+    html += '<div class="gave-header">';
+    html += '<span class="gave-tag">' + data.tag + '</span>';
+    html += '<h1 class="gave-title">' + data.title + '</h1>';
+    html += '<p class="gave-author">' + data.author + '</p>';
+    html += '</div>';
+
+    for (var i = 0; i < data.sections.length; i++) {
+      html += '<div class="gave-illustration">' + GAVE_SVG[i] + '</div>';
+      html += '<div class="gave-section">';
+      html += '<h2 class="gave-heading">' + data.sections[i].heading + '</h2>';
+      html += data.sections[i].text;
+      html += '</div>';
+    }
+
+    container.innerHTML = html;
+  }
+
+  function showGave() {
+    renderGave();
+    navigateTo('gave');
+  }
+
   // ── Favoritter view ──
   function renderFavoritter() {
     var container = document.getElementById('favoritterContent');
@@ -2142,8 +2308,12 @@
           localStorage.setItem('cf_notif_email', emailInput.value.trim());
           if (notifSavedMsg) {
             notifSavedMsg.style.display = '';
-            setTimeout(function() { notifSavedMsg.style.display = 'none'; }, 3000);
           }
+          // Show gift after a short moment
+          setTimeout(function() {
+            closeMenu();
+            setTimeout(function() { showGave(); }, 350);
+          }, 1200);
         }
       });
     }
