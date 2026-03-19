@@ -1951,11 +1951,11 @@
     // ── Kontakt ──
     html += '<div class="menu-section">';
     html += '<div class="menu-section-title">' + t('contactTitle') + '</div>';
-    html += '<a class="menu-contact-item" href="tel:+4540301085"><span class="menu-contact-icon">✆</span>+45 40 30 10 85</a>';
-    html += '<a class="menu-contact-item" href="mailto:annemarie@clement.dk"><span class="menu-contact-icon">✉</span>annemarie@clement.dk</a>';
-    html += '<a class="menu-contact-item" href="https://www.linkedin.com/in/annemarie-clement/" target="_blank" rel="noopener"><span class="menu-contact-icon">in</span>LinkedIn</a>';
-    html += '<a class="menu-contact-item" href="https://www.instagram.com/annemarieclementt/" target="_blank" rel="noopener"><span class="menu-contact-icon">✦</span>Instagram</a>';
-    html += '<a class="menu-contact-item" href="https://www.clement.dk" target="_blank" rel="noopener"><span class="menu-contact-icon">⊕</span>' + t('website') + '</a>';
+    html += '<a class="menu-contact-item" href="tel:+4522544542"><span class="menu-contact-icon">✆</span>+45 2254 4542</a>';
+    html += '<a class="menu-contact-item" href="mailto:annemarie@annemarieclement.dk"><span class="menu-contact-icon">✉</span>annemarie@annemarieclement.dk</a>';
+    html += '<a class="menu-contact-item" href="https://www.linkedin.com/in/annemarie-clement-ba703731" target="_blank" rel="noopener"><span class="menu-contact-icon">in</span>LinkedIn</a>';
+    html += '<a class="menu-contact-item" href="https://www.instagram.com/annemarieclement/" target="_blank" rel="noopener"><span class="menu-contact-icon">✦</span>Instagram</a>';
+    html += '<a class="menu-contact-item" href="https://annemarieclement.dk" target="_blank" rel="noopener"><span class="menu-contact-icon">⊕</span>' + t('website') + '</a>';
     html += '</div>';
 
     html += '<div class="menu-divider"></div>';
@@ -2562,9 +2562,9 @@
     html += '<h3 class="virksomhed-cta-title">' + (isEn() ? 'Let\'s talk' : 'Lad os tale sammen') + '</h3>';
     html += '<p class="virksomhed-cta-text">' + (isEn() ? 'Anne Marie is happy to have an informal conversation about what makes sense for your organization. No sales pitch — just an honest talk about where you are and what might help.' : 'Anne Marie tager gerne en uforpligtende samtale om, hvad der giver mening for jeres organisation. Ingen salgstale — bare en ærlig snak om, hvor I er, og hvad der kunne hjælpe.') + '</p>';
     html += '<div class="virksomhed-cta-info">';
-    html += '<a href="mailto:annemarie@clement.dk" class="virksomhed-cta-btn virksomhed-cta-btn-primary">' + svgMail + ' annemarie@clement.dk</a>';
-    html += '<a href="tel:+4540301085" class="virksomhed-cta-btn virksomhed-cta-btn-secondary">' + svgPhone + ' +45 40 30 10 85</a>';
-    html += '<a href="https://www.linkedin.com/in/annemarie-clement/" target="_blank" rel="noopener" class="virksomhed-cta-btn virksomhed-cta-btn-linkedin">' + svgLinkedIn + ' LinkedIn</a>';
+    html += '<a href="mailto:annemarie@annemarieclement.dk" class="virksomhed-cta-btn virksomhed-cta-btn-primary">' + svgMail + ' annemarie@annemarieclement.dk</a>';
+    html += '<a href="tel:+4522544542" class="virksomhed-cta-btn virksomhed-cta-btn-secondary">' + svgPhone + ' +45 2254 4542</a>';
+    html += '<a href="https://www.linkedin.com/in/annemarie-clement-ba703731" target="_blank" rel="noopener" class="virksomhed-cta-btn virksomhed-cta-btn-linkedin">' + svgLinkedIn + ' LinkedIn</a>';
     html += '</div>';
     html += '</div>';
 
