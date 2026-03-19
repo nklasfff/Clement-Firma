@@ -171,8 +171,6 @@
     el = document.getElementById('choiceDescLeder'); if (el) el.textContent = t('choiceLeaderDesc');
     el = document.getElementById('choiceTitleVirksomhed'); if (el) el.textContent = t('choiceCompany');
     el = document.getElementById('choiceDescVirksomhed'); if (el) el.textContent = t('choiceCompanyDesc');
-    // Motto
-    el = document.getElementById('mottoTekst'); if (el) el.textContent = t('motto');
     // Menu header
     el = document.getElementById('menuHeaderSub'); if (el) el.textContent = isEn() ? 'Nervous system specialist' : 'Nervesystemsspecialist';
     // Search
@@ -877,6 +875,11 @@
     trappenResponse.innerHTML = html;
     trappenResponse.classList.add('visible');
     bindActionBars(trappenResponse);
+
+    // Scroll to the response so user sees the content immediately
+    setTimeout(function() {
+      trappenResponse.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
   }
 
   // ── Temaer ──

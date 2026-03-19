@@ -48,7 +48,7 @@ var I18N = {
       // Seven dimensions
       sevenDimensions: 'De syv dimensioner',
       circleHint: 'Tryk på en cirkel for at udforske',
-      dynamikLinkTitle: 'Forstå dynamikken ↗',
+      dynamikLinkTitle: 'Forstå dynamikken',
       dynamikLinkDesc: 'Hvordan alle syv dimensioner påvirker hinanden — og hvorfor helheden er afgørende',
 
       // Favorites
@@ -276,7 +276,7 @@ var I18N = {
       // Seven dimensions
       sevenDimensions: 'The seven dimensions',
       circleHint: 'Tap a circle to explore',
-      dynamikLinkTitle: 'Understand the dynamics ↗',
+      dynamikLinkTitle: 'Understand the dynamics',
       dynamikLinkDesc: 'How all seven dimensions influence each other — and why the whole picture matters',
 
       // Favorites
