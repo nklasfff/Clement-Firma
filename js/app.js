@@ -412,7 +412,7 @@
 
     if (hash.indexOf('cirkel/') === 0) {
       var cirkelId = hash.split('/')[1];
-      if (CIRKLER[cirkelId]) {
+      if (D_CIRKLER()[cirkelId]) {
         aktivCirkel = cirkelId;
         renderCirkelDetail(cirkelId);
         navigateTo('cirkel', false);

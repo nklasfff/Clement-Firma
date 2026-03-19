@@ -981,7 +981,125 @@ var CIRKEL_NAVNE_EN = {
   "resiliens": "Resilience & boundaries"
 };
 
-var SAMMENHAENGE_EN = undefined;
+var SAMMENHAENGE_EN = {
+
+  // ─── Centrum (Stress regulation) ↔ all others ───
+
+  'centrum-tilstande': {
+    medarbejder: "Stress regulation and your three nervous system states are inseparably connected. Regulation is the very ability to consciously move between states — from yellow alarm back to green safety, or from red shutdown up to yellow activation. Without regulation tools, you're stuck in whatever state your nervous system automatically selects. With them, you have a concrete map and a concrete path. When you notice yourself shifting to yellow — heart pounding, shoulders rising — it's the regulation exercise itself (three breaths, grounding, a micro-pause) that brings you back. Stress regulation isn't something you do alongside your work. It's the competency that determines which state you work from — and thus the quality of everything you do.",
+    leder: "Your ability to regulate stress is directly connected to your ability to read and influence your team's states. When you're regulated yourself, you can clearly see whether the team is in green, yellow, or red — and act accordingly. When you're dysregulated, you lose this reading ability and risk pushing a team that's already in red, or braking a team that's in green flow. Co-regulation begins with your own regulation: your nervous system's state sets the tone for the entire room's state. Start with yourself, and you start with the team."
+  },
+
+  'centrum-ledelse': {
+    medarbejder: "Your experience of leadership and culture directly affects your nervous system's regulation — every single day. A leader who creates psychological safety sends safety signals to your nervous system, giving you access to creativity, honesty, and engagement. A leader who creates unpredictability or fear activates your alarm system, and you spend energy on self-protection instead of good work. Understanding this connection gives you language for your experience: it's not 'just stress' — it's your nervous system reacting to the social signals in your work culture.",
+    leder: "Leadership is regulation. It's not a metaphor — it's neurobiology. Research shows that nervous systems synchronize in hierarchical relationships, and your team's systems orient themselves by yours. When you're calm and present, you create a cascade of regulation. When you're stressed and reactive, that reaction amplifies throughout the team. Your most important preparation for any meeting is therefore not slides — it's your own regulation. The 60 seconds you spend landing before entering the room is the most effective leadership investment you can make."
+  },
+
+  'centrum-samarbejde': {
+    medarbejder: "Your nervous system's regulation state fundamentally determines which collaboration style you bring to the team. When you're regulated and in green state, you have access to your secure collaboration style — you can listen, make space, ask for help, and handle disagreement. When you're dysregulated, your early attachment patterns activate automatically: the avoidant withdraws, the anxious over-adapts, the disorganized swings between both. Regulating your nervous system is therefore the most direct path to better collaboration — not because you 'control yourself,' but because regulation gives you access to the parts of you that collaborate best.",
+    leder: "The team's collaboration patterns are directly shaped by the regulation environment you create. In a regulated team — where there is psychological safety and consistent leadership — even employees with insecure attachment patterns will begin to collaborate more flexibly. In a dysregulated team, everyone's defense patterns activate: the avoidant isolates more, the anxious over-adapts more, and conflicts escalate. Your investment in the team's regulation is simultaneously an investment in the team's collaborative ability."
+  },
+
+  'centrum-krop': {
+    medarbejder: "Body and nervous system are an inseparable whole — you cannot regulate one without the other. When you sit tensely in front of the screen for hours, your body sends constant stress signals to the nervous system through fascia, muscles, and breathing. Conversely, conscious movement, stretching, and sensory contact (feel your feet, feel the chair) send direct regulation signals. Your body is the most immediate access to stress regulation — faster than thoughts, faster than conversation. Three shoulder rolls and five deep breaths measurably change your physiological state in under a minute.",
+    leder: "Body awareness in the team is a direct extension of stress regulation. When you create a culture where movement, breaks, and bodily attention are natural parts of the workday, you invest directly in the team's regulation capacity. Walking meetings, standing desks, movement breaks — these aren't wellness decoration. They're nervous system infrastructure. A team that moves is a team that regulates."
+  },
+
+  'centrum-aandedraet': {
+    medarbejder: "Breathing is the fastest and most direct path to stress regulation — it's the very key to your nervous system's dashboard. The vagus nerve, the longest nerve in your autonomic nervous system, is directly stimulated by extended exhalation. When you extend your exhalation, you literally send a signal to your brain that it's safe to relax. That's why 4-7-8 breathing works: because the exhalation is twice as long as the inhalation. Stress regulation at the office, in its most distilled form, is about one thing: conscious breathing spread throughout your day.",
+    leder: "Collective breathing is the most powerful regulation tool you have as a leader. When you start a meeting with 30 seconds of shared breathing, you literally synchronize your team's nervous systems. The biological mechanism is called respiratory synchronization, and it creates a shared regulated baseline for the entire group. It might feel unfamiliar the first few times, but the effect is measurable: better listening, clearer thinking, deeper conversations."
+  },
+
+  'centrum-resiliens': {
+    medarbejder: "Resilience is not the ability to endure — it's the ability to return. And that ability depends directly on your nervous system's regulation capacity. The better you are at daily stress regulation, the more flexible your system is when pressure rises. Think of it as a muscle: daily micro-pauses, conscious breathing, and grounding train your nervous system's ability to shift between activation and rest. When the big deadline or the difficult conversation comes, you have a system that can handle it — because it's been trained in everyday life.",
+    leder: "The team's resilience is built in everyday life, not in crisis. The daily regulation routines you create — breaks between meetings, conscious check-ins, visible care — build the autonomic flexibility that carries the team through pressured periods. A team with strong daily regulation rituals can absorb far more pressure than a team running on constant alarm. Your investment in everyday regulation is your insurance against tomorrow's overload."
+  },
+
+  // ─── States ↔ all others (excl. centrum) ───
+
+  'tilstande-ledelse': {
+    medarbejder: "Your leader's behavior directly affects which state your nervous system is in. A leader who is consistent, accessible, and acknowledging sends safety signals that keep your system in green. A leader who is unpredictable, critical, or inaccessible activates yellow alarm — and over time can push you toward red shutdown. Understanding this connection gives you language for your experience and the ability to act: seek regulation from other relationships, set boundaries, and be aware of which leadership signals activate your system.",
+    leder: "Your ability to read your team's states is directly connected to your leadership effectiveness. When you can see that the team is in yellow alarm, you know they need clarity and prioritization — not more tasks. When you can see red shutdown, you know that relief is necessary — not motivation. And your own state is contagious: a team with a leader in yellow alarm will itself escalate to yellow. Your most effective leadership strategy is to regulate yourself down, so you can read clearly and act precisely."
+  },
+
+  'tilstande-samarbejde': {
+    medarbejder: "Your three nervous system states directly shape your collaborative ability. In green state, you have access to empathy, flexibility, and creative collaboration. In yellow state, you become reactive — you interrupt, misunderstand, or withdraw. In red state, you're absent — you sit in the meeting but aren't really there. Your collaboration patterns from childhood (secure, avoidant, anxious) intensify under pressure: the more dysregulated you are, the more you fall back into old patterns. Recognizing your state is the first step toward choosing a different collaboration strategy.",
+    leder: "The team's collaboration quality is a direct mirror of the team's collective nervous system state. A team in green state collaborates naturally: they listen, build on each other's ideas, and handle disagreement constructively. A team in yellow state fragments: people work in silos, misunderstandings rise, and conflicts escalate. A team in red state is functionally disconnected. Your most important collaboration effort as a leader is to create the conditions for green state — clarity, safety, breaks, and realistic expectations."
+  },
+
+  'tilstande-krop': {
+    medarbejder: "Your three nervous system states live in the body — not in the head. Green state feels like relaxed shoulders, deep breathing, and a sense of being present. Yellow state feels like tense muscles, rapid pulse, and shallow breathing. Red state feels like heaviness, emptiness, and numbness. The body is your most reliable instrument for knowing which state you're in — and it's simultaneously your most direct path to changing the state. Movement brings you up from red, grounding brings you down from yellow.",
+    leder: "Reading your team's states requires looking at bodies, not just listening to words. Tense shoulders, rapid movements, and strained voices signal yellow alarm. Slumped postures, absent gazes, and monotone voices signal red shutdown. Energy, humor, and relaxed bodies signal green. When you introduce movement breaks, walking meetings, and bodily awareness, you give the team tools to shift state through the body — the most direct path."
+  },
+
+  'tilstande-aandedraet': {
+    medarbejder: "Breathing is the most precise instrument for moving between states. From yellow to green: extended exhalation (4-7-8 breathing) activates the calming system and lowers arousal. From red to yellow: energizing breathing (faster inhalation, shorter exhalation) gently activates the system. Respiratory sinus arrhythmia — the natural variation in pulse during inhalation and exhalation — is a direct measure of your autonomic flexibility. The better you are at conscious breathing, the more flexibly your system can shift between states.",
+    leder: "Shared breathing is the most effective tool for shifting an entire team's state. When a team in yellow alarm takes three shared breaths with extended exhalation, the nervous systems synchronize and the state shifts toward green. This is the biological mechanism behind why singing, meditation, and shared movement feel unifying — and you can use it consciously in your leadership. Start meetings with breathing, build in pauses during workshops, and model it yourself."
+  },
+
+  'tilstande-resiliens': {
+    medarbejder: "Resilience is fundamentally about your ability to move between states — especially returning from yellow and red to green. Burnout is when you've lost this flexibility: your system is locked in chronic yellow alarm or red shutdown and can no longer shift. The three states are therefore your early warning system: if you spend more and more time in yellow or red, and it takes longer and longer to return to green, that's a signal that your resilience is under pressure. Recovery is about restoring this flexibility.",
+    leder: "The team's resilience can be read directly in the team's state patterns. A resilient team spends most of its time in green, can handle periods in yellow without fragmenting, and returns quickly after pressure. A team at risk of overload spends increasingly more time in yellow, has more difficulty finding green, and begins to show signs of red. Watch for these patterns in your team — they are the most reliable early warning system you have."
+  },
+
+  // ─── Leadership ↔ all others (excl. centrum, states) ───
+
+  'ledelse-samarbejde': {
+    medarbejder: "Your leader's style directly shapes the team's collaboration patterns. A leader who creates psychological safety enables secure collaboration — people dare to ask for help, admit mistakes, and disagree. A leader who creates fear activates everyone's defense strategies: the avoidant isolates, the anxious over-adapts, and conflicts go underground. Your leader's relationship with you functions as a kind of attachment relationship in the workplace — it fundamentally shapes how you connect with the team and the tasks.",
+    leder: "You are the most important architect of your team's collaboration patterns. Through your consistency, accessibility, and responsiveness, you create what attachment theory calls a 'secure base' — a foundation from which the team can explore, take risks, and collaborate safely. Concretely, this means: react roughly the same way to mistakes, keep your promises, be available when things are hard. When you create this base, even employees with insecure collaboration patterns will gradually begin to collaborate more flexibly."
+  },
+
+  'ledelse-krop': {
+    medarbejder: "The culture at your workplace largely determines how much space your body has in your workday. In a culture where it's legitimate to stand up, stretch, and take movement breaks, your nervous system is supported. In a culture where you're expected to sit still and produce uninterrupted, your system's fundamental needs are suppressed. Notice: are you holding your breath during meetings? Clenching your jaw when reading emails? Your body's reactions reveal the culture — and your body deserves to be listened to.",
+    leder: "Body awareness in the team is a leadership question — not a wellness question. When you make it legitimate to move, take breaks, and listen to the body, you create a culture that supports the nervous system's fundamental needs. Walking meetings, standing desks, movement breaks — these aren't extras. They're infrastructure for regulation. And it starts with you modeling it: stand up during meetings, suggest walks, and show that the body is welcome in the work."
+  },
+
+  'ledelse-aandedraet': {
+    medarbejder: "Shared breathing pauses in the team are a signal of leadership quality. When your leader starts a meeting with 30 seconds of quiet breathing, it communicates: 'We have time. We are present. This is important enough that we land first.' It's an action that regulates the entire room's nervous system — and it requires a leader who understands that presence is more productive than pace.",
+    leder: "Breathing is your most accessible co-regulation tool. When you take a visible, conscious breath before speaking, it regulates your own system and sends a signal to the room's nervous systems. When you guide shared breathing at the start of meetings, you synchronize the team. It's the simplest and most evidence-based leadership intervention that exists — and it takes 30 seconds."
+  },
+
+  'ledelse-resiliens': {
+    medarbejder: "Your leader's ability to create realistic expectations, protect boundaries, and acknowledge strain is the most important factor for your resilience in the workplace. A leader who says 'we'll do less right now' during a pressured period protects your nervous system. A leader who adds tasks on top of overload breaks it down. Psychological safety isn't just nice — it's resilience infrastructure. When you know it's okay to say 'I have too much,' you can act before you hit the wall.",
+    leder: "You are your team's primary resilience factor. Not because you should carry their burdens, but because you create the frameworks that either build or break down their autonomic flexibility. Realistic expectations, protected breaks, legitimate boundaries, and genuine one-on-one check-ins are resilience building blocks. And remember: you can't build resilience in your team from an empty tank. Your own recovery, your own boundaries are the prerequisite — not a luxury."
+  },
+
+  // ─── Collaboration ↔ all others (excl. centrum, states, leadership) ───
+
+  'samarbejde-krop': {
+    medarbejder: "Your collaboration patterns live in the body — not just in the head. The avoidant style shows as pulled-back shoulders, crossed arms, and a body that turns slightly away. The anxious style shows as constant tension, a leaning-forward body, and hypervigilance toward others' reactions. These bodily patterns were shaped in your earliest relationships and repeat automatically in the team. Body awareness gives you the chance to notice the pattern in your body before it controls your behavior — and thus a choice to do something different.",
+    leder: "The team's collaboration patterns can be read in bodies just as clearly as in words. Who physically withdraws during discussions? Who constantly leans forward and takes over? Who sits stiff and tense? These bodily signals tell you about the team's attachment patterns and regulation state. When you introduce movement, walks, and bodily variation into the team's daily life, you create opportunities to break stuck patterns — the body can open for new forms of collaboration."
+  },
+
+  'samarbejde-aandedraet': {
+    medarbejder: "When collaboration becomes tense — disagreements, misunderstandings, conflicts — breathing is your most immediate escape from the automatic reaction. Three conscious breaths under the table give your nervous system the few seconds it needs to shift from reaction to response. It's the difference between saying something you regret and choosing your words consciously. Breathing isn't just a regulation exercise — it's a collaboration competency.",
+    leder: "Shared breathing transforms collaboration quality in a team. When you start meetings with three shared breaths, you create a shared regulated baseline that makes everyone better able to listen, contribute, and handle disagreement. It's especially powerful before difficult conversations, feedback sessions, or strategy discussions — precisely the situations where nervous systems are most activated and collaboration patterns most challenged."
+  },
+
+  'samarbejde-resiliens': {
+    medarbejder: "Your collaboration patterns directly affect your resilience. If you have an avoidant style and isolate under pressure, you lose access to co-regulation from colleagues — and your nervous system carries the entire load alone. If you have an anxious style and over-adapt, you spend energy on others' needs and forget your own boundaries. Both patterns break down resilience over time. Developing a more secure collaboration style — where you can ask for help and set boundaries — is one of the most effective resilience strategies that exists.",
+    leder: "The team's collaboration patterns are a direct indicator of the team's resilience. A team with secure collaboration patterns — where people ask for help, share burdens, and support each other — is far more resilient than a team where everyone carries alone. Your task is to create the conditions that enable secure collaboration: clarity about roles, explicit permission to say no, and a culture where asking for help is strength, not weakness."
+  },
+
+  // ─── Body ↔ all others (excl. centrum, states, leadership, collaboration) ───
+
+  'krop-aandedraet': {
+    medarbejder: "Body and breathing are two sides of the same regulation mechanism. When the body is tense, breathing becomes shallow — and vice versa. Fascia, your body's connective tissue, is closely connected to the diaphragm and directly affects your breathing quality. When you sit slumped in front of the screen, the diaphragm is compressed and breathing is restricted. When you stand up, stretch out, and open the chest, breathing is naturally released. The two tools reinforce each other: movement frees breathing, and deeper breathing relaxes the body. Together they are the most powerful regulation pair you have.",
+    leder: "Body and breathing are the two most direct regulation tools your team has access to — and they reinforce each other. When you combine movement breaks with conscious breathing — for example, 'stand up, stretch your arms, and take three deep breaths' — you get a double regulation effect. It takes 60 seconds and changes the entire room's energy. Make it a habit in the middle of long meetings and workshops."
+  },
+
+  'krop-resiliens': {
+    medarbejder: "Your body's condition is a direct barometer for your resilience. Chronic tensions, poor sleep, headaches, and digestive issues aren't random — they're your nervous system's signals that your capacity is under pressure. The body speaks before the psyche does. When you notice that your neck is constantly tense, that your stomach hurts, or you can't sleep, it's time to listen — not to take a painkiller and keep going. Body awareness is your earliest warning system for overload.",
+    leder: "Bodily signals in the team are early warning indicators for resilience under pressure. When several team members report headaches, poor sleep, or constant tension, these aren't individual problems — they're a system problem. They're nervous systems telling you that the load is too high. Take these signals seriously: adjust the pace, reduce load, and create space for physical recharging. The body doesn't lie."
+  },
+
+  // ─── Breathing ↔ Resilience ───
+
+  'aandedraet-resiliens': {
+    medarbejder: "Daily breathing practice is one of the most evidence-based ways to build resilience. Respiratory sinus arrhythmia — the natural variation in your pulse during inhalation and exhalation — is a direct measure of your autonomic flexibility, your nervous system's ability to shift between activation and rest. The higher the RSA, the more resilient your system. And RSA is directly strengthened by regular conscious breathing. Three minutes a day with extended exhalation literally trains your nervous system's bounce-back ability. It's the cheapest and most accessible resilience investment there is.",
+    leder: "Shared breathing pauses don't just build momentary regulation — they build the team's long-term resilience. Each time the team breathes consciously together, the collective ability to regulate under pressure is strengthened. It's like training: the effect accumulates over time. Teams that have regular breathing pauses as part of their meeting culture report higher stress resistance, better recovery after pressured periods, and lower sick leave. It's 30 seconds that pay back many times over."
+  }
+};
 
 // Language-aware hentSammenhaenge
 function hentSammenhaengeEN(cirkelId) {
@@ -990,7 +1108,7 @@ function hentSammenhaengeEN(cirkelId) {
     var parts = key.split("-");
     if (parts[0] === cirkelId || parts[1] === cirkelId) {
       var otherKey = parts[0] === cirkelId ? parts[1] : parts[0];
-      result.push({ key: key, other: otherKey, data: SAMMENHAENGE_EN[key] });
+      result.push({ key: key, other: otherKey, id: otherKey, titel: CIRKLER_EN[otherKey] ? CIRKLER_EN[otherKey].titel : otherKey, data: SAMMENHAENGE_EN[key] });
     }
   });
   return result;
