@@ -1440,7 +1440,7 @@
         { l1: 'Stress regulation', l2: '' },
         { l1: 'Three states', l2: erLeder ? 'in your team' : 'in your workday' },
         { l1: erLeder ? 'Your leadership' : 'Your leader', l2: erLeder ? '& the culture' : '& your wellbeing' },
-        { l1: erLeder ? 'Team' : 'Your', l2: erLeder ? 'collaboration' : 'collaboration patterns' },
+        { l1: erLeder ? 'Team' : 'Your', l2: erLeder ? 'collaboration' : 'collaboration', l3: erLeder ? '' : 'patterns' },
         { l1: erLeder ? 'Movement' : 'Your body', l2: erLeder ? 'in the team' : 'in daily life' },
         { l1: erLeder ? 'Shared breaks' : 'Your breathing', l2: erLeder ? '& breathing' : '& breaks' },
         { l1: erLeder ? "Team's" : 'Your mental', l2: erLeder ? 'resilience' : 'resilience' }
@@ -1497,8 +1497,10 @@
     balCircles.forEach(function(c){
       html += '<circle cx="'+c.x+'" cy="'+c.y+'" r="56" fill="#fff"/>';
       html += '<circle cx="'+c.x+'" cy="'+c.y+'" r="56" fill="var(--primary-light)" stroke="var(--primary)" stroke-width="1.5" opacity="0.88"/>';
-      html += '<text x="'+c.x+'" y="'+(c.y-6)+'" fill="#fff" font-family="Georgia,serif" font-size="12" text-anchor="middle">'+cLabels[c.idx].l1+'</text>';
-      html += '<text x="'+c.x+'" y="'+(c.y+10)+'" fill="#fff" font-family="Georgia,serif" font-size="12" text-anchor="middle">'+cLabels[c.idx].l2+'</text>';
+      var yOff = cLabels[c.idx].l3 ? -12 : -6;
+      html += '<text x="'+c.x+'" y="'+(c.y+yOff)+'" fill="#fff" font-family="Georgia,serif" font-size="12" text-anchor="middle">'+cLabels[c.idx].l1+'</text>';
+      html += '<text x="'+c.x+'" y="'+(c.y+yOff+16)+'" fill="#fff" font-family="Georgia,serif" font-size="12" text-anchor="middle">'+cLabels[c.idx].l2+'</text>';
+      if (cLabels[c.idx].l3) html += '<text x="'+c.x+'" y="'+(c.y+yOff+32)+'" fill="#fff" font-family="Georgia,serif" font-size="12" text-anchor="middle">'+cLabels[c.idx].l3+'</text>';
     });
     html += '</svg>';
     html += '<p class="dynamik-svg-caption">' + t('balanceCaption') + '</p>';
@@ -1558,8 +1560,10 @@
     presCircles.forEach(function(c){
       html += '<circle cx="'+c.x+'" cy="'+c.y+'" r="'+c.r+'" fill="#fff"/>';
       html += '<circle cx="'+c.x+'" cy="'+c.y+'" r="'+c.r+'" fill="var(--primary-light)" stroke="var(--primary)" stroke-width="1.5" opacity="'+c.op+'"/>';
-      html += '<text x="'+c.x+'" y="'+(c.y-5)+'" fill="#fff" font-family="Georgia,serif" font-size="11" text-anchor="middle">'+cLabels[c.idx].l1+'</text>';
-      html += '<text x="'+c.x+'" y="'+(c.y+9)+'" fill="#fff" font-family="Georgia,serif" font-size="11" text-anchor="middle">'+cLabels[c.idx].l2+'</text>';
+      var yOff2 = cLabels[c.idx].l3 ? -11 : -5;
+      html += '<text x="'+c.x+'" y="'+(c.y+yOff2)+'" fill="#fff" font-family="Georgia,serif" font-size="11" text-anchor="middle">'+cLabels[c.idx].l1+'</text>';
+      html += '<text x="'+c.x+'" y="'+(c.y+yOff2+14)+'" fill="#fff" font-family="Georgia,serif" font-size="11" text-anchor="middle">'+cLabels[c.idx].l2+'</text>';
+      if (cLabels[c.idx].l3) html += '<text x="'+c.x+'" y="'+(c.y+yOff2+28)+'" fill="#fff" font-family="Georgia,serif" font-size="11" text-anchor="middle">'+cLabels[c.idx].l3+'</text>';
     });
     html += '</svg>';
     html += '<p class="dynamik-svg-caption">' + t('pressureCaption') + '</p>';
@@ -1625,8 +1629,10 @@
     domCircles.forEach(function(c){
       html += '<circle cx="'+c.x+'" cy="'+c.y+'" r="'+c.r+'" fill="#fff"/>';
       html += '<circle cx="'+c.x+'" cy="'+c.y+'" r="'+c.r+'" fill="var(--primary-light)" stroke="var(--primary)" stroke-width="1.5" opacity="'+c.op+'"/>';
-      html += '<text x="'+c.x+'" y="'+(c.y-5)+'" fill="#fff" font-family="Georgia,serif" font-size="10" text-anchor="middle">'+cLabels[c.idx].l1+'</text>';
-      html += '<text x="'+c.x+'" y="'+(c.y+8)+'" fill="#fff" font-family="Georgia,serif" font-size="10" text-anchor="middle">'+cLabels[c.idx].l2+'</text>';
+      var yOff3 = cLabels[c.idx].l3 ? -10 : -5;
+      html += '<text x="'+c.x+'" y="'+(c.y+yOff3)+'" fill="#fff" font-family="Georgia,serif" font-size="10" text-anchor="middle">'+cLabels[c.idx].l1+'</text>';
+      html += '<text x="'+c.x+'" y="'+(c.y+yOff3+13)+'" fill="#fff" font-family="Georgia,serif" font-size="10" text-anchor="middle">'+cLabels[c.idx].l2+'</text>';
+      if (cLabels[c.idx].l3) html += '<text x="'+c.x+'" y="'+(c.y+yOff3+26)+'" fill="#fff" font-family="Georgia,serif" font-size="10" text-anchor="middle">'+cLabels[c.idx].l3+'</text>';
     });
     html += '</svg>';
     html += '<p class="dynamik-svg-caption">' + (erLeder ? (isEn() ? 'Cultural pressure pulls the entire team system toward itself' : 'Kulturelt pres trækker hele teamets system mod sig') : (isEn() ? 'Unaddressed stress pulls your entire system out of balance' : 'Uadresseret stress trækker hele dit system ud af balance')) + '</p>';
@@ -1717,8 +1723,10 @@
     mulCircles.forEach(function(c){
       html += '<circle cx="'+c.x+'" cy="'+c.y+'" r="'+c.r+'" fill="#fff"/>';
       html += '<circle cx="'+c.x+'" cy="'+c.y+'" r="'+c.r+'" fill="'+c.fill+'" stroke="'+c.stroke+'" stroke-width="1.5" opacity="'+c.op+'"/>';
-      html += '<text x="'+c.x+'" y="'+(c.y-5)+'" fill="#fff" font-family="Georgia,serif" font-size="10" text-anchor="middle">'+cLabels[c.idx].l1+'</text>';
-      html += '<text x="'+c.x+'" y="'+(c.y+8)+'" fill="#fff" font-family="Georgia,serif" font-size="10" text-anchor="middle">'+cLabels[c.idx].l2+'</text>';
+      var yOff4 = cLabels[c.idx].l3 ? -10 : -5;
+      html += '<text x="'+c.x+'" y="'+(c.y+yOff4)+'" fill="#fff" font-family="Georgia,serif" font-size="10" text-anchor="middle">'+cLabels[c.idx].l1+'</text>';
+      html += '<text x="'+c.x+'" y="'+(c.y+yOff4+13)+'" fill="#fff" font-family="Georgia,serif" font-size="10" text-anchor="middle">'+cLabels[c.idx].l2+'</text>';
+      if (cLabels[c.idx].l3) html += '<text x="'+c.x+'" y="'+(c.y+yOff4+26)+'" fill="#fff" font-family="Georgia,serif" font-size="10" text-anchor="middle">'+cLabels[c.idx].l3+'</text>';
     });
     html += '</svg>';
     html += '<p class="dynamik-svg-caption">' + t('multipleCaption') + '</p>';

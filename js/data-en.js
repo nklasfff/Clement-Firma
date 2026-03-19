@@ -24,7 +24,8 @@ var CIRKEL_TEKSTER_EN = {
   "ledelse": {
     "medarbejder": [
       "Your leader",
-      "and your wellbeing"
+      "and your",
+      "wellbeing"
     ],
     "leder": [
       "Your leadership",
