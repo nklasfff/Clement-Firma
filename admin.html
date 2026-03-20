@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clement Admin — Indholdsstyring</title>
+
+  <!-- Supabase config — UDFYLD med dit projekts URL og anon key -->
+  <!-- <meta name="supabase-url" content="https://DIT-PROJEKT.supabase.co"> -->
+  <!-- <meta name="supabase-key" content="din-anon-key-her"> -->
+
+  <style>
+    :root {
+      --primary: #6B2D5B;
+      --primary-light: #8B3D7B;
+      --sage: #4A7C59;
+      --amber: #D4A373;
+      --rose: #C25B56;
+      --bg: #FAF8F5;
+      --card: #FFFFFF;
+      --text: #2C2C2C;
+      --muted: #7A7A7A;
+      --border: #E8E4DF;
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .admin-header {
+      background: var(--primary);
+      color: white;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .admin-header h1 {
+      font-family: Georgia, serif;
+      font-size: 18px;
+      font-weight: 400;
+    }
+
+    .admin-header-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .admin-user {
+      font-size: 13px;
+      opacity: 0.8;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover { opacity: 0.85; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-sage { background: var(--sage); color: white; }
+    .btn-rose { background: var(--rose); color: white; }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .btn-sm { padding: 5px 12px; font-size: 13px; }
+
+    .admin-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* Login */
+    .login-card {
+      max-width: 400px;
+      margin: 100px auto;
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 40px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .login-card h2 {
+      font-family: Georgia, serif;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .login-card p {
+      color: var(--muted);
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 4px;
+      color: var(--muted);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus { border-color: var(--primary); }
+
+    .form-textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      min-height: 100px;
+      resize: vertical;
+      font-family: inherit;
+    }
+
+    .error-msg {
+      color: var(--rose);
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    /* Tabs */
+    .admin-tabs {
+      display: flex;
+      gap: 4px;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 24px;
+    }
+
+    .admin-tab {
+      padding: 12px 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+      color: var(--muted);
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s;
+    }
+
+    .admin-tab:hover { color: var(--text); }
+    .admin-tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      font-weight: 500;
+    }
+
+    /* Content panels */
+    .admin-panel { display: none; }
+    .admin-panel.active { display: block; }
+
+    /* Table */
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    .admin-table th {
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      background: #FAFAF8;
+    }
+
+    .admin-table td {
+      padding: 12px 16px;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    .admin-table tr:last-child td { border-bottom: none; }
+    .admin-table tr:hover td { background: #FAF8F5; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .badge-active { background: #E8F5E9; color: var(--sage); }
+    .badge-inactive { background: #FBE9E7; color: var(--rose); }
+
+    .text-ellipsis {
+      max-width: 300px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.visible {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--card);
+      border-radius: var(--radius);
+      width: 90%;
+      max-width: 700px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 32px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    }
+
+    .modal h3 {
+      font-family: Georgia, serif;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-help {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    .stat-card .stat-value {
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .stat-card .stat-label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* Status bar */
+    .status-bar {
+      background: #FFF3E0;
+      color: #E65100;
+      padding: 12px 24px;
+      font-size: 14px;
+      text-align: center;
+      display: none;
+    }
+
+    .status-bar.visible { display: block; }
+    .status-bar.success { background: #E8F5E9; color: #2E7D32; }
+    .status-bar.error { background: #FBE9E7; color: #C62828; }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+
+    .empty-state p { margin-bottom: 16px; }
+
+    @media (max-width: 768px) {
+      .form-row { grid-template-columns: 1fr; }
+      .admin-table { font-size: 13px; }
+      .admin-table th, .admin-table td { padding: 8px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Status bar -->
+  <div class="status-bar" id="statusBar"></div>
+
+  <!-- Login -->
+  <div id="loginView">
+    <div class="login-card">
+      <h2>Clement Admin</h2>
+      <p>Log ind for at redigere indhold, se tilmeldinger og administrere appen.</p>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" class="form-input" id="loginEmail" placeholder="admin@example.com">
+      </div>
+      <div class="form-group">
+        <label>Adgangskode</label>
+        <input type="password" class="form-input" id="loginPassword" placeholder="Din adgangskode">
+      </div>
+      <div class="error-msg" id="loginError" style="display:none;"></div>
+      <br>
+      <button class="btn btn-primary" id="loginBtn" style="width:100%;">Log ind</button>
+    </div>
+  </div>
+
+  <!-- Admin interface -->
+  <div id="adminView" style="display:none;">
+    <div class="admin-header">
+      <h1>Clement Admin</h1>
+      <div class="admin-header-actions">
+        <span class="admin-user" id="adminUser"></span>
+        <a href="index.html" class="btn btn-outline btn-sm" style="color:white;border-color:rgba(255,255,255,0.3);">Se appen</a>
+        <button class="btn btn-outline btn-sm" id="logoutBtn" style="color:white;border-color:rgba(255,255,255,0.3);">Log ud</button>
+      </div>
+    </div>
+
+    <div class="admin-container">
+      <!-- Stats -->
+      <div class="stats-grid" id="statsGrid"></div>
+
+      <!-- Tabs -->
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-tab="exercises">Øvelser</button>
+        <button class="admin-tab" data-tab="reflections">Refleksioner</button>
+        <button class="admin-tab" data-tab="subscribers">Email-tilmeldinger</button>
+      </div>
+
+      <!-- Exercises panel -->
+      <div class="admin-panel active" data-panel="exercises">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <h2 style="font-family:Georgia,serif;font-size:20px;">Øvelser</h2>
+          <button class="btn btn-sage btn-sm" id="addExercise">+ Tilføj øvelse</button>
+        </div>
+        <div id="exercisesTable"></div>
+      </div>
+
+      <!-- Reflections panel -->
+      <div class="admin-panel" data-panel="reflections">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <h2 style="font-family:Georgia,serif;font-size:20px;">Refleksioner</h2>
+          <button class="btn btn-sage btn-sm" id="addReflection">+ Tilføj refleksion</button>
+        </div>
+        <div id="reflectionsTable"></div>
+      </div>
+
+      <!-- Subscribers panel -->
+      <div class="admin-panel" data-panel="subscribers">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <h2 style="font-family:Georgia,serif;font-size:20px;">Email-tilmeldinger</h2>
+          <button class="btn btn-outline btn-sm" id="exportSubscribers">Eksportér CSV</button>
+        </div>
+        <div id="subscribersTable"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise Modal -->
+  <div class="modal-overlay" id="exerciseModal">
+    <div class="modal">
+      <h3 id="exerciseModalTitle">Ny øvelse</h3>
+      <input type="hidden" id="exerciseId">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Titel (dansk)</label>
+          <input type="text" class="form-input" id="exTitel" placeholder="f.eks. Desk grounding">
+        </div>
+        <div class="form-group">
+          <label>Titel (engelsk)</label>
+          <input type="text" class="form-input" id="exTitelEn" placeholder="f.eks. Desk grounding">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tid</label>
+          <input type="text" class="form-input" id="exTid" placeholder="f.eks. 2 min">
+        </div>
+        <div class="form-group">
+          <label>Cirkel</label>
+          <select class="form-input" id="exCirkel">
+            <option value="centrum">Stressregulering (centrum)</option>
+            <option value="tilstande">Tre tilstande</option>
+            <option value="ledelse">Ledelse</option>
+            <option value="samarbejde">Samarbejde</option>
+            <option value="krop">Krop</option>
+            <option value="aandedraet">Åndedræt</option>
+            <option value="resiliens">Resiliens</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Sted (dansk)</label>
+          <input type="text" class="form-input" id="exSted" placeholder="f.eks. Ved skrivebordet">
+        </div>
+        <div class="form-group">
+          <label>Sted (engelsk)</label>
+          <input type="text" class="form-input" id="exStedEn" placeholder="f.eks. At your desk">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Temaer</label>
+        <input type="text" class="form-input" id="exTemaer" placeholder="generelt, skaerm, deadlines">
+        <p class="form-help">Kommasepareret. Mulige: generelt, moeder, deadlines, skaerm, konflikter, balance</p>
+      </div>
+
+      <div class="form-group">
+        <label>Intro (dansk)</label>
+        <textarea class="form-textarea" id="exIntro" placeholder="Kort introduktion til øvelsen..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Intro (engelsk)</label>
+        <textarea class="form-textarea" id="exIntroEn" placeholder="Short introduction..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Trin (dansk) — ét trin per linje</label>
+        <textarea class="form-textarea" id="exSteps" style="min-height:150px;" placeholder="Trin 1&#10;Trin 2&#10;Trin 3"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Trin (engelsk) — ét trin per linje</label>
+        <textarea class="form-textarea" id="exStepsEn" style="min-height:150px;" placeholder="Step 1&#10;Step 2&#10;Step 3"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Refleksionsspørgsmål (dansk)</label>
+        <textarea class="form-textarea" id="exRefleksion" style="min-height:60px;" placeholder="Hvad lagde du mærke til?"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Refleksionsspørgsmål (engelsk)</label>
+        <textarea class="form-textarea" id="exRefleksionEn" style="min-height:60px;" placeholder="What did you notice?"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Rækkefølge (sort order)</label>
+          <input type="number" class="form-input" id="exSortOrder" value="0">
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select class="form-input" id="exActive">
+            <option value="true">Aktiv</option>
+            <option value="false">Inaktiv (skjult)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-outline" id="exerciseCancel">Annullér</button>
+        <button class="btn btn-primary" id="exerciseSave">Gem øvelse</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reflection Modal -->
+  <div class="modal-overlay" id="reflectionModal">
+    <div class="modal">
+      <h3 id="reflectionModalTitle">Ny refleksion</h3>
+      <input type="hidden" id="reflectionId">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>ID (unikt, f.eks. "forbindelse")</label>
+          <input type="text" class="form-input" id="refId" placeholder="f.eks. forbindelse">
+        </div>
+        <div class="form-group">
+          <label>Ikon</label>
+          <input type="text" class="form-input" id="refIkon" value="◎" placeholder="◎">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Titel (dansk)</label>
+          <input type="text" class="form-input" id="refTitel" placeholder="f.eks. Forbindelse">
+        </div>
+        <div class="form-group">
+          <label>Titel (engelsk)</label>
+          <input type="text" class="form-input" id="refTitelEn" placeholder="f.eks. Connection">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Farve</label>
+        <select class="form-input" id="refFarve">
+          <option value="sage">Grøn (sage)</option>
+          <option value="amber">Amber</option>
+          <option value="rose">Rose</option>
+          <option value="primary">Primær</option>
+          <option value="accent">Accent</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Spørgsmål (dansk)</label>
+        <textarea class="form-textarea" id="refSpoergsmaal" placeholder="Det refleksionsspørgsmål brugeren skal besvare..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Spørgsmål (engelsk)</label>
+        <textarea class="form-textarea" id="refSpoergsmaalEn" placeholder="The reflection question..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Uddybning (dansk)</label>
+        <textarea class="form-textarea" id="refUddybning" placeholder="Kontekst og baggrund for refleksionen..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Uddybning (engelsk)</label>
+        <textarea class="form-textarea" id="refUddybningEn" placeholder="Context and background..."></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Rækkefølge (sort order)</label>
+          <input type="number" class="form-input" id="refSortOrder" value="0">
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select class="form-input" id="refActive">
+            <option value="true">Aktiv</option>
+            <option value="false">Inaktiv (skjult)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-outline" id="reflectionCancel">Annullér</button>
+        <button class="btn btn-primary" id="reflectionSave">Gem refleksion</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/supabase.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

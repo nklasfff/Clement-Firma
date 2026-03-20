@@ -279,43 +279,98 @@
     });
   }
 
+  // ── Supabase data override ──
+  // When Supabase data is loaded, these hold the remote content.
+  // The D_* accessor functions check these first.
+  var _remoteExercises = null;
+  var _remoteExercisesEn = null;
+  var _remoteReflections = null;
+  var _remoteReflectionsEn = null;
+
+  function applyRemoteContent(content) {
+    if (!content) return;
+    // Override exercises
+    if (content.exercises) {
+      _remoteExercises = content.exercises.map(function(e) {
+        return { titel: e.titel, tid: e.tid, sted: e.sted, cirkel: e.cirkel, temaer: e.temaer, intro: e.intro, steps: e.steps, refleksion: e.refleksion };
+      });
+      _remoteExercisesEn = content.exercises.map(function(e) {
+        return { titel: e.titel_en || e.titel, tid: e.tid, sted: e.sted_en || e.sted, cirkel: e.cirkel, temaer: e.temaer, intro: e.intro_en || e.intro, steps: e.steps_en && e.steps_en.length ? e.steps_en : e.steps, refleksion: e.refleksion_en || e.refleksion };
+      });
+    }
+    // Override reflections
+    if (content.reflections) {
+      _remoteReflections = content.reflections.map(function(r) {
+        return { id: r.id, titel: r.titel, ikon: r.ikon, farve: r.farve, spoergsmaal: r.spoergsmaal, uddybning: r.uddybning };
+      });
+      _remoteReflectionsEn = content.reflections.map(function(r) {
+        return { id: r.id, titel: r.titel_en || r.titel, ikon: r.ikon, farve: r.farve, spoergsmaal: r.spoergsmaal_en || r.spoergsmaal, uddybning: r.uddybning_en || r.uddybning };
+      });
+    }
+  }
+
+  // Patch D_OEVELSER and D_REFLEKSIONER to use remote data when available
+  var _origDOevelser = D_OEVELSER;
+  D_OEVELSER = function() {
+    if (isEn() && _remoteExercisesEn) return _remoteExercisesEn;
+    if (!isEn() && _remoteExercises) return _remoteExercises;
+    return _origDOevelser();
+  };
+
+  var _origDRefleksioner = D_REFLEKSIONER;
+  D_REFLEKSIONER = function() {
+    if (isEn() && _remoteReflectionsEn) return _remoteReflectionsEn;
+    if (!isEn() && _remoteReflections) return _remoteReflections;
+    return _origDRefleksioner();
+  };
+
   function startApp(firstVisit) {
     isFirstVisit = firstVisit;
     onboarding.classList.add('hidden');
     bottomNav.classList.remove('hidden');
     topBar.classList.remove('hidden');
-    opdaterRolleLabel();
-    opdaterCirkelTekster();
-    renderTemaer();
-    renderOevelser();
-    renderRefleksioner();
-    renderDinProces();
-    renderTrappenMoenster();
-    renderTrappenForstaaelse();
-    renderMenuContent();
-    renderSearchTags();
-    bindEvents();
-    bindMenuEvents();
-    bindSearchEvents();
-    bindFilterEvents();
 
-    if (firstVisit) {
-      if (aktivPerspektiv === 'virksomhed') {
-        // Virksomhed goes straight to the virksomhed page
-        renderVirksomhed();
-        window.location.hash = 'virksomhed';
-        navigateTo('virksomhed', false);
+    // Try loading content from Supabase, then render
+    var backendReady = (window.ClementBackend && window.ClementBackend.isConfigured())
+      ? window.ClementBackend.loadAllContent()
+      : Promise.resolve(null);
+
+    backendReady.then(function(content) {
+      applyRemoteContent(content);
+    }).catch(function() {
+      // Supabase unavailable — use local data
+    }).then(function() {
+      opdaterRolleLabel();
+      opdaterCirkelTekster();
+      renderTemaer();
+      renderOevelser();
+      renderRefleksioner();
+      renderDinProces();
+      renderTrappenMoenster();
+      renderTrappenForstaaelse();
+      renderMenuContent();
+      renderSearchTags();
+      bindEvents();
+      bindMenuEvents();
+      bindSearchEvents();
+      bindFilterEvents();
+
+      if (firstVisit) {
+        if (aktivPerspektiv === 'virksomhed') {
+          renderVirksomhed();
+          window.location.hash = 'virksomhed';
+          navigateTo('virksomhed', false);
+        } else {
+          window.location.hash = 'hjem';
+          navigateTo('hjem', false);
+          showVelkommen();
+          animateCircles();
+        }
       } else {
-        // Always go to hjem on first visit
-        window.location.hash = 'hjem';
-        navigateTo('hjem', false);
-        showVelkommen();
-        animateCircles();
+        handleHash();
       }
-    } else {
-      handleHash();
-    }
-    updateHeroVisibility();
+      updateHeroVisibility();
+    });
   }
 
   // ── Rolle ──
@@ -2305,9 +2360,33 @@
       notifSaveBtn.addEventListener('click', function() {
         var emailInput = document.getElementById('notifEmail');
         if (emailInput && emailInput.value.trim()) {
-          localStorage.setItem('cf_notif_email', emailInput.value.trim());
-          if (notifSavedMsg) {
-            notifSavedMsg.style.display = '';
+          var emailVal = emailInput.value.trim();
+          // Validate email format
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+            emailInput.style.borderColor = 'var(--rose)';
+            return;
+          }
+          emailInput.style.borderColor = '';
+          localStorage.setItem('cf_notif_email', emailVal);
+
+          // Send to Supabase if configured
+          if (window.ClementBackend && window.ClementBackend.isConfigured()) {
+            notifSaveBtn.disabled = true;
+            notifSaveBtn.textContent = '...';
+            window.ClementBackend.subscribeEmail(emailVal, aktivPerspektiv, isEn() ? 'en' : 'da')
+              .then(function() {
+                if (notifSavedMsg) notifSavedMsg.style.display = '';
+                notifSaveBtn.disabled = false;
+                notifSaveBtn.textContent = t('notifSave');
+              })
+              .catch(function() {
+                // Still saved locally even if backend fails
+                if (notifSavedMsg) notifSavedMsg.style.display = '';
+                notifSaveBtn.disabled = false;
+                notifSaveBtn.textContent = t('notifSave');
+              });
+          } else {
+            if (notifSavedMsg) notifSavedMsg.style.display = '';
           }
           // Show gift after a short moment
           setTimeout(function() {
