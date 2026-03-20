@@ -1,0 +1,65 @@
+{
+  "virksomhed": {
+    "navn": "",
+    "logo": "",
+    "branche": ""
+  },
+
+  "farver": {
+    "primaer": "",
+    "sekundaer": "",
+    "accent": "",
+    "baggrund": "",
+    "tekst": "",
+    "groen_zone": "",
+    "gul_zone": "",
+    "roed_zone": ""
+  },
+
+  "typografi": {
+    "overskrift": "",
+    "broedtekst": ""
+  },
+
+  "indhold": {
+    "perspektiver": {
+      "medarbejder": true,
+      "leder": true
+    },
+    "temaer": {
+      "generelt": true,
+      "moeder": true,
+      "deadlines": true,
+      "skaerm": true,
+      "konflikter": true,
+      "balance": true
+    }
+  },
+
+  "branche_eksempler": {
+    "teknologi": {
+      "deadline_eksempel": "Sprint-afslutning fredag kl. 16",
+      "moede_eksempel": "Daily stand-up kl. 9:15",
+      "konflikt_eksempel": "Code review-uenighed",
+      "skaerm_eksempel": "6 timers uafbrudt kodning"
+    },
+    "finans": {
+      "deadline_eksempel": "Kvartalsrapport deadline",
+      "moede_eksempel": "Kundemøde med investorer",
+      "konflikt_eksempel": "Uenighed om risikovurdering",
+      "skaerm_eksempel": "Regneark og markedsdata hele dagen"
+    },
+    "sundhed": {
+      "deadline_eksempel": "Vagtskifte og overlevering",
+      "moede_eksempel": "Tværfaglig konference",
+      "konflikt_eksempel": "Uenighed om behandlingsplan",
+      "skaerm_eksempel": "Journalskrivning efter patientkontakt"
+    },
+    "produktion": {
+      "deadline_eksempel": "Leveringsfrist til kunde",
+      "moede_eksempel": "Produktionsmøde mandag morgen",
+      "konflikt_eksempel": "Kvalitetskontrol-uenighed",
+      "skaerm_eksempel": "Planlægning og logistik ved skærm"
+    }
+  }
+}

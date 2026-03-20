@@ -34,11 +34,34 @@
   function D_CIRKEL_NAVNE() { return isEn() ? CIRKEL_NAVNE_EN : CIRKEL_NAVNE; }
   function D_hentSammenhaenge(id) { return isEn() ? hentSammenhaengeEN(id) : hentSammenhaenge(id); }
 
+  // ── Safe localStorage wrapper ──
+  function safeGetItem(key, fallback) {
+    try { return localStorage.getItem(key); } catch (e) { return fallback !== undefined ? fallback : null; }
+  }
+  function safeSetItem(key, value) {
+    try { localStorage.setItem(key, value); return true; } catch (e) { return false; }
+  }
+  function safeRemoveItem(key) {
+    try { localStorage.removeItem(key); } catch (e) { /* ignore */ }
+  }
+  function safeGetJSON(key, fallback) {
+    try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); } catch (e) { return fallback; }
+  }
+  function safeSetJSON(key, value) {
+    return safeSetItem(key, JSON.stringify(value));
+  }
+
+  // ── Input sanitization ──
+  function sanitizeText(str) {
+    if (!str) return '';
+    return String(str).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
   // ── Favoritter ──
   function getFavoritter() {
-    try { return JSON.parse(localStorage.getItem('cf_favoritter') || '[]'); } catch (e) { return []; }
+    return safeGetJSON('cf_favoritter', []);
   }
-  function saveFavoritter(fav) { localStorage.setItem('cf_favoritter', JSON.stringify(fav)); }
+  function saveFavoritter(fav) { safeSetJSON('cf_favoritter', fav); }
   function isFavorit(type, id) { return getFavoritter().some(function(f) { return f.type === type && f.id === id; }); }
   function toggleFavorit(type, id, titel) {
     var fav = getFavoritter();
@@ -253,14 +276,22 @@
   // ── Init ──
   function init() {
     updateStaticTexts();
-    // Check om bruger allerede har valgt rolle
-    var gemt = localStorage.getItem('clementRolle');
-    if (gemt) {
-      aktivPerspektiv = gemt;
-      startApp(false);
-    } else {
-      visOnboarding();
-    }
+
+    // Load firma customization first, then start
+    var firmaReady = (window.ClementFirma)
+      ? window.ClementFirma.load()
+      : Promise.resolve(null);
+
+    firmaReady.catch(function() { /* ignore */ }).then(function() {
+      // Check om bruger allerede har valgt rolle
+      var gemt = safeGetItem('clementRolle');
+      if (gemt) {
+        aktivPerspektiv = gemt;
+        startApp(false);
+      } else {
+        visOnboarding();
+      }
+    });
   }
 
   // ── Onboarding ──
@@ -273,7 +304,7 @@
     choices.forEach(function(btn) {
       btn.addEventListener('click', function() {
         aktivPerspektiv = this.dataset.rolle;
-        localStorage.setItem('clementRolle', aktivPerspektiv);
+        safeSetItem('clementRolle', aktivPerspektiv);
         startApp(true);
       });
     });
@@ -389,7 +420,7 @@
     } else {
       aktivPerspektiv = aktivPerspektiv === 'medarbejder' ? 'leder' : 'medarbejder';
     }
-    localStorage.setItem('clementRolle', aktivPerspektiv);
+    safeSetItem('clementRolle', aktivPerspektiv);
     opdaterRolleLabel();
     opdaterCirkelTekster();
     renderTemaer();
@@ -737,7 +768,7 @@
   // ── Trappen ──
   // Check-in tracking
   function getTrappenCheckins() {
-    try { return JSON.parse(localStorage.getItem('cf_trappen_checkins') || '[]'); } catch (e) { return []; }
+    return safeGetJSON('cf_trappen_checkins', []);
   }
   function saveTrappenCheckin(trinId) {
     var checkins = getTrappenCheckins();
@@ -748,7 +779,7 @@
     });
     saveTrappenCheckins(checkins);
   }
-  function saveTrappenCheckins(c) { localStorage.setItem('cf_trappen_checkins', JSON.stringify(c)); }
+  function saveTrappenCheckins(c) { safeSetJSON('cf_trappen_checkins', c); }
 
   function renderTrappenCheckinBekraeft(trinId) {
     var container = document.getElementById('trappenCheckinBekraeft');
@@ -948,6 +979,9 @@
     var html = '';
     var temaKeys = Object.keys(D_TEMA_INDHOLD());
     temaKeys.forEach(function(key) {
+      // Skip temaer deaktiveret i firma-config
+      if (window.ClementFirma && !window.ClementFirma.isThemeEnabled(key)) return;
+
       var tema = D_TEMA_INDHOLD()[key];
       // Count related exercises
       var oevelseCount = 0;
@@ -1091,10 +1125,9 @@
 
   // ── Proces-tracking (localStorage) ──
   function getProces() {
-    try { return JSON.parse(localStorage.getItem('cf_proces') || '{"oevelser":[],"refleksioner":[],"journal":[]}'); }
-    catch (e) { return { oevelser: [], refleksioner: [], journal: [] }; }
+    return safeGetJSON('cf_proces', { oevelser: [], refleksioner: [], journal: [] });
   }
-  function saveProces(p) { localStorage.setItem('cf_proces', JSON.stringify(p)); }
+  function saveProces(p) { safeSetJSON('cf_proces', p); }
 
   function markerOevelseGennemfoert(titel) {
     var p = getProces();
@@ -1251,6 +1284,9 @@
           setTimeout(function() { textarea.style.borderColor = ''; }, 2000);
           return;
         }
+        // Limit length to prevent localStorage bloat
+        if (svar.length > 5000) svar = svar.substring(0, 5000);
+        svar = sanitizeText(svar);
         var id = this.dataset.refId;
         var titel = this.dataset.refTitel;
         gemRefleksionSvar(id, titel, svar);
@@ -1369,6 +1405,8 @@
           setTimeout(function() { journalInput.style.borderColor = ''; }, 2000);
           return;
         }
+        if (tekst.length > 5000) tekst = tekst.substring(0, 5000);
+        tekst = sanitizeText(tekst);
         gemJournalNotat(tekst);
         journalInput.value = '';
         gemBtn.textContent = t('saved');
@@ -2232,8 +2270,8 @@
     html += '<div class="menu-divider"></div>';
 
     // ── Nyt indhold / notifikationer ──
-    var notifEnabled = localStorage.getItem('cf_notif_enabled') === 'true';
-    var notifEmail = localStorage.getItem('cf_notif_email') || '';
+    var notifEnabled = safeGetItem('cf_notif_enabled') === 'true';
+    var notifEmail = safeGetItem('cf_notif_email', '');
     html += '<div class="menu-section">';
     html += '<div class="menu-section-title">' + t('notifTitle') + '</div>';
     html += '<p class="menu-notif-desc">' + t('notifDesc') + '</p>';
@@ -2244,9 +2282,11 @@
     html += '</div>';
     html += '</div>';
     html += '<div class="menu-notif-email-wrap" id="notifEmailWrap" style="' + (notifEnabled ? '' : 'display:none;') + '">';
-    html += '<input type="email" class="menu-notif-email" id="notifEmail" placeholder="' + t('notifEmailPlaceholder') + '" value="' + notifEmail + '">';
+    html += '<input type="email" class="menu-notif-email" id="notifEmail" placeholder="' + t('notifEmailPlaceholder') + '" value="' + escapeAttr(notifEmail) + '">';
     html += '<button class="menu-notif-save" id="notifSave">' + t('notifSave') + '</button>';
+    html += '<p class="menu-notif-error" id="notifErrorMsg" style="display:none;color:var(--rose);font-size:13px;margin-top:6px;">' + t('notifError') + '</p>';
     html += '<p class="menu-notif-saved" id="notifSavedMsg" style="display:none;">' + t('notifSaved') + '</p>';
+    html += '<p class="menu-notif-offline" id="notifOfflineMsg" style="display:none;color:var(--amber);font-size:13px;margin-top:6px;">' + t('notifOffline') + '</p>';
     html += '</div>';
     html += '</div>';
     html += '<div class="menu-divider"></div>';
@@ -2323,10 +2363,10 @@
     if (deleteBtn) {
       deleteBtn.addEventListener('click', function() {
         if (confirm(t('resetConfirm'))) {
-          localStorage.removeItem('cf_favoritter');
-          localStorage.removeItem('cf_proces');
-          localStorage.removeItem('cf_trappen_checkins');
-          localStorage.removeItem('clementRolle');
+          safeRemoveItem('cf_favoritter');
+          safeRemoveItem('cf_proces');
+          safeRemoveItem('cf_trappen_checkins');
+          safeRemoveItem('clementRolle');
           closeMenu();
           location.reload();
         }
@@ -2347,10 +2387,10 @@
     var notifSavedMsg = document.getElementById('notifSavedMsg');
     if (notifToggleEl) {
       notifToggleEl.addEventListener('change', function() {
-        localStorage.setItem('cf_notif_enabled', this.checked);
+        safeSetItem('cf_notif_enabled', this.checked);
         if (notifEmailWrap) notifEmailWrap.style.display = this.checked ? '' : 'none';
         if (!this.checked) {
-          localStorage.removeItem('cf_notif_email');
+          safeRemoveItem('cf_notif_email');
           var emailInput = document.getElementById('notifEmail');
           if (emailInput) emailInput.value = '';
         }
@@ -2359,36 +2399,56 @@
     if (notifSaveBtn) {
       notifSaveBtn.addEventListener('click', function() {
         var emailInput = document.getElementById('notifEmail');
-        if (emailInput && emailInput.value.trim()) {
-          var emailVal = emailInput.value.trim();
-          // Validate email format
-          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
-            emailInput.style.borderColor = 'var(--rose)';
-            return;
-          }
-          emailInput.style.borderColor = '';
-          localStorage.setItem('cf_notif_email', emailVal);
+        var errorMsg = document.getElementById('notifErrorMsg');
+        var offlineMsg = document.getElementById('notifOfflineMsg');
 
-          // Send to Supabase if configured
-          if (window.ClementBackend && window.ClementBackend.isConfigured()) {
-            notifSaveBtn.disabled = true;
-            notifSaveBtn.textContent = '...';
-            window.ClementBackend.subscribeEmail(emailVal, aktivPerspektiv, isEn() ? 'en' : 'da')
-              .then(function() {
-                if (notifSavedMsg) notifSavedMsg.style.display = '';
-                notifSaveBtn.disabled = false;
-                notifSaveBtn.textContent = t('notifSave');
-              })
-              .catch(function() {
-                // Still saved locally even if backend fails
-                if (notifSavedMsg) notifSavedMsg.style.display = '';
-                notifSaveBtn.disabled = false;
-                notifSaveBtn.textContent = t('notifSave');
-              });
-          } else {
-            if (notifSavedMsg) notifSavedMsg.style.display = '';
-          }
-          // Show gift after a short moment
+        // Hide previous messages
+        if (notifSavedMsg) notifSavedMsg.style.display = 'none';
+        if (errorMsg) errorMsg.style.display = 'none';
+        if (offlineMsg) offlineMsg.style.display = 'none';
+
+        if (!emailInput || !emailInput.value.trim()) {
+          if (errorMsg) errorMsg.style.display = '';
+          if (emailInput) { emailInput.style.borderColor = 'var(--rose)'; emailInput.focus(); }
+          return;
+        }
+
+        var emailVal = emailInput.value.trim();
+        // Validate email format
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+          emailInput.style.borderColor = 'var(--rose)';
+          if (errorMsg) errorMsg.style.display = '';
+          return;
+        }
+        emailInput.style.borderColor = '';
+
+        safeSetItem('cf_notif_email', emailVal);
+
+        // Send to Supabase if configured
+        if (window.ClementBackend && window.ClementBackend.isConfigured()) {
+          notifSaveBtn.disabled = true;
+          notifSaveBtn.textContent = '...';
+          window.ClementBackend.subscribeEmail(emailVal, aktivPerspektiv, isEn() ? 'en' : 'da')
+            .then(function() {
+              if (notifSavedMsg) notifSavedMsg.style.display = '';
+              notifSaveBtn.disabled = false;
+              notifSaveBtn.textContent = t('notifSave');
+              // Show gift after a short moment
+              setTimeout(function() {
+                closeMenu();
+                setTimeout(function() { showGave(); }, 350);
+              }, 1200);
+            })
+            .catch(function() {
+              // Backend failed — show offline message
+              if (offlineMsg) offlineMsg.style.display = '';
+              notifSaveBtn.disabled = false;
+              notifSaveBtn.textContent = t('notifSave');
+            });
+        } else {
+          // No backend configured — tell user it's saved locally
+          if (offlineMsg) offlineMsg.style.display = '';
+          // Still show gift
           setTimeout(function() {
             closeMenu();
             setTimeout(function() { showGave(); }, 350);
