@@ -1873,7 +1873,7 @@
     assessmentScores = {};
     assessmentTrin = 0;
     ASSESSMENT_KEYS.forEach(function(k) {
-      assessmentScores[k] = { generelt: 5, vinkler: [5,5,5,5,5,5] };
+      assessmentScores[k] = { generelt: 5, vinkler: [5,5,5] };
     });
     renderAssessmentTrin();
     navigateTo('vurdering');
@@ -2142,6 +2142,44 @@
     }
     html += '</div>';
 
+    // ── Dybere profilanalyse: hvad dit billede betyder ──
+    html += '<div class="resultat-profil">';
+    html += '<h3 class="resultat-section-title">Hvad dit billede fortæller</h3>';
+
+    // Find stærkeste og svageste
+    var staerkeste = sorted[sorted.length - 1];
+    var svageste = sorted[0];
+    var spread = Math.round((staerkeste.score - svageste.score) * 10) / 10;
+
+    html += '<div class="resultat-profil-card">';
+    html += '<p class="resultat-profil-tekst">';
+    if (spread <= 2) {
+      html += 'Dit billede er relativt jævnt — der er ikke stor afstand mellem dine stærkeste og svageste områder. Det kan betyde at du enten fungerer godt generelt, eller at der er en bred, lav belastning der fordeler sig over hele dit system. ';
+      if (svageste.score <= 4) {
+        html += 'Med en samlet score under middel er det vigtigt at tage signalet alvorligt — dit nervesystem bærer en bred belastning.';
+      } else {
+        html += 'Med dine scores i den positive ende er dette et tegn på god balance i dit system.';
+      }
+    } else {
+      html += 'Der er en tydelig forskel mellem dine dimensioner — <strong>' + svageste.data.titel + '</strong> scorer markant lavere end <strong>' + staerkeste.data.titel + '</strong>. ';
+      html += 'Det fortæller at dit nervesystem kompenserer: du bruger ressourcer fra dine stærke sider til at bære de svage. Over tid kan det koste — fordi selv stærke områder slides ned af kompensation.';
+    }
+    html += '</p>';
+
+    // Hvad det betyder for arbejdspladsen
+    html += '<div class="resultat-profil-sub">';
+    html += '<strong>For din arbejdsplads betyder det:</strong> ';
+    if (svageste.score <= 4) {
+      html += 'Du er sandsynligvis ikke i stand til at levere dit bedste arbejde konsistent. Ikke fordi du mangler evnerne — men fordi dit nervesystem bruger energi på overlevelse i stedet for kreativitet og samarbejde. Det er ikke et personligt problem. Det er et signal om at noget i systemet skal ændres.';
+    } else if (svageste.score <= 7) {
+      html += 'Du fungerer, men der er plads til betydelig forbedring. De områder du scorer lavest på påvirker sandsynligvis din daglige oplevelse mere end du er bevidst om — og små ændringer her kan have stor effekt.';
+    } else {
+      html += 'Du er i en stærk position. Dit nervesystem er reguleret, og du har adgang til dine bedste ressourcer. Overvej hvordan du kan bruge denne styrke til at støtte kolleger og forme kulturen positivt.';
+    }
+    html += '</div>';
+    html += '</div>';
+    html += '</div>';
+
     // ── Samlet score circle ──
     var totalAvg = 0;
     dimScores.forEach(function(d) { totalAvg += d.score; });
@@ -2261,13 +2299,29 @@
     if (!container) return;
     var historik = getAssessmentHistorik();
     if (historik.length === 0) {
-      container.innerHTML = '<p class="historik-empty">Du har ikke lavet nogen vurderinger endnu.</p>';
+      container.innerHTML = '<p class="historik-empty">Du har ikke lavet nogen vurderinger endnu.</p>' +
+        '<div class="resultat-actions"><button class="assess-btn assess-btn-next" id="historikNyVurdering">Tag din første vurdering</button></div>';
+      document.getElementById('historikNyVurdering').addEventListener('click', startAssessment);
       return;
     }
 
     var html = '';
+    var seneste = historik[historik.length - 1];
 
-    // Udviklingsgraf (simpel linjegraf med SVG)
+    // Antal vurderinger + tidsspan
+    if (historik.length > 1) {
+      var foerste = new Date(historik[0].dato);
+      var sidsteD = new Date(seneste.dato);
+      var dage = Math.round((sidsteD - foerste) / (1000 * 60 * 60 * 24));
+      var tidsLabel = dage < 7 ? dage + ' dage' : (dage < 60 ? Math.round(dage / 7) + ' uger' : Math.round(dage / 30) + ' måneder');
+
+      html += '<div class="historik-summary">';
+      html += '<div class="historik-summary-stat"><span class="historik-stat-nr">' + historik.length + '</span><span class="historik-stat-label">vurderinger</span></div>';
+      html += '<div class="historik-summary-stat"><span class="historik-stat-nr">' + tidsLabel + '</span><span class="historik-stat-label">tidsperiode</span></div>';
+      html += '</div>';
+    }
+
+    // Udviklingsgraf
     if (historik.length > 1) {
       html += '<div class="historik-graf-wrap">';
       html += '<h3 class="resultat-section-title">Udvikling over tid</h3>';
@@ -2279,24 +2333,82 @@
       html += '</div>';
       html += '</div>';
 
-      // Ændringer siden sidst
-      var seneste = historik[historik.length - 1];
+      // Mønstergenkendelse — hvad der har ændret sig mest
       var forrige = historik[historik.length - 2];
-      html += '<div class="historik-aendringer">';
-      html += '<h3 class="resultat-section-title">Ændringer siden sidst</h3>';
+      var changes = [];
       ASSESSMENT_KEYS.forEach(function(key) {
         var nu = seneste.scores[key].samlet;
         var foer = forrige.scores[key].samlet;
         var diff = Math.round((nu - foer) * 10) / 10;
-        if (diff === 0) return;
-        var cls = diff > 0 ? 'historik-change-pos' : 'historik-change-neg';
-        var arrow = diff > 0 ? '↑' : '↓';
+        changes.push({ key: key, nu: nu, foer: foer, diff: diff });
+      });
+      changes.sort(function(a, b) { return b.diff - a.diff; });
+
+      html += '<div class="historik-aendringer">';
+      html += '<h3 class="resultat-section-title">Ændringer siden sidst</h3>';
+      var hasChanges = false;
+      changes.forEach(function(c) {
+        if (c.diff === 0) return;
+        hasChanges = true;
+        var cls = c.diff > 0 ? 'historik-change-pos' : 'historik-change-neg';
+        var arrow = c.diff > 0 ? '↑' : '↓';
         html += '<div class="historik-change-item ' + cls + '">';
-        html += '<span>' + ASSESSMENT_DATA[key].ikon + ' ' + ASSESSMENT_DATA[key].titel + '</span>';
-        html += '<span>' + foer + ' → ' + nu + ' <strong>' + arrow + ' ' + Math.abs(diff) + '</strong></span>';
+        html += '<span>' + ASSESSMENT_DATA[c.key].ikon + ' ' + ASSESSMENT_DATA[c.key].titel + '</span>';
+        html += '<span>' + c.foer + ' → ' + c.nu + ' <strong>' + arrow + ' ' + Math.abs(c.diff) + '</strong></span>';
         html += '</div>';
       });
+      if (!hasChanges) {
+        html += '<p class="historik-no-change">Ingen ændringer siden sidst — dit billede er stabilt.</p>';
+      }
       html += '</div>';
+
+      // Mønstre over tid (kun med 3+ vurderinger)
+      if (historik.length >= 3) {
+        html += '<div class="historik-moenstre">';
+        html += '<h3 class="resultat-section-title">Mønstre i din udvikling</h3>';
+
+        // Find konsistente trends
+        var trends = [];
+        ASSESSMENT_KEYS.forEach(function(key) {
+          var foersteScore = historik[0].scores[key].samlet;
+          var senesteScore = seneste.scores[key].samlet;
+          var totalDiff = Math.round((senesteScore - foersteScore) * 10) / 10;
+          if (Math.abs(totalDiff) >= 1) {
+            trends.push({ key: key, foerste: foersteScore, seneste: senesteScore, diff: totalDiff });
+          }
+        });
+
+        if (trends.length > 0) {
+          trends.sort(function(a, b) { return Math.abs(b.diff) - Math.abs(a.diff); });
+          html += '<div class="historik-moenstre-cards">';
+          trends.forEach(function(t) {
+            var retning = t.diff > 0 ? 'fremgang' : 'tilbagegang';
+            var farve = t.diff > 0 ? 'var(--sage)' : 'var(--rose)';
+            html += '<div class="historik-moenster-card" style="border-left: 3px solid ' + farve + '">';
+            html += '<strong>' + ASSESSMENT_DATA[t.key].ikon + ' ' + ASSESSMENT_DATA[t.key].titel + ':</strong> ';
+            html += t.foerste + ' → ' + t.seneste + ' (' + (t.diff > 0 ? '+' : '') + t.diff + ' — ' + retning + ')';
+            html += '</div>';
+          });
+          html += '</div>';
+
+          // Størst potentiale for bedring
+          var laveste = [];
+          ASSESSMENT_KEYS.forEach(function(key) {
+            laveste.push({ key: key, score: seneste.scores[key].samlet });
+          });
+          laveste.sort(function(a, b) { return a.score - b.score; });
+          if (laveste[0].score <= 7) {
+            html += '<div class="historik-potentiale">';
+            html += '<strong>Størst potentiale for bedring:</strong> ';
+            html += ASSESSMENT_DATA[laveste[0].key].ikon + ' ' + ASSESSMENT_DATA[laveste[0].key].titel;
+            html += ' (scorer ' + laveste[0].score + '/10). Fokusér her for at løfte hele dit billede.';
+            html += '</div>';
+          }
+        } else {
+          html += '<p class="historik-no-change">Endnu ikke nok data til at se tydelige mønstre — bliv ved med at vurdere.</p>';
+        }
+        html += '</div>';
+      }
     }
 
     // Tidligere vurderinger
@@ -2671,6 +2783,12 @@
     html += '<button class="menu-item" data-nav="temaer"><span class="menu-item-icon">◈</span>' + t('menuThemes') + '</button>';
     html += '<button class="menu-item" data-nav="oevelser"><span class="menu-item-icon">◎</span>' + t('menuExercises') + '</button>';
     html += '<button class="menu-item" data-nav="dynamik"><span class="menu-item-icon">⬡</span>' + t('menuDynamik') + '</button>';
+    // Assessment menu items
+    html += '<button class="menu-item menu-item-assessment" id="menuAssessment"><span class="menu-item-icon">◎</span>Din personlige vurdering</button>';
+    var assessHist = getAssessmentHistorik();
+    if (assessHist.length > 0) {
+      html += '<button class="menu-item menu-item-historik" id="menuHistorik"><span class="menu-item-icon">◈</span>Din udvikling <span class="menu-favorit-badge">' + assessHist.length + '</span></button>';
+    }
     html += '<button class="menu-item menu-item-virksomhed" data-nav="virksomhed"><span class="menu-item-icon">◆</span>' + t('menuCompany') + '</button>';
     var favCount = getFavoritter().length;
     html += '<button class="menu-item menu-item-favoritter" id="menuFavoritter"><span class="menu-item-icon">' + IKONER.bookmark(15) + '</span>' + t('menuFavorites') + ' <span class="menu-favorit-badge" id="favoritBadge" style="' + (favCount > 0 ? '' : 'display:none') + '">' + favCount + '</span></button>';
@@ -2787,6 +2905,23 @@
       favLink.addEventListener('click', function() {
         closeMenu();
         showFavoritter();
+      });
+    }
+
+    // Bind assessment menu items
+    var menuAssess = document.getElementById('menuAssessment');
+    if (menuAssess) {
+      menuAssess.addEventListener('click', function() {
+        closeMenu();
+        startAssessment();
+      });
+    }
+    var menuHist = document.getElementById('menuHistorik');
+    if (menuHist) {
+      menuHist.addEventListener('click', function() {
+        closeMenu();
+        renderHistorik();
+        navigateTo('historik');
       });
     }
 

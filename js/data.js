@@ -1005,7 +1005,7 @@ var CIRKEL_NAVNE = {
   resiliens: 'Resiliens & grænser'
 };
 
-// ── Personlig vurdering: 7 dimensioner × 6 vinkler ──
+// ── Personlig vurdering: 7 dimensioner × 3 vinkler ──
 var ASSESSMENT_DATA = {
   centrum: {
     titel: 'Stressregulering',
@@ -1017,39 +1017,21 @@ var ASSESSMENT_DATA = {
     vinkler: [
       {
         id: 'micropauser',
-        titel: 'Micro-pauser',
-        medarbejder: 'Tager du bevidste pauser i løbet af din arbejdsdag?',
-        leder: 'Er der en kultur for at tage pauser i dit team?'
+        titel: 'Pauser og regulering',
+        medarbejder: 'Tager du bevidste pauser og bruger du reguleringsredskaber i din hverdag?',
+        leder: 'Er der en kultur for bevidste pauser og regulering i dit team?'
       },
       {
         id: 'kropssignaler',
         titel: 'Kroppens signaler',
-        medarbejder: 'Kan du mærke når din krop signalerer stress (spændte skuldre, hurtig puls)?',
+        medarbejder: 'Kan du mærke når din krop signalerer stress — og handler du på det?',
         leder: 'Er du opmærksom på fysiske stresssignaler hos dine medarbejdere?'
       },
       {
-        id: 'reguleringsredskaber',
-        titel: 'Reguleringsredskaber',
-        medarbejder: 'Har du konkrete redskaber til at regulere dig selv, når presset stiger?',
-        leder: 'Har dit team adgang til og kendskab til reguleringsredskaber?'
-      },
-      {
-        id: 'miljoe',
-        titel: 'Arbejdsmiljø',
-        medarbejder: 'Støtter dit fysiske arbejdsmiljø (lys, lyd, temperatur) din regulering?',
-        leder: 'Prioriterer du arbejdsmiljøet som en reguleringsfaktor for teamet?'
-      },
-      {
         id: 'recovery',
-        titel: 'Recovery efter pres',
-        medarbejder: 'Kan du komme dig efter intense perioder uden at bære stressen videre?',
-        leder: 'Skaber du rum for recovery i teamet efter pressede perioder?'
-      },
-      {
-        id: 'energi',
-        titel: 'Generelt energiniveau',
-        medarbejder: 'Har du generelt energi og overskud i din arbejdsdag?',
-        leder: 'Oplever du at teamet generelt har energi og overskud?'
+        titel: 'Recovery og energi',
+        medarbejder: 'Kan du komme dig efter intense perioder og har du generelt energi?',
+        leder: 'Skaber du rum for recovery og har teamet generelt overskud?'
       }
     ]
   },
@@ -1064,39 +1046,21 @@ var ASSESSMENT_DATA = {
     vinkler: [
       {
         id: 'genkendelse',
-        titel: 'Genkendelse',
+        titel: 'Genkendelse af tilstande',
         medarbejder: 'Kan du genkende når du skifter mellem grøn, gul og rød tilstand?',
         leder: 'Kan du aflæse når teamet skifter mellem tilstandene?'
       },
       {
-        id: 'groen_tid',
-        titel: 'Tid i grøn',
-        medarbejder: 'Tilbringer du en god del af din arbejdsdag i grøn tilstand (ro, fokus, kreativitet)?',
-        leder: 'Tilbringer dit team tilstrækkelig tid i grøn tilstand?'
-      },
-      {
-        id: 'gul_haandtering',
-        titel: 'Håndtering af gul',
-        medarbejder: 'Kan du regulere dig selv ned, når du mærker gul alarm (stress, irritation)?',
-        leder: 'Kan du hjælpe teamet med at regulere ned fra gul alarm?'
-      },
-      {
-        id: 'roed_bevidsthed',
-        titel: 'Bevidsthed om rød',
-        medarbejder: 'Genkender du når du er i rød tilstand (udmattet, fraværende, lukket ned)?',
-        leder: 'Genkender du når medarbejdere er i rød tilstand (nedlukning)?'
-      },
-      {
         id: 'skift_evne',
-        titel: 'Evne til at skifte',
-        medarbejder: 'Har du redskaber til bevidst at bevæge dig fra én tilstand til en anden?',
-        leder: 'Tilpasser du din ledelse til teamets aktuelle tilstand?'
+        titel: 'Evne til at skifte tilstand',
+        medarbejder: 'Har du redskaber til at regulere dig selv fra gul alarm eller rød nedlukning?',
+        leder: 'Tilpasser du din ledelse og støtter teamet i at skifte tilstand?'
       },
       {
-        id: 'tilstandssprog',
-        titel: 'Fælles sprog',
-        medarbejder: 'Har du og dine kolleger et sprog for jeres tilstande?',
-        leder: 'Har teamet et fælles sprog for nervesystemtilstande?'
+        id: 'groen_tid',
+        titel: 'Tid i grøn tilstand',
+        medarbejder: 'Tilbringer du en god del af din arbejdsdag i grøn tilstand (ro, fokus)?',
+        leder: 'Tilbringer dit team tilstrækkelig tid i grøn tilstand?'
       }
     ]
   },
@@ -1116,34 +1080,16 @@ var ASSESSMENT_DATA = {
         leder: 'Kan dine medarbejdere indrømme fejl og stille spørgsmål uden frygt?'
       },
       {
-        id: 'feedback',
-        titel: 'Feedback',
-        medarbejder: 'Får du feedback der er specifik, respektfuld og brugbar?',
-        leder: 'Giver du feedback der er specifik, rettidig og venlig?'
+        id: 'coregulering',
+        titel: 'Co-regulering og tilstedeværelse',
+        medarbejder: 'Oplever du at din leder er en rolig, regulerende og konsistent tilstedeværelse?',
+        leder: 'Er du bevidst om at dit nervesystem smitter — og regulerer du dig selv først?'
       },
       {
         id: 'tillid',
-        titel: 'Tillid',
-        medarbejder: 'Oplever du tillidsbaseret ledelse (autonomi, ansvar) fremfor kontrol?',
-        leder: 'Leder du med tillid og autonomi fremfor kontrol og overvågning?'
-      },
-      {
-        id: 'coregulering',
-        titel: 'Co-regulering',
-        medarbejder: 'Oplever du at din leder er en rolig og regulerende tilstedeværelse?',
-        leder: 'Er du bevidst om at dit nervesystem smitter direkte over på teamet?'
-      },
-      {
-        id: 'konsistens',
-        titel: 'Konsistens',
-        medarbejder: 'Er din leders reaktioner forudsigelige og konsistente?',
-        leder: 'Er dine reaktioner konsistente — reagerer du ens på fejl og succes?'
-      },
-      {
-        id: 'kultur_signaler',
-        titel: 'Kultursignaler',
-        medarbejder: 'Understøtter kulturen ægte trivsel — eller er det bare fine ord?',
-        leder: 'Matcher dine handlinger de værdier du kommunikerer om trivsel?'
+        titel: 'Tillid og autonomi',
+        medarbejder: 'Oplever du tillidsbaseret ledelse med ansvar og autonomi?',
+        leder: 'Leder du med tillid og autonomi fremfor kontrol?'
       }
     ]
   },
@@ -1157,40 +1103,22 @@ var ASSESSMENT_DATA = {
     },
     vinkler: [
       {
-        id: 'hjælp',
-        titel: 'Bede om hjælp',
-        medarbejder: 'Kan du bede om hjælp uden at føle dig svag eller utilstrækkelig?',
-        leder: 'Er det legitimt i teamet at bede om hjælp og støtte?'
-      },
-      {
         id: 'konflikter',
-        titel: 'Konflikthåndtering',
+        titel: 'Konflikter og uenigheder',
         medarbejder: 'Kan du håndtere uenigheder uden at trække dig eller eskalere?',
         leder: 'Håndteres konflikter konstruktivt i teamet — eller går de under jorden?'
       },
       {
-        id: 'graenser',
-        titel: 'Grænser i samarbejde',
-        medarbejder: 'Kan du sige fra og sætte grænser overfor kolleger?',
-        leder: 'Respekteres individuelle grænser i teamsamarbejdet?'
-      },
-      {
         id: 'moenstre',
         titel: 'Bevidsthed om mønstre',
-        medarbejder: 'Er du bevidst om dine egne samarbejdsmønstre (tilbagetrækning, overtilpasning)?',
-        leder: 'Forstår du de forskellige samarbejdsstile i dit team?'
+        medarbejder: 'Er du bevidst om dine egne samarbejdsmønstre under pres?',
+        leder: 'Forstår du de forskellige samarbejdsstile og mønstre i dit team?'
       },
       {
         id: 'forbindelse',
-        titel: 'Ægte forbindelse',
-        medarbejder: 'Føler du dig ægte forbundet med dine kolleger — ikke bare professionelt?',
-        leder: 'Er der reel menneskelig forbindelse i teamet — udover opgaver?'
-      },
-      {
-        id: 'fleksibilitet',
-        titel: 'Fleksibilitet',
-        medarbejder: 'Kan du tilpasse din samarbejdsstil til forskellige kolleger og situationer?',
-        leder: 'Er teamets samarbejde fleksibelt nok til at rumme forskelle?'
+        titel: 'Forbindelse og grænser',
+        medarbejder: 'Føler du ægte forbindelse med kolleger — og kan du sætte grænser?',
+        leder: 'Er der reel menneskelig forbindelse i teamet og respekteres grænser?'
       }
     ]
   },
@@ -1206,38 +1134,20 @@ var ASSESSMENT_DATA = {
       {
         id: 'bevaegelse',
         titel: 'Bevægelse i hverdagen',
-        medarbejder: 'Bevæger du dig regelmæssigt i løbet af din arbejdsdag?',
+        medarbejder: 'Bevæger du dig regelmæssigt og tager kropslige pauser i din arbejdsdag?',
         leder: 'Er der plads til bevægelse og kropslige pauser i teamets hverdag?'
       },
       {
         id: 'spaending',
         titel: 'Kropslig spænding',
-        medarbejder: 'Er du fri for kronisk spænding (nakke, skuldre, kæbe)?',
+        medarbejder: 'Er du fri for kronisk spænding i nakke, skuldre og kæbe?',
         leder: 'Er du opmærksom på fysiske spændingssignaler i dit team?'
       },
       {
         id: 'interoception',
         titel: 'Kropsbevidsthed',
-        medarbejder: 'Kan du mærke hvad din krop har brug for (bevægelse, hvile, mad)?',
+        medarbejder: 'Kan du mærke hvad din krop har brug for — og handler du på det?',
         leder: 'Opfordrer du teamet til at lytte til kroppens signaler?'
-      },
-      {
-        id: 'ergonomi',
-        titel: 'Fysiske rammer',
-        medarbejder: 'Støtter din fysiske arbejdsplads din krop (stol, bord, variation)?',
-        leder: 'Investerer du i fysiske rammer der støtter kroppens behov?'
-      },
-      {
-        id: 'skaerm',
-        titel: 'Skærmbalance',
-        medarbejder: 'Tager du bevidste pauser fra skærmen (øjne, nakke, hænder)?',
-        leder: 'Er der kultur for skærmpauser og variation i arbejdsstillinger?'
-      },
-      {
-        id: 'gaa_moeder',
-        titel: 'Bevægelse i samarbejde',
-        medarbejder: 'Bruger du bevægelse som del af dit arbejde (gå-møder, stående arbejde)?',
-        leder: 'Bruger du gå-møder eller bevægelse som del af teamets arbejdsformer?'
       }
     ]
   },
@@ -1253,14 +1163,8 @@ var ASSESSMENT_DATA = {
       {
         id: 'bevidst_aande',
         titel: 'Bevidst åndedræt',
-        medarbejder: 'Bruger du bevidst åndedræt som reguleringsredskab i din hverdag?',
+        medarbejder: 'Bruger du bevidst åndedræt til at regulere dig selv i hverdagen?',
         leder: 'Bruger du selv bevidst åndedræt — og viser du det for teamet?'
-      },
-      {
-        id: 'pauser',
-        titel: 'Ægte pauser',
-        medarbejder: 'Tager du ægte pauser (ikke skærm-scroll) i din arbejdsdag?',
-        leder: 'Skaber du rum for ægte pauser i teamets kalender?'
       },
       {
         id: 'vejr_under_pres',
@@ -1269,22 +1173,10 @@ var ASSESSMENT_DATA = {
         leder: 'Bruger du åndedræt bevidst til at regulere rummet i pressede møder?'
       },
       {
-        id: 'udaanding',
-        titel: 'Forlænget udånding',
-        medarbejder: 'Kender og bruger du teknikker som 4-7-8 eller box breathing?',
-        leder: 'Har du introduceret åndedrætstekniker i teamet?'
-      },
-      {
-        id: 'faelles_aande',
-        titel: 'Fælles åndedræt',
-        medarbejder: 'Oplever du fælles åndedræts- eller landingsøjeblikke i dit team?',
-        leder: 'Starter du møder med fælles landing eller åndedræt?'
-      },
-      {
         id: 'mellemrum',
-        titel: 'Mellemrum mellem opgaver',
-        medarbejder: 'Har du bevidste overgange mellem opgaver — eller kører du non-stop?',
-        leder: 'Er der bevidste overgange og mellemrum i teamets arbejdsrytme?'
+        titel: 'Pauser og overgange',
+        medarbejder: 'Har du ægte pauser og bevidste overgange mellem opgaver?',
+        leder: 'Skaber du rum for ægte pauser og bevidste overgange i teamet?'
       }
     ]
   },
@@ -1298,39 +1190,21 @@ var ASSESSMENT_DATA = {
     },
     vinkler: [
       {
-        id: 'graenser_arbejdstid',
-        titel: 'Grænser for arbejdstid',
-        medarbejder: 'Har du klare grænser for hvornår arbejdsdagen slutter?',
-        leder: 'Respekterer du og kulturen medarbejdernes grænser for arbejdstid?'
-      },
-      {
         id: 'overbelastning',
         titel: 'Tegn på overbelastning',
-        medarbejder: 'Genkender du tidlige tegn på overbelastning hos dig selv?',
+        medarbejder: 'Genkender du tidlige tegn på overbelastning — og handler du på dem?',
         leder: 'Genkender du tidlige tegn på overbelastning i dit team?'
       },
       {
-        id: 'nej_sige',
-        titel: 'At sige nej',
-        medarbejder: 'Kan du sige nej til opgaver, når du har for meget?',
+        id: 'graenser',
+        titel: 'Grænser og at sige nej',
+        medarbejder: 'Har du klare grænser for arbejdstid og kan du sige nej?',
         leder: 'Er det legitimt i teamet at sige "jeg har for meget lige nu"?'
       },
       {
-        id: 'recovery_evne',
-        titel: 'Recovery-evne',
-        medarbejder: 'Kan du vende tilbage til normal funktion efter pressede perioder?',
-        leder: 'Vender teamet hurtigt tilbage efter pressede perioder?'
-      },
-      {
-        id: 'soevn_hvile',
-        titel: 'Søvn og hvile',
-        medarbejder: 'Sover du godt — uden at arbejdstanker holder dig vågen?',
-        leder: 'Tager du din egen hvile og recovery alvorligt som leder?'
-      },
-      {
-        id: 'langsigtighed',
+        id: 'baeredygtighed',
         titel: 'Langsigtet bæredygtighed',
-        medarbejder: 'Føler du at dit nuværende tempo er bæredygtigt på lang sigt?',
+        medarbejder: 'Føler du at dit nuværende tempo er bæredygtigt og sover du godt?',
         leder: 'Er teamets nuværende tempo bæredygtigt på lang sigt?'
       }
     ]

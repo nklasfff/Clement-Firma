@@ -4243,3 +4243,41 @@ footer {
 .historik-entry-bars { display: flex; flex-direction: column; gap: 3px; }
 .historik-mini-bar { height: 4px; background: var(--bg-warm); border-radius: 2px; overflow: hidden; border: 1px solid var(--border); }
 .historik-mini-fill { height: 100%; border-radius: 2px; }
+
+/* Profil-analyse */
+.resultat-profil { margin-bottom: 8px; }
+.resultat-profil-card {
+  background: var(--bg-warm); border-radius: 12px; padding: 18px;
+  border: 1px solid var(--border); border-left: 4px solid var(--primary);
+}
+.resultat-profil-tekst { font-size: 14px; line-height: 1.6; color: var(--text); margin: 0 0 12px; }
+.resultat-profil-sub { font-size: 13px; line-height: 1.5; color: var(--text-muted); }
+
+/* Menu assessment items */
+.menu-item-assessment, .menu-item-historik {
+  position: relative;
+}
+.menu-item-assessment .menu-item-icon { color: var(--primary); }
+.menu-item-historik .menu-item-icon { color: var(--sage); }
+
+/* Historik summary */
+.historik-summary {
+  display: flex; justify-content: center; gap: 32px;
+  padding: 16px 0 20px; margin-bottom: 8px;
+}
+.historik-summary-stat { text-align: center; }
+.historik-stat-nr { display: block; font-size: 24px; font-weight: 700; font-family: Georgia, serif; color: var(--primary); }
+.historik-stat-label { font-size: 12px; color: var(--text-muted); }
+
+/* Mønstre */
+.historik-moenstre { margin-bottom: 24px; }
+.historik-moenstre-cards { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.historik-moenster-card {
+  padding: 10px 14px; background: var(--bg-warm); border-radius: 8px;
+  font-size: 13px; line-height: 1.4;
+}
+.historik-potentiale {
+  padding: 12px 14px; background: #fff; border-radius: 10px;
+  border: 1px solid var(--border); font-size: 13px; line-height: 1.5;
+}
+.historik-no-change { font-size: 13px; color: var(--text-muted); font-style: italic; }
