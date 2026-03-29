@@ -428,6 +428,16 @@
     } else if (hash === 'gave') {
       renderGave();
       navigateTo('gave', false);
+    } else if (hash === 'vurdering') {
+      startAssessment();
+    } else if (hash === 'resultat') {
+      // Redirect to hjem if no data
+      if (getAssessmentHistorik().length === 0) { navigateTo('hjem', false); return; }
+      renderResultat();
+      navigateTo('resultat', false);
+    } else if (hash === 'historik') {
+      renderHistorik();
+      navigateTo('historik', false);
     } else {
       navigateTo(hash, false);
     }
@@ -486,6 +496,14 @@
         navigateTo('hjem');
       });
     });
+
+    // Assessment back-buttons
+    var vurderingBack = document.getElementById('vurderingBack');
+    if (vurderingBack) vurderingBack.addEventListener('click', function() { navigateTo('dynamik'); renderDynamik(); });
+    var resultatBack = document.getElementById('resultatBack');
+    if (resultatBack) resultatBack.addEventListener('click', function() { navigateTo('hjem'); });
+    var historikBack = document.getElementById('historikBack');
+    if (historikBack) historikBack.addEventListener('click', function() { navigateTo('hjem'); });
 
     // Dynamik link fra forsiden
     var dynamikLink = document.getElementById('dynamikLink');
@@ -1811,15 +1829,553 @@
     }
     html += '</div>';
 
+    // Assessment CTA
+    html += '<div class="dynamik-assessment-cta">';
+    html += '<div class="dynamik-assessment-cta-inner">';
+    html += '<h3 class="dynamik-assessment-cta-title">Kortlæg dit eget billede</h3>';
+    html += '<p class="dynamik-assessment-cta-desc">Nu forstår du dynamikken. Næste skridt er at se, hvor du selv er — og hvor du kan skabe størst forandring.</p>';
+    html += '<button class="assess-btn assess-btn-next" id="dynamikStartAssessment">Start din personlige vurdering</button>';
+    var hist = getAssessmentHistorik();
+    if (hist.length > 0) {
+      html += '<button class="assess-btn assess-btn-back" id="dynamikVisHistorik" style="margin-top:8px">Se din udvikling over tid (' + hist.length + ' vurdering' + (hist.length > 1 ? 'er' : '') + ')</button>';
+    }
+    html += '</div>';
+    html += '</div>';
+
     // Back to top
     html += '<button class="dynamik-to-top" onclick="window.scrollTo({top:0,behavior:\'smooth\'})">' + t('backToTop') + '</button>';
 
     container.innerHTML = html;
+
+    // Bind assessment CTA
+    var startBtn = document.getElementById('dynamikStartAssessment');
+    if (startBtn) startBtn.addEventListener('click', startAssessment);
+    var histBtn = document.getElementById('dynamikVisHistorik');
+    if (histBtn) histBtn.addEventListener('click', function() { renderHistorik(); navigateTo('historik'); });
   }
 
   function showDynamik() {
     renderDynamik();
     navigateTo('dynamik');
+  }
+
+  // ── Assessment: Personlig vurdering ──
+  var assessmentScores = {};
+  var assessmentTrin = 0;
+  var ASSESSMENT_KEYS = ['centrum', 'tilstande', 'ledelse', 'samarbejde', 'krop', 'aandedraet', 'resiliens'];
+
+  function getAssessmentHistorik() {
+    try { return JSON.parse(localStorage.getItem('cf_assessment_historik') || '[]'); } catch(e) { return []; }
+  }
+  function saveAssessmentHistorik(data) { localStorage.setItem('cf_assessment_historik', JSON.stringify(data)); }
+
+  function startAssessment() {
+    assessmentScores = {};
+    assessmentTrin = 0;
+    ASSESSMENT_KEYS.forEach(function(k) {
+      assessmentScores[k] = { generelt: 5, vinkler: [5,5,5,5,5,5] };
+    });
+    renderAssessmentTrin();
+    navigateTo('vurdering');
+  }
+
+  function renderAssessmentProgress() {
+    var container = document.getElementById('vurderingProgress');
+    if (!container) return;
+    var total = ASSESSMENT_KEYS.length;
+    var html = '<div class="assess-progress-bar">';
+    for (var i = 0; i < total; i++) {
+      var cls = i < assessmentTrin ? 'done' : (i === assessmentTrin ? 'active' : '');
+      html += '<div class="assess-progress-step ' + cls + '">' +
+        '<span class="assess-progress-dot"></span>' +
+        '<span class="assess-progress-label">' + ASSESSMENT_DATA[ASSESSMENT_KEYS[i]].ikon + '</span>' +
+        '</div>';
+    }
+    html += '</div>';
+    html += '<p class="assess-progress-text">Trin ' + (assessmentTrin + 1) + ' af ' + total + '</p>';
+    container.innerHTML = html;
+  }
+
+  function renderAssessmentTrin() {
+    var container = document.getElementById('vurderingContent');
+    if (!container) return;
+    renderAssessmentProgress();
+
+    var key = ASSESSMENT_KEYS[assessmentTrin];
+    var dim = ASSESSMENT_DATA[key];
+    var perspektiv = getDataPerspektiv();
+    var scores = assessmentScores[key];
+
+    var html = '';
+    html += '<div class="assess-dimension">';
+    html += '<div class="assess-dim-header">';
+    html += '<span class="assess-dim-ikon">' + dim.ikon + '</span>';
+    html += '<h2 class="assess-dim-titel">' + dim.titel + '</h2>';
+    html += '</div>';
+
+    // Generel score
+    html += '<div class="assess-generelt">';
+    html += '<p class="assess-question">' + dim.generelt[perspektiv] + '</p>';
+    html += '<div class="assess-slider-wrap">';
+    html += '<input type="range" min="1" max="10" value="' + scores.generelt + '" class="assess-slider" id="assessGenSlider">';
+    html += '<div class="assess-slider-labels"><span>1</span><span>5</span><span>10</span></div>';
+    html += '<div class="assess-slider-value" id="assessGenValue">' + scores.generelt + '</div>';
+    html += '</div>';
+    html += '</div>';
+
+    // 6 vinkler
+    html += '<div class="assess-vinkler">';
+    html += '<h3 class="assess-vinkler-titel">Uddyb din oplevelse</h3>';
+    for (var i = 0; i < dim.vinkler.length; i++) {
+      var v = dim.vinkler[i];
+      html += '<div class="assess-vinkel">';
+      html += '<p class="assess-vinkel-label">' + v.titel + '</p>';
+      html += '<p class="assess-vinkel-question">' + v[perspektiv] + '</p>';
+      html += '<div class="assess-slider-wrap assess-slider-small">';
+      html += '<input type="range" min="1" max="10" value="' + scores.vinkler[i] + '" class="assess-slider" data-vinkel="' + i + '">';
+      html += '<span class="assess-vinkel-value">' + scores.vinkler[i] + '</span>';
+      html += '</div>';
+      html += '</div>';
+    }
+    html += '</div>';
+
+    // Mini-opsummering SVG
+    html += '<div class="assess-mini-summary" id="assessMiniSummary"></div>';
+
+    // Navigation
+    html += '<div class="assess-nav">';
+    if (assessmentTrin > 0) {
+      html += '<button class="assess-btn assess-btn-back" id="assessPrev">← Forrige</button>';
+    }
+    if (assessmentTrin < ASSESSMENT_KEYS.length - 1) {
+      html += '<button class="assess-btn assess-btn-next" id="assessNext">Næste →</button>';
+    } else {
+      html += '<button class="assess-btn assess-btn-finish" id="assessFinish">Se din samlede vurdering</button>';
+    }
+    html += '</div>';
+
+    html += '</div>';
+    container.innerHTML = html;
+
+    // Bind slider events
+    var genSlider = document.getElementById('assessGenSlider');
+    var genValue = document.getElementById('assessGenValue');
+    genSlider.addEventListener('input', function() {
+      scores.generelt = parseInt(this.value);
+      genValue.textContent = this.value;
+      updateMiniSummary(key);
+    });
+
+    container.querySelectorAll('.assess-slider[data-vinkel]').forEach(function(slider) {
+      slider.addEventListener('input', function() {
+        var idx = parseInt(this.dataset.vinkel);
+        scores.vinkler[idx] = parseInt(this.value);
+        this.parentNode.querySelector('.assess-vinkel-value').textContent = this.value;
+        updateMiniSummary(key);
+      });
+    });
+
+    var prevBtn = document.getElementById('assessPrev');
+    var nextBtn = document.getElementById('assessNext');
+    var finishBtn = document.getElementById('assessFinish');
+
+    if (prevBtn) prevBtn.addEventListener('click', function() {
+      assessmentTrin--;
+      renderAssessmentTrin();
+      window.scrollTo(0, 0);
+    });
+    if (nextBtn) nextBtn.addEventListener('click', function() {
+      assessmentTrin++;
+      renderAssessmentTrin();
+      window.scrollTo(0, 0);
+    });
+    if (finishBtn) finishBtn.addEventListener('click', function() {
+      saveAssessmentResult();
+      renderResultat();
+      navigateTo('resultat');
+    });
+
+    updateMiniSummary(key);
+  }
+
+  function updateMiniSummary(key) {
+    var el = document.getElementById('assessMiniSummary');
+    if (!el) return;
+    var scores = assessmentScores[key];
+    var dim = ASSESSMENT_DATA[key];
+    var avg = scores.generelt;
+    var vinkelAvg = 0;
+    for (var i = 0; i < scores.vinkler.length; i++) vinkelAvg += scores.vinkler[i];
+    vinkelAvg = Math.round(vinkelAvg / scores.vinkler.length * 10) / 10;
+    var samlet = Math.round((avg + vinkelAvg) / 2 * 10) / 10;
+    var niveau = getNiveau(samlet);
+
+    var html = '<div class="assess-mini-card">';
+    html += '<div class="assess-mini-bar-wrap">';
+    html += '<div class="assess-mini-bar" style="width:' + (samlet * 10) + '%;background:' + niveau.farve + '"></div>';
+    html += '</div>';
+    html += '<span class="assess-mini-score">' + samlet + '/10</span>';
+    html += '<span class="assess-mini-niveau" style="color:' + niveau.farve + '">' + niveau.label + '</span>';
+    html += '</div>';
+    el.innerHTML = html;
+  }
+
+  function beregnDimScore(key) {
+    var s = assessmentScores[key];
+    var vinkelAvg = 0;
+    for (var i = 0; i < s.vinkler.length; i++) vinkelAvg += s.vinkler[i];
+    vinkelAvg = vinkelAvg / s.vinkler.length;
+    return Math.round((s.generelt + vinkelAvg) / 2 * 10) / 10;
+  }
+
+  function saveAssessmentResult() {
+    var result = { dato: new Date().toISOString(), scores: {} };
+    ASSESSMENT_KEYS.forEach(function(key) {
+      result.scores[key] = {
+        generelt: assessmentScores[key].generelt,
+        vinkler: assessmentScores[key].vinkler.slice(),
+        samlet: beregnDimScore(key)
+      };
+    });
+    var historik = getAssessmentHistorik();
+    historik.push(result);
+    saveAssessmentHistorik(historik);
+  }
+
+  // ── Resultat-side med radar-chart og analyse ──
+  function renderResultat() {
+    var container = document.getElementById('resultatContent');
+    if (!container) return;
+    var perspektiv = getDataPerspektiv();
+
+    // Beregn scores
+    var dimScores = [];
+    ASSESSMENT_KEYS.forEach(function(key) {
+      dimScores.push({ key: key, score: beregnDimScore(key), data: ASSESSMENT_DATA[key] });
+    });
+
+    var html = '';
+
+    // ── Radar-chart SVG ──
+    html += '<div class="resultat-radar-wrap">';
+    html += buildRadarChart(dimScores);
+    html += '</div>';
+
+    // ── Sorteret bar-chart ──
+    var sorted = dimScores.slice().sort(function(a, b) { return a.score - b.score; });
+
+    html += '<div class="resultat-bars">';
+    html += '<h3 class="resultat-section-title">Dine 7 dimensioner</h3>';
+    sorted.forEach(function(d) {
+      var niveau = getNiveau(d.score);
+      html += '<div class="resultat-bar-item">';
+      html += '<div class="resultat-bar-header">';
+      html += '<span class="resultat-bar-ikon">' + d.data.ikon + '</span>';
+      html += '<span class="resultat-bar-name">' + d.data.titel + '</span>';
+      html += '<span class="resultat-bar-score" style="color:' + niveau.farve + '">' + d.score + '</span>';
+      html += '</div>';
+      html += '<div class="resultat-bar-track"><div class="resultat-bar-fill" style="width:' + (d.score * 10) + '%;background:' + niveau.farve + '"></div></div>';
+      html += '</div>';
+    });
+    html += '</div>';
+
+    // ── Analyse: Top udfordringer og sammenhænge ──
+    var top3 = sorted.slice(0, 3);
+    html += '<div class="resultat-analyse">';
+    html += '<h3 class="resultat-section-title">Analyse af dine udfordringer</h3>';
+    html += '<p class="resultat-analyse-intro">Baseret på dine svar ser vi de stærkeste udfordringer her — og hvordan de påvirker hinanden:</p>';
+
+    top3.forEach(function(d) {
+      var niveau = getNiveau(d.score);
+      var anbefaling = ASSESSMENT_ANBEFALINGER[d.key];
+      var niveauKey = d.score <= 4 ? 'lav' : (d.score <= 7 ? 'middel' : 'hoej');
+
+      html += '<div class="resultat-analyse-card">';
+      html += '<div class="resultat-analyse-header" style="border-left: 4px solid ' + niveau.farve + '">';
+      html += '<span class="resultat-analyse-ikon">' + d.data.ikon + '</span>';
+      html += '<div><strong>' + d.data.titel + '</strong><span class="resultat-analyse-score" style="color:' + niveau.farve + '"> — ' + d.score + '/10 (' + niveau.label + ')</span></div>';
+      html += '</div>';
+      html += '<p class="resultat-analyse-tekst">' + anbefaling[niveauKey] + '</p>';
+
+      // Vis sammenhænge med andre lave scores
+      var sammenhaenge = findRelevanteSammenhaenge(d.key, top3, perspektiv);
+      if (sammenhaenge.length > 0) {
+        html += '<div class="resultat-sammenhaeng">';
+        html += '<p class="resultat-sammenhaeng-label">↔ Sammenhæng med dine andre udfordringer:</p>';
+        sammenhaenge.forEach(function(s) {
+          html += '<p class="resultat-sammenhaeng-tekst">' + s + '</p>';
+        });
+        html += '</div>';
+      }
+      html += '</div>';
+    });
+    html += '</div>';
+
+    // ── Prioriteret handlingsplan ──
+    html += '<div class="resultat-handlingsplan">';
+    html += '<h3 class="resultat-section-title">Din prioriterede handlingsplan</h3>';
+    html += '<p class="resultat-handlingsplan-intro">Start her — det vil have størst effekt på tværs af hele dit billede:</p>';
+
+    var topKey = top3[0].key;
+    html += '<div class="resultat-prioritet">';
+    html += '<span class="resultat-prioritet-nr">1</span>';
+    html += '<div class="resultat-prioritet-tekst">';
+    html += '<strong>' + top3[0].data.titel + '</strong> — dette område trækker mest ned i dit samlede billede.';
+    // Link til relevante øvelser
+    var relevanteOevelser = findRelevanteOevelser(topKey);
+    if (relevanteOevelser.length > 0) {
+      html += '<div class="resultat-oevelser-links">';
+      html += '<span>Prøv: </span>';
+      relevanteOevelser.forEach(function(o, idx) {
+        html += '<button class="resultat-oevelse-link" data-goto-oevelse="' + idx + '">' + o + '</button>';
+      });
+      html += '</div>';
+    }
+    html += '</div></div>';
+
+    if (top3.length > 1) {
+      html += '<div class="resultat-prioritet">';
+      html += '<span class="resultat-prioritet-nr">2</span>';
+      html += '<div class="resultat-prioritet-tekst">';
+      html += '<strong>' + top3[1].data.titel + '</strong> — styrk dette område for at løfte flere dimensioner samtidig.';
+      html += '</div></div>';
+    }
+    html += '</div>';
+
+    // ── Samlet score circle ──
+    var totalAvg = 0;
+    dimScores.forEach(function(d) { totalAvg += d.score; });
+    totalAvg = Math.round(totalAvg / dimScores.length * 10) / 10;
+    var totalNiveau = getNiveau(totalAvg);
+
+    html += '<div class="resultat-samlet">';
+    html += '<div class="resultat-samlet-circle" style="border-color:' + totalNiveau.farve + '">';
+    html += '<span class="resultat-samlet-score">' + totalAvg + '</span>';
+    html += '<span class="resultat-samlet-label">/ 10</span>';
+    html += '</div>';
+    html += '<p class="resultat-samlet-niveau" style="color:' + totalNiveau.farve + '">' + totalNiveau.label + '</p>';
+    html += '<p class="resultat-samlet-tekst">Dit samlede billede</p>';
+    html += '</div>';
+
+    // ── Knapper ──
+    html += '<div class="resultat-actions">';
+    var historik = getAssessmentHistorik();
+    if (historik.length > 1) {
+      html += '<button class="assess-btn assess-btn-next" id="resultatHistorik">Se din udvikling over tid</button>';
+    }
+    html += '<button class="assess-btn assess-btn-back" id="resultatTilbage">Tilbage til forsiden</button>';
+    html += '</div>';
+
+    container.innerHTML = html;
+
+    // Bind events
+    var histBtn = document.getElementById('resultatHistorik');
+    if (histBtn) histBtn.addEventListener('click', function() {
+      renderHistorik();
+      navigateTo('historik');
+    });
+    var tilbageBtn = document.getElementById('resultatTilbage');
+    if (tilbageBtn) tilbageBtn.addEventListener('click', function() { navigateTo('hjem'); });
+  }
+
+  function buildRadarChart(dimScores) {
+    var cx = 200, cy = 200, r = 150;
+    var n = dimScores.length;
+    var svg = '<svg viewBox="0 0 400 400" class="resultat-radar-svg">';
+
+    // Baggrundscirkler
+    for (var ring = 2; ring <= 10; ring += 2) {
+      var rr = r * ring / 10;
+      svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + rr + '" fill="none" stroke="var(--primary)" opacity="0.1" stroke-width="1"/>';
+    }
+
+    // Akser + labels
+    var points = [];
+    for (var i = 0; i < n; i++) {
+      var angle = -Math.PI / 2 + (2 * Math.PI * i / n);
+      var px = cx + r * Math.cos(angle);
+      var py = cy + r * Math.sin(angle);
+      points.push({ x: px, y: py, angle: angle });
+      svg += '<line x1="' + cx + '" y1="' + cy + '" x2="' + px + '" y2="' + py + '" stroke="var(--primary)" opacity="0.15" stroke-width="1"/>';
+
+      // Label
+      var lx = cx + (r + 28) * Math.cos(angle);
+      var ly = cy + (r + 28) * Math.sin(angle);
+      svg += '<text x="' + lx + '" y="' + (ly + 4) + '" text-anchor="middle" font-size="11" font-family="Georgia,serif" fill="var(--primary)">' + dimScores[i].data.ikon + '</text>';
+    }
+
+    // Data-polygon
+    var dataPoints = [];
+    for (var j = 0; j < n; j++) {
+      var val = dimScores[j].score / 10;
+      var a2 = -Math.PI / 2 + (2 * Math.PI * j / n);
+      dataPoints.push((cx + r * val * Math.cos(a2)) + ',' + (cy + r * val * Math.sin(a2)));
+    }
+    svg += '<polygon points="' + dataPoints.join(' ') + '" fill="var(--primary)" fill-opacity="0.15" stroke="var(--primary)" stroke-width="2"/>';
+
+    // Data-punkter med farve
+    for (var k = 0; k < n; k++) {
+      var val2 = dimScores[k].score / 10;
+      var a3 = -Math.PI / 2 + (2 * Math.PI * k / n);
+      var dpx = cx + r * val2 * Math.cos(a3);
+      var dpy = cy + r * val2 * Math.sin(a3);
+      var niv = getNiveau(dimScores[k].score);
+      svg += '<circle cx="' + dpx + '" cy="' + dpy + '" r="6" fill="' + niv.farve + '" stroke="#fff" stroke-width="2"/>';
+    }
+
+    svg += '</svg>';
+    return svg;
+  }
+
+  function findRelevanteSammenhaenge(key, top3, perspektiv) {
+    var result = [];
+    var sammenhaenge = D_SAMMENHAENGE();
+    top3.forEach(function(d) {
+      if (d.key === key) return;
+      var pairKey = key + '-' + d.key;
+      var pairKeyAlt = d.key + '-' + key;
+      var tekst = sammenhaenge[pairKey] || sammenhaenge[pairKeyAlt];
+      if (tekst && tekst[perspektiv]) {
+        // Tag kun de første 2 sætninger
+        var sætninger = tekst[perspektiv].split('. ');
+        result.push(sætninger.slice(0, 2).join('. ') + '.');
+      }
+    });
+    return result;
+  }
+
+  function findRelevanteOevelser(key) {
+    var oevelser = D_OEVELSER();
+    var result = [];
+    for (var i = 0; i < oevelser.length && result.length < 3; i++) {
+      if (oevelser[i].cirkel === key) {
+        result.push(oevelser[i].titel);
+      }
+    }
+    return result;
+  }
+
+  // ── Historik / tidslinje ──
+  function renderHistorik() {
+    var container = document.getElementById('historikContent');
+    if (!container) return;
+    var historik = getAssessmentHistorik();
+    if (historik.length === 0) {
+      container.innerHTML = '<p class="historik-empty">Du har ikke lavet nogen vurderinger endnu.</p>';
+      return;
+    }
+
+    var html = '';
+
+    // Udviklingsgraf (simpel linjegraf med SVG)
+    if (historik.length > 1) {
+      html += '<div class="historik-graf-wrap">';
+      html += '<h3 class="resultat-section-title">Udvikling over tid</h3>';
+      html += buildHistorikGraf(historik);
+      html += '<div class="historik-graf-legend">';
+      ASSESSMENT_KEYS.forEach(function(key) {
+        html += '<span class="historik-legend-item">' + ASSESSMENT_DATA[key].ikon + ' ' + ASSESSMENT_DATA[key].titel + '</span>';
+      });
+      html += '</div>';
+      html += '</div>';
+
+      // Ændringer siden sidst
+      var seneste = historik[historik.length - 1];
+      var forrige = historik[historik.length - 2];
+      html += '<div class="historik-aendringer">';
+      html += '<h3 class="resultat-section-title">Ændringer siden sidst</h3>';
+      ASSESSMENT_KEYS.forEach(function(key) {
+        var nu = seneste.scores[key].samlet;
+        var foer = forrige.scores[key].samlet;
+        var diff = Math.round((nu - foer) * 10) / 10;
+        if (diff === 0) return;
+        var cls = diff > 0 ? 'historik-change-pos' : 'historik-change-neg';
+        var arrow = diff > 0 ? '↑' : '↓';
+        html += '<div class="historik-change-item ' + cls + '">';
+        html += '<span>' + ASSESSMENT_DATA[key].ikon + ' ' + ASSESSMENT_DATA[key].titel + '</span>';
+        html += '<span>' + foer + ' → ' + nu + ' <strong>' + arrow + ' ' + Math.abs(diff) + '</strong></span>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+
+    // Tidligere vurderinger
+    html += '<div class="historik-entries">';
+    html += '<h3 class="resultat-section-title">Dine vurderinger</h3>';
+    for (var i = historik.length - 1; i >= 0; i--) {
+      var entry = historik[i];
+      var dato = new Date(entry.dato);
+      var datoStr = dato.getDate() + '/' + (dato.getMonth() + 1) + '-' + dato.getFullYear();
+      var samletAvg = 0;
+      ASSESSMENT_KEYS.forEach(function(key) { samletAvg += entry.scores[key].samlet; });
+      samletAvg = Math.round(samletAvg / ASSESSMENT_KEYS.length * 10) / 10;
+      var niveau = getNiveau(samletAvg);
+
+      html += '<div class="historik-entry">';
+      html += '<div class="historik-entry-header">';
+      html += '<span class="historik-entry-dato">' + datoStr + '</span>';
+      html += '<span class="historik-entry-score" style="color:' + niveau.farve + '">' + samletAvg + '/10</span>';
+      html += '</div>';
+      html += '<div class="historik-entry-bars">';
+      ASSESSMENT_KEYS.forEach(function(key) {
+        var s = entry.scores[key].samlet;
+        var n = getNiveau(s);
+        html += '<div class="historik-mini-bar" title="' + ASSESSMENT_DATA[key].titel + ': ' + s + '">';
+        html += '<div class="historik-mini-fill" style="width:' + (s * 10) + '%;background:' + n.farve + '"></div>';
+        html += '</div>';
+      });
+      html += '</div>';
+      html += '</div>';
+    }
+    html += '</div>';
+
+    // Ny vurdering knap
+    html += '<div class="resultat-actions">';
+    html += '<button class="assess-btn assess-btn-next" id="historikNyVurdering">Tag ny vurdering</button>';
+    html += '<button class="assess-btn assess-btn-back" id="historikTilbage">Tilbage til forsiden</button>';
+    html += '</div>';
+
+    container.innerHTML = html;
+
+    document.getElementById('historikNyVurdering').addEventListener('click', startAssessment);
+    document.getElementById('historikTilbage').addEventListener('click', function() { navigateTo('hjem'); });
+  }
+
+  function buildHistorikGraf(historik) {
+    var w = 360, h = 200, pad = 30;
+    var n = historik.length;
+    var colors = ['var(--primary)', 'var(--sage)', 'var(--amber)', 'var(--rose)', '#8B6B4B', '#5B7B8B', '#6B5B8B'];
+
+    var svg = '<svg viewBox="0 0 ' + w + ' ' + h + '" class="historik-graf-svg">';
+
+    // Y-akse linjer
+    for (var y = 0; y <= 10; y += 2) {
+      var yy = pad + (h - 2 * pad) * (1 - y / 10);
+      svg += '<line x1="' + pad + '" y1="' + yy + '" x2="' + (w - pad) + '" y2="' + yy + '" stroke="#ddd" stroke-width="0.5"/>';
+      svg += '<text x="' + (pad - 8) + '" y="' + (yy + 4) + '" font-size="9" fill="#999" text-anchor="end">' + y + '</text>';
+    }
+
+    // En linje per dimension
+    ASSESSMENT_KEYS.forEach(function(key, ki) {
+      var pathD = '';
+      for (var i = 0; i < n; i++) {
+        var x = pad + (w - 2 * pad) * i / Math.max(n - 1, 1);
+        var val = historik[i].scores[key].samlet;
+        var yPos = pad + (h - 2 * pad) * (1 - val / 10);
+        pathD += (i === 0 ? 'M' : 'L') + x + ',' + yPos;
+      }
+      svg += '<path d="' + pathD + '" fill="none" stroke="' + colors[ki] + '" stroke-width="2" opacity="0.7"/>';
+      // Dots
+      for (var j = 0; j < n; j++) {
+        var dx = pad + (w - 2 * pad) * j / Math.max(n - 1, 1);
+        var dval = historik[j].scores[key].samlet;
+        var dy = pad + (h - 2 * pad) * (1 - dval / 10);
+        svg += '<circle cx="' + dx + '" cy="' + dy + '" r="3" fill="' + colors[ki] + '"/>';
+      }
+    });
+
+    svg += '</svg>';
+    return svg;
   }
 
   // ── Gave (Gift) view ──
